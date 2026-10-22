@@ -1,0 +1,1106 @@
+{
+  "$comment": "Period street network. ALIGNMENTS ARE SCHEMATIC: hand-placed along the modern street pattern using the verified anchor points in places.json (positional uncertainty about ±30–60 m in the core, more on radial roads). Replace with OpenStreetMap centrelines by running `npm run data:osm` (matches on osm_names). 'first_evidence' is used only where a source dates the street; otherwise the street's appearance is inferred segment by segment from the schematic growth envelope (growth.json) and labelled as inferred.",
+  "streets": [
+    {
+      "id": "high-street",
+      "name": "High Street",
+      "osm_names": [
+        "High Street"
+      ],
+      "class": "main",
+      "first_evidence": 1613,
+      "first_evidence_source_ids": [
+        "wiki-belfast",
+        "wiki-1613"
+      ],
+      "first_evidence_note": "The original settlement grew along the line of High Street at the ford; the borough charter dates from 1613.",
+      "coords": [
+        [
+          -5.9288,
+          54.59965
+        ],
+        [
+          -5.9278,
+          54.59978
+        ],
+        [
+          -5.9265,
+          54.59992
+        ],
+        [
+          -5.925,
+          54.60005
+        ],
+        [
+          -5.9237,
+          54.60022
+        ],
+        [
+          -5.9228,
+          54.6006
+        ],
+        [
+          -5.9222,
+          54.6011
+        ]
+      ]
+    },
+    {
+      "id": "castle-place",
+      "name": "Castle Place",
+      "osm_names": [
+        "Castle Place"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9303,
+          54.59965
+        ],
+        [
+          -5.9288,
+          54.59965
+        ]
+      ]
+    },
+    {
+      "id": "castle-street",
+      "name": "Castle Street",
+      "osm_names": [
+        "Castle Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9303,
+          54.59965
+        ],
+        [
+          -5.933,
+          54.5996
+        ],
+        [
+          -5.9355,
+          54.59965
+        ],
+        [
+          -5.938,
+          54.59975
+        ]
+      ]
+    },
+    {
+      "id": "corn-market",
+      "name": "Corn Market",
+      "osm_names": [
+        "Cornmarket",
+        "Corn Market"
+      ],
+      "class": "main",
+      "first_evidence": 1692,
+      "first_evidence_source_ids": [
+        "belfaststreetnames-cornmarket"
+      ],
+      "first_evidence_note": "Named Corn Market in Belfast deeds of 1692 (earlier Shamble Street).",
+      "coords": [
+        [
+          -5.9286,
+          54.59965
+        ],
+        [
+          -5.9287,
+          54.599
+        ],
+        [
+          -5.9288,
+          54.5986
+        ]
+      ]
+    },
+    {
+      "id": "ann-street",
+      "name": "Ann Street",
+      "osm_names": [
+        "Ann Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9287,
+          54.599
+        ],
+        [
+          -5.927,
+          54.59915
+        ],
+        [
+          -5.925,
+          54.5993
+        ],
+        [
+          -5.923,
+          54.59945
+        ],
+        [
+          -5.9208,
+          54.5995
+        ]
+      ]
+    },
+    {
+      "id": "bridge-street",
+      "name": "Bridge Street",
+      "osm_names": [
+        "Bridge Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9276,
+          54.5998
+        ],
+        [
+          -5.92785,
+          54.6003
+        ],
+        [
+          -5.92808,
+          54.60089
+        ]
+      ]
+    },
+    {
+      "id": "waring-street",
+      "name": "Waring Street",
+      "osm_names": [
+        "Waring Street"
+      ],
+      "class": "main",
+      "first_evidence": 1675,
+      "first_evidence_source_ids": [
+        "dfc-hb26-50-278"
+      ],
+      "first_evidence_note": "Largely developed in the 1670s and 1680s (NI Buildings Database, HB26/50/278).",
+      "coords": [
+        [
+          -5.92808,
+          54.60089
+        ],
+        [
+          -5.9268,
+          54.60082
+        ],
+        [
+          -5.9255,
+          54.60095
+        ],
+        [
+          -5.9242,
+          54.6012
+        ],
+        [
+          -5.9233,
+          54.6015
+        ]
+      ]
+    },
+    {
+      "id": "north-street",
+      "name": "North Street",
+      "osm_names": [
+        "North Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.92808,
+          54.60089
+        ],
+        [
+          -5.9295,
+          54.6019
+        ],
+        [
+          -5.9312,
+          54.6032
+        ],
+        [
+          -5.933,
+          54.6042
+        ]
+      ]
+    },
+    {
+      "id": "rosemary-street",
+      "name": "Rosemary Street",
+      "osm_names": [
+        "Rosemary Street"
+      ],
+      "class": "secondary",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.92808,
+          54.60089
+        ],
+        [
+          -5.9292,
+          54.6006
+        ],
+        [
+          -5.9304,
+          54.6004
+        ]
+      ]
+    },
+    {
+      "id": "donegall-street",
+      "name": "Donegall Street",
+      "osm_names": [
+        "Donegall Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9274,
+          54.6011
+        ],
+        [
+          -5.9283,
+          54.6023
+        ],
+        [
+          -5.9296,
+          54.6036
+        ],
+        [
+          -5.9312,
+          54.6047
+        ],
+        [
+          -5.932,
+          54.6052
+        ]
+      ]
+    },
+    {
+      "id": "clifton-street",
+      "name": "Clifton Street",
+      "osm_names": [
+        "Clifton Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.932,
+          54.6052
+        ],
+        [
+          -5.934,
+          54.6064
+        ],
+        [
+          -5.936,
+          54.6076
+        ],
+        [
+          -5.9375,
+          54.6083
+        ]
+      ]
+    },
+    {
+      "id": "donegall-place",
+      "name": "Donegall Place",
+      "osm_names": [
+        "Donegall Place"
+      ],
+      "class": "main",
+      "first_evidence": 1788,
+      "first_evidence_source_ids": [
+        "wiki-timeline"
+      ],
+      "first_evidence_note": "Planned 1784 with the White Linen Hall; completed by 1788 (Timeline of Belfast history).",
+      "coords": [
+        [
+          -5.9302,
+          54.59965
+        ],
+        [
+          -5.9301,
+          54.5973
+        ]
+      ]
+    },
+    {
+      "id": "donegall-square",
+      "name": "Donegall Square",
+      "osm_names": [
+        "Donegall Square North",
+        "Donegall Square East",
+        "Donegall Square South",
+        "Donegall Square West"
+      ],
+      "class": "main",
+      "first_evidence": 1788,
+      "first_evidence_source_ids": [
+        "wiki-timeline"
+      ],
+      "first_evidence_note": "Completed by 1788 around the White Linen Hall.",
+      "coords": [
+        [
+          -5.9316,
+          54.59728
+        ],
+        [
+          -5.9284,
+          54.59728
+        ],
+        [
+          -5.9284,
+          54.59548
+        ],
+        [
+          -5.9316,
+          54.59548
+        ],
+        [
+          -5.9316,
+          54.59728
+        ]
+      ]
+    },
+    {
+      "id": "royal-avenue",
+      "name": "Royal Avenue",
+      "osm_names": [
+        "Royal Avenue"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9303,
+          54.59975
+        ],
+        [
+          -5.9306,
+          54.6012
+        ],
+        [
+          -5.931,
+          54.6026
+        ],
+        [
+          -5.9315,
+          54.6042
+        ],
+        [
+          -5.932,
+          54.6052
+        ]
+      ]
+    },
+    {
+      "id": "york-street",
+      "name": "York Street",
+      "osm_names": [
+        "York Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9274,
+          54.6014
+        ],
+        [
+          -5.9266,
+          54.6035
+        ],
+        [
+          -5.9258,
+          54.606
+        ],
+        [
+          -5.925,
+          54.609
+        ],
+        [
+          -5.924,
+          54.613
+        ]
+      ]
+    },
+    {
+      "id": "victoria-street",
+      "name": "Victoria Street",
+      "osm_names": [
+        "Victoria Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.92374,
+          54.6015
+        ],
+        [
+          -5.92374,
+          54.60009
+        ],
+        [
+          -5.9239,
+          54.5985
+        ],
+        [
+          -5.9242,
+          54.597
+        ]
+      ]
+    },
+    {
+      "id": "chichester-street",
+      "name": "Chichester Street",
+      "osm_names": [
+        "Chichester Street"
+      ],
+      "class": "secondary",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9284,
+          54.597
+        ],
+        [
+          -5.926,
+          54.5971
+        ],
+        [
+          -5.923,
+          54.59725
+        ],
+        [
+          -5.9215,
+          54.59735
+        ]
+      ]
+    },
+    {
+      "id": "may-street",
+      "name": "May Street",
+      "osm_names": [
+        "May Street"
+      ],
+      "class": "secondary",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9284,
+          54.596
+        ],
+        [
+          -5.9255,
+          54.5959
+        ],
+        [
+          -5.9225,
+          54.59585
+        ]
+      ]
+    },
+    {
+      "id": "oxford-street",
+      "name": "Oxford Street",
+      "osm_names": [
+        "Oxford Street"
+      ],
+      "class": "secondary",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9208,
+          54.5995
+        ],
+        [
+          -5.9212,
+          54.5978
+        ],
+        [
+          -5.9215,
+          54.5962
+        ]
+      ]
+    },
+    {
+      "id": "donegall-quay",
+      "name": "Donegall Quay",
+      "osm_names": [
+        "Donegall Quay"
+      ],
+      "class": "quay",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9215,
+          54.6012
+        ],
+        [
+          -5.9212,
+          54.603
+        ],
+        [
+          -5.9215,
+          54.605
+        ],
+        [
+          -5.922,
+          54.607
+        ]
+      ]
+    },
+    {
+      "id": "great-victoria-street",
+      "name": "Great Victoria Street",
+      "osm_names": [
+        "Great Victoria Street"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9333,
+          54.5962
+        ],
+        [
+          -5.9344,
+          54.595
+        ],
+        [
+          -5.9347,
+          54.593
+        ],
+        [
+          -5.9345,
+          54.5905
+        ]
+      ]
+    },
+    {
+      "id": "bedford-street",
+      "name": "Bedford Street",
+      "osm_names": [
+        "Bedford Street"
+      ],
+      "class": "secondary",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.931,
+          54.5956
+        ],
+        [
+          -5.9306,
+          54.594
+        ],
+        [
+          -5.9304,
+          54.5925
+        ]
+      ]
+    },
+    {
+      "id": "dublin-road",
+      "name": "Dublin Road",
+      "osm_names": [
+        "Dublin Road"
+      ],
+      "class": "main",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9304,
+          54.5925
+        ],
+        [
+          -5.9325,
+          54.5905
+        ],
+        [
+          -5.9345,
+          54.59
+        ]
+      ]
+    },
+    {
+      "id": "lisburn-road",
+      "name": "Lisburn Road",
+      "osm_names": [
+        "Lisburn Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9345,
+          54.59
+        ],
+        [
+          -5.937,
+          54.586
+        ],
+        [
+          -5.941,
+          54.58
+        ],
+        [
+          -5.946,
+          54.573
+        ],
+        [
+          -5.951,
+          54.566
+        ]
+      ]
+    },
+    {
+      "id": "university-malone",
+      "name": "University Road / Malone Road",
+      "osm_names": [
+        "University Road",
+        "Malone Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9345,
+          54.59
+        ],
+        [
+          -5.9338,
+          54.586
+        ],
+        [
+          -5.9342,
+          54.582
+        ],
+        [
+          -5.9355,
+          54.576
+        ],
+        [
+          -5.938,
+          54.568
+        ],
+        [
+          -5.941,
+          54.56
+        ]
+      ]
+    },
+    {
+      "id": "ormeau-road",
+      "name": "Ormeau Road",
+      "osm_names": [
+        "Ormeau Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.926,
+          54.592
+        ],
+        [
+          -5.9242,
+          54.588
+        ],
+        [
+          -5.92297,
+          54.5855
+        ],
+        [
+          -5.9205,
+          54.581
+        ],
+        [
+          -5.917,
+          54.575
+        ]
+      ]
+    },
+    {
+      "id": "shankill-road",
+      "name": "Shankill Road",
+      "osm_names": [
+        "Shankill Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.937,
+          54.603
+        ],
+        [
+          -5.942,
+          54.6038
+        ],
+        [
+          -5.948,
+          54.6042
+        ],
+        [
+          -5.952,
+          54.604
+        ],
+        [
+          -5.958,
+          54.605
+        ],
+        [
+          -5.966,
+          54.607
+        ]
+      ]
+    },
+    {
+      "id": "divis-falls",
+      "name": "Divis Street / Falls Road",
+      "osm_names": [
+        "Divis Street",
+        "Falls Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.938,
+          54.59975
+        ],
+        [
+          -5.9422,
+          54.59985
+        ],
+        [
+          -5.947,
+          54.5992
+        ],
+        [
+          -5.953,
+          54.5978
+        ],
+        [
+          -5.96,
+          54.595
+        ],
+        [
+          -5.97,
+          54.591
+        ]
+      ]
+    },
+    {
+      "id": "crumlin-road",
+      "name": "Crumlin Road",
+      "osm_names": [
+        "Crumlin Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9375,
+          54.6083
+        ],
+        [
+          -5.943,
+          54.61
+        ],
+        [
+          -5.95,
+          54.6125
+        ],
+        [
+          -5.96,
+          54.616
+        ]
+      ]
+    },
+    {
+      "id": "antrim-road",
+      "name": "Antrim Road",
+      "osm_names": [
+        "Antrim Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.9375,
+          54.6083
+        ],
+        [
+          -5.9395,
+          54.6096
+        ],
+        [
+          -5.943,
+          54.6135
+        ],
+        [
+          -5.948,
+          54.62
+        ],
+        [
+          -5.953,
+          54.627
+        ],
+        [
+          -5.958,
+          54.635
+        ]
+      ]
+    },
+    {
+      "id": "york-road",
+      "name": "York Road",
+      "osm_names": [
+        "York Road"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.924,
+          54.613
+        ],
+        [
+          -5.923,
+          54.618
+        ],
+        [
+          -5.9215,
+          54.625
+        ],
+        [
+          -5.919,
+          54.632
+        ]
+      ]
+    },
+    {
+      "id": "newtownards-road",
+      "name": "Newtownards Road",
+      "osm_names": [
+        "Newtownards Road",
+        "Upper Newtownards Road",
+        "Bridge End"
+      ],
+      "class": "radial",
+      "first_evidence": null,
+      "coords": [
+        [
+          -5.917,
+          54.5996
+        ],
+        [
+          -5.91,
+          54.599
+        ],
+        [
+          -5.9,
+          54.5982
+        ],
+        [
+          -5.888,
+          54.5985
+        ],
+        [
+          -5.875,
+          54.5995
+        ],
+        [
+          -5.86,
+          54.601
+        ],
+        [
+          -5.845,
+          54.604
+        ]
+      ]
+    },
+    {
+      "id": "westlink",
+      "name": "Westlink (A12)",
+      "osm_names": [
+        "Westlink"
+      ],
+      "class": "motorway",
+      "first_evidence": 1981.1,
+      "first_evidence_source_ids": [
+        "wiki-westlink"
+      ],
+      "first_evidence_note": "Phase 1 opened February 1981; phase 2 March 1983.",
+      "dated": true,
+      "coords": [
+        [
+          -5.937,
+          54.591
+        ],
+        [
+          -5.94,
+          54.5945
+        ],
+        [
+          -5.9415,
+          54.598
+        ],
+        [
+          -5.94,
+          54.602
+        ],
+        [
+          -5.935,
+          54.6065
+        ],
+        [
+          -5.93,
+          54.609
+        ],
+        [
+          -5.926,
+          54.6105
+        ]
+      ]
+    },
+    {
+      "id": "crown-entry",
+      "name": "Crown Entry",
+      "osm_names": [
+        "Crown Entry"
+      ],
+      "class": "entry",
+      "first_evidence": 1630,
+      "first_evidence_source_ids": [
+        "wiki-entries"
+      ],
+      "first_evidence_note": "The entries date back to at least 1630 (The Belfast Entries).",
+      "status": "surviving",
+      "chapter": "1798",
+      "coords": [
+        [
+          -5.92735,
+          54.59985
+        ],
+        [
+          -5.9274,
+          54.59905
+        ]
+      ]
+    },
+    {
+      "id": "joys-entry",
+      "name": "Joy's Entry",
+      "osm_names": [
+        "Joy's Entry",
+        "Joys Entry"
+      ],
+      "class": "entry",
+      "first_evidence": 1630,
+      "first_evidence_source_ids": [
+        "wiki-entries"
+      ],
+      "first_evidence_note": "The entries date back to at least 1630.",
+      "status": "surviving",
+      "chapter": "1798",
+      "coords": [
+        [
+          -5.92645,
+          54.59992
+        ],
+        [
+          -5.9264,
+          54.59925
+        ]
+      ]
+    },
+    {
+      "id": "pottingers-entry",
+      "name": "Pottinger's Entry",
+      "osm_names": [
+        "Pottinger's Entry",
+        "Pottingers Entry"
+      ],
+      "class": "entry",
+      "first_evidence": 1630,
+      "first_evidence_source_ids": [
+        "wiki-entries"
+      ],
+      "first_evidence_note": "The entries date back to at least 1630.",
+      "status": "surviving",
+      "chapter": "1798",
+      "coords": [
+        [
+          -5.92593,
+          54.59997
+        ],
+        [
+          -5.9259,
+          54.59935
+        ]
+      ]
+    },
+    {
+      "id": "sugarhouse-entry",
+      "name": "Sugarhouse Entry",
+      "osm_names": [
+        "Sugarhouse Entry",
+        "Sugar House Entry"
+      ],
+      "class": "entry",
+      "first_evidence": 1630,
+      "first_evidence_source_ids": [
+        "wiki-entries",
+        "geograph-sugarhouse"
+      ],
+      "first_evidence_note": "Entries date back to at least 1630; named after a sugar house of 1704. Closed 1972–2024.",
+      "status": "surviving",
+      "chapter": "1798",
+      "coords": [
+        [
+          -5.9269,
+          54.59988
+        ],
+        [
+          -5.9268,
+          54.6008
+        ]
+      ],
+      "closures": [
+        {
+          "from": 1972,
+          "to": 2024.6,
+          "note": "Sealed as part of the city-centre security cordon from 1972 until it reopened in summer 2024 (The Belfast Entries; Belfast City Council)."
+        }
+      ]
+    }
+  ],
+  "lost_entries": [
+    {
+      "name": "Mitchell's Entry",
+      "note": "Lost; it stood next to the Ulster Sports Club (Irish News, 2025). Not georeferenced in this build.",
+      "source_ids": [
+        "irishnews-entries"
+      ]
+    }
+  ]
+}

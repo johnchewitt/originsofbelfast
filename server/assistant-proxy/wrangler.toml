@@ -1,0 +1,12 @@
+# Optional "Ask Belfast Rising" proxy — see README.md in this folder.
+name = "belfast-rising-assistant"
+main = "worker.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+# The exact origin of your deployed site (no trailing slash).
+ALLOWED_ORIGIN = "https://YOUR-USER.github.io"
+# MODEL = "claude-sonnet-5-5"
+
+# The API key is a secret, never a var:
+#   npx wrangler secret put ANTHROPIC_API_KEY

@@ -1,0 +1,4154 @@
+{
+  "$comment": "Curated historical events (source of truth). scripts/build-data.ts validates this file, resolves 'place' against places.json, derives era, longitude/latitude and source_name/source_url, and writes public/data/events.json plus public/data/events.geojson using the full schema in src/types/history.ts. Descriptions are written for this project; they paraphrase the cited sources. Confidence vocabulary: documented | probable | approximate | tradition. interpretation_status: established | disputed | competing-dates | single-source | tradition-unverified | estimate.",
+  "events": [
+    {
+      "id": "origins-fearset-666",
+      "title": "First recorded mention: a battle at the 'Fearset'",
+      "date": "0666",
+      "precision": "year",
+      "category": "origins",
+      "people": [],
+      "place": "ford-of-belfast",
+      "historical_location_name": "The sandbank ford at the mouth of the Farset",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "The Department for Communities' record for St George's notes that Belfast first enters the historical record through a battle fought at the 'Fearset' in 666 AD. The place-name itself, Béal Feirste, refers to the mouth of the Farset and its sandbar or tidal ford — the low-water crossing of the Lagan around which the later town grew.",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-belfast"
+      ],
+      "tags": [
+        "Béal Feirste",
+        "Farset",
+        "ford",
+        "place-name"
+      ]
+    },
+    {
+      "id": "origins-norman-castle",
+      "title": "Anglo-Norman fort guards the ford",
+      "date": "1220",
+      "precision": "decade",
+      "category": "military",
+      "people": [],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle (medieval)",
+      "confidence": "probable",
+      "status": "established",
+      "importance": 3,
+      "summary": "A castle stood at Belfast by the 1220s, probably to command the ford over the Lagan. Wikipedia's article on Belfast describes the early thirteenth-century Normans building a fort, a parish church and a watermill at the crossing. The exact footprint of the medieval castle has not been recovered; the marker shows the general Castle Place area.",
+      "sources": [
+        "wiki-belfast-castle",
+        "wiki-belfast"
+      ],
+      "landmark": "castle-medieval",
+      "tags": [
+        "castle",
+        "Norman"
+      ]
+    },
+    {
+      "id": "origins-chapel-ford-1306",
+      "title": "The Chapel of the Ford is recorded",
+      "date": "1306",
+      "precision": "year",
+      "category": "religion",
+      "people": [],
+      "place": "st-georges",
+      "historical_location_name": "Chapel of the Ford",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "The papal taxation roll of 1306 lists a 'chapel of the ford' as one of the chapelries dependent on Shankill. It served travellers waiting to cross the mudflats where the Farset met the Lagan. Worship on this High Street site continued through the later Corporation Church to today's St George's.",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-st-georges"
+      ],
+      "landmark": "chapel-of-the-ford",
+      "tags": [
+        "church",
+        "High Street"
+      ]
+    },
+    {
+      "id": "origins-castle-1503",
+      "title": "The castle at Belfast is pulled down",
+      "date": "1503",
+      "precision": "year",
+      "category": "military",
+      "people": [
+        "Gerald FitzGerald, 8th Earl of Kildare"
+      ],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The Timeline of Belfast history records that the Earl of Kildare declared the fortification on the castle site illegal in 1503 and had it pulled down, with a further demolition in 1512. The castle was rebuilt and changed hands several times during the sixteenth century.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "castle"
+      ]
+    },
+    {
+      "id": "origins-castle-1552",
+      "title": "Sir James Croft refortifies Belfast Castle",
+      "date": "1552",
+      "precision": "year",
+      "category": "military",
+      "people": [
+        "Sir James Croft",
+        "Hugh Mac Neil Og"
+      ],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "In 1552 the castle was rebuilt and fortified under Sir James Croft and placed in the keeping of Hugh Mac Neil Og.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "castle"
+      ]
+    },
+    {
+      "id": "origins-1574-macphelim",
+      "title": "Sir Brian MacPhelim seized at Belfast Castle",
+      "date": "1574",
+      "precision": "year",
+      "category": "political",
+      "people": [
+        "Walter Devereux, 1st Earl of Essex",
+        "Sir Brian MacPhelim O'Neill"
+      ],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "During the Enterprise of Ulster, the Earl of Essex invited the Gaelic lord Sir Brian MacPhelim to Belfast Castle under the pretence of negotiation, then seized him; he was later executed in Dublin. Elizabeth I had granted the castle and surrounding lands to Sir Thomas Smith in 1571.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Clandeboye",
+        "Elizabethan"
+      ]
+    },
+    {
+      "id": "plantation-chichester-grant",
+      "title": "Arthur Chichester receives Belfast",
+      "date": "1603",
+      "precision": "year",
+      "category": "political",
+      "people": [
+        "Sir Arthur Chichester"
+      ],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle and lands",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Sir Arthur Chichester received grants of Belfast in 1603 and 1604 and began developing it as a planned town, bringing in craftsmen and building in fired brick. His castle was rebuilt, mainly in brick, in the early 1610s on or near the medieval site.",
+      "sources": [
+        "wiki-belfast-castle",
+        "wiki-timeline"
+      ],
+      "landmark": "castle-chichester",
+      "tags": [
+        "Plantation",
+        "castle"
+      ]
+    },
+    {
+      "id": "plantation-charter-1613",
+      "title": "Belfast receives its charter",
+      "date": "1613-04",
+      "precision": "month",
+      "category": "civic",
+      "people": [
+        "James VI and I",
+        "Thomas Vesey",
+        "Sir John Blennerhasset",
+        "George Trevillian"
+      ],
+      "place": null,
+      "historical_location_name": "Borough of Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "In April 1613 James I granted Belfast a royal charter, creating a corporation of a Sovereign, twelve burgesses and a commonalty with the right to send two members to Parliament. The first Sovereign was Thomas Vesey. The charter also called for a wharf where the Lagan and Farset met — the beginnings of the port.",
+      "sources": [
+        "wiki-1613",
+        "irishgenealogy-charter400",
+        "wiki-belfast-harbour",
+        "wiki-timeline"
+      ],
+      "details": [
+        {
+          "label": "Date",
+          "value": "April 1613 (day not confirmed in the sources consulted)",
+          "source_ids": [
+            "irishgenealogy-charter400"
+          ]
+        },
+        {
+          "label": "Corporation",
+          "value": "Sovereign, twelve burgesses and commonalty",
+          "source_ids": [
+            "wiki-1613"
+          ]
+        },
+        {
+          "label": "Representation",
+          "value": "Two members of Parliament",
+          "source_ids": [
+            "wiki-1613"
+          ]
+        }
+      ],
+      "tags": [
+        "charter",
+        "corporation",
+        "borough"
+      ]
+    },
+    {
+      "id": "plantation-timber-1619",
+      "title": "Archaeology: early seventeenth-century town beneath High Street",
+      "date": "1619",
+      "end": null,
+      "precision": "decade",
+      "category": "archaeology",
+      "people": [
+        "Peter Moore (excavator)"
+      ],
+      "place": "woolworth-excavation",
+      "historical_location_name": "Block between High Street, Ann Street, Cornmarket and Crown Entry",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Excavation in 2003 on the former Woolworth's site found a horizontal timber dendro-dated to AD 1619 (±9 years), stone walls of a substantial structure, a drain timber of the mid-1600s and tile wasters suggesting local tile-making, as well as medieval everted-rim pottery. The excavator concluded the area probably lies within the medieval borough and Chichester's seventeenth-century town.",
+      "sources": [
+        "excavations-2003-0011"
+      ],
+      "tags": [
+        "archaeology",
+        "dendrochronology",
+        "Crown Entry"
+      ]
+    },
+    {
+      "id": "plantation-market-house",
+      "title": "Market House built at the corner of High Street",
+      "date": "1639",
+      "end": "1665",
+      "precision": "range",
+      "category": "civic",
+      "people": [],
+      "place": "market-house-site",
+      "historical_location_name": "Market House, High Street at Corn Market",
+      "confidence": "probable",
+      "status": "competing-dates",
+      "importance": 4,
+      "summary": "Belfast's first public hall stood at the corner of High Street next to Corn Market. Archiseek's entry gives two construction dates without reconciling them: 1639 in a building description and 1665 from an 1823 history of Belfast. It was extended after 1663 to provide a courthouse upstairs and is described as small red brick with sandstone dressings, an arcaded ground floor and a three-stage tower with an ogival turret, weathercock and clock.",
+      "sources": [
+        "archiseek-market-house",
+        "belfaststreetnames-cornmarket"
+      ],
+      "interpretations": [
+        {
+          "label": "Built 1639",
+          "claim": "A building description quoted by Archiseek dates the Market House to 1639.",
+          "source_ids": [
+            "archiseek-market-house"
+          ]
+        },
+        {
+          "label": "Built 1665",
+          "claim": "An 1823 history of Belfast, quoted by Archiseek, gives 1665.",
+          "source_ids": [
+            "archiseek-market-house"
+          ]
+        }
+      ],
+      "landmark": "market-house",
+      "tags": [
+        "Market House",
+        "Cornmarket"
+      ]
+    },
+    {
+      "id": "plantation-customs-1640",
+      "title": "Customs moves from Carrickfergus to Belfast",
+      "date": "1640",
+      "precision": "year",
+      "category": "maritime",
+      "people": [
+        "Thomas Wentworth"
+      ],
+      "place": null,
+      "historical_location_name": "Port of Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "Thomas Wentworth bought Carrickfergus's trade privileges and transferred them to Belfast, moving the customs house to the growing town.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "port",
+        "trade"
+      ]
+    },
+    {
+      "id": "plantation-1644-monro",
+      "title": "Robert Monro seizes Belfast",
+      "date": "1644",
+      "precision": "year",
+      "category": "military",
+      "people": [
+        "Robert Monro",
+        "George Monck"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "In the wars that followed the 1641 rising, the Scottish commander Robert Monro took Belfast in 1644 and refused to give it up to George Monck; Monro was captured in 1648.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "content_note": "War and civil conflict.",
+      "tags": [
+        "1641",
+        "Confederate wars"
+      ]
+    },
+    {
+      "id": "plantation-church-1650s",
+      "title": "Corporation Church enlarged",
+      "date": "1650",
+      "precision": "decade",
+      "category": "religion",
+      "people": [],
+      "place": "st-georges",
+      "historical_location_name": "Corporation Church (former Chapel of the Ford)",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "After the 1613 charter the old chapel became the corporation's parish church; it was enlarged in the 1650s.",
+      "sources": [
+        "dfc-hb26-50-045"
+      ],
+      "tags": [
+        "church"
+      ]
+    },
+    {
+      "id": "plantation-ships-1663",
+      "title": "A small but growing fleet",
+      "date": "1663",
+      "precision": "year",
+      "category": "maritime",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast quays",
+      "confidence": "documented",
+      "status": "single-source",
+      "importance": 1,
+      "summary": "Records for 1663 show twenty-nine vessels owned in Belfast, with a combined tonnage of about 1,100 tonnes. By 1667, according to the Timeline of Belfast history, the town was handling half of Ireland's butter exports.",
+      "sources": [
+        "wiki-belfast-harbour",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "port",
+        "trade"
+      ]
+    },
+    {
+      "id": "plantation-long-bridge",
+      "title": "The Long Bridge is begun across the Lagan",
+      "date": "1682",
+      "end": "1688",
+      "precision": "range",
+      "category": "transport",
+      "people": [],
+      "place": "queens-bridge",
+      "historical_location_name": "Long Bridge",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Construction of the Long Bridge began in 1682, reputedly on the line of the ancient ford. It had twenty-one arches spanning about 840 feet (256 m), was about 20 feet wide, and with its eastern approach stretched almost a mile. In 1692 a ship rammed it and seven arches collapsed. It remained in use until work on its replacement, the Queen's Bridge, began.",
+      "sources": [
+        "wiki-queens-bridge"
+      ],
+      "details": [
+        {
+          "label": "Arches",
+          "value": "21",
+          "source_ids": [
+            "wiki-queens-bridge"
+          ]
+        },
+        {
+          "label": "Span",
+          "value": "c. 840 ft (256 m); almost a mile with the eastern approach",
+          "source_ids": [
+            "wiki-queens-bridge"
+          ]
+        },
+        {
+          "label": "Width",
+          "value": "c. 20 ft (6.1 m)",
+          "source_ids": [
+            "wiki-queens-bridge"
+          ]
+        }
+      ],
+      "landmark": "long-bridge",
+      "tags": [
+        "bridge",
+        "Lagan",
+        "ford"
+      ]
+    },
+    {
+      "id": "plantation-william-1690",
+      "title": "William III attends service in Belfast",
+      "date": "1690-06",
+      "precision": "month",
+      "category": "political",
+      "people": [
+        "William III"
+      ],
+      "place": "st-georges",
+      "historical_location_name": "Corporation Church, High Street",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "William of Orange came to Belfast in 1690 on his way to the Boyne campaign and attended a service at the church on the High Street site, recorded in the listed-building notes for St George's.",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Williamite war"
+      ]
+    },
+    {
+      "id": "georgian-sugarhouse-1704",
+      "title": "A sugar house gives an entry its name",
+      "date": "1704",
+      "precision": "year",
+      "category": "industry",
+      "people": [],
+      "place": "sugarhouse-entry",
+      "historical_location_name": "Sugar House Entry",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The lane between High Street and Waring Street takes its name from a sugar house — one of the town's refineries — established there in 1704, according to the Geograph record for the entry. Belfast City Council's account confirms the refinery origin of the name.",
+      "sources": [
+        "geograph-sugarhouse",
+        "bcc-sugarhouse-2024"
+      ],
+      "tags": [
+        "entries",
+        "sugar"
+      ]
+    },
+    {
+      "id": "georgian-castle-fire-1708",
+      "title": "Belfast Castle burns",
+      "date": "1708-04-24",
+      "precision": "day",
+      "category": "architecture",
+      "people": [],
+      "place": "belfast-castle-town-site",
+      "historical_location_name": "Belfast Castle (Chichester's)",
+      "confidence": "documented",
+      "status": "competing-dates",
+      "importance": 4,
+      "summary": "The Plantation-era castle was destroyed by fire in April 1708 and never rebuilt; its grounds were later redeveloped and survive in names such as Castle Place and Castle Street.",
+      "sources": [
+        "wiki-belfast-castle",
+        "wiki-timeline"
+      ],
+      "interpretations": [
+        {
+          "label": "24 April 1708",
+          "claim": "Wikipedia's article on Belfast Castle gives 24 April 1708.",
+          "source_ids": [
+            "wiki-belfast-castle"
+          ]
+        },
+        {
+          "label": "25 April 1708",
+          "claim": "The Timeline of Belfast history gives 25 April 1708.",
+          "source_ids": [
+            "wiki-timeline"
+          ]
+        }
+      ],
+      "landmark": "castle-chichester",
+      "tags": [
+        "castle",
+        "fire"
+      ]
+    },
+    {
+      "id": "georgian-newsletter-1737",
+      "title": "The Belfast News Letter is founded",
+      "date": "1737",
+      "precision": "year",
+      "category": "culture",
+      "people": [
+        "Francis Joy"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Francis Joy founded the Belfast News Letter, the town's first newspaper. The Joy family later gave its name to Joy's Entry; Francis Joy was Henry Joy McCracken's maternal grandfather.",
+      "sources": [
+        "wiki-timeline",
+        "uhc-hjm",
+        "belfasttimes-joys"
+      ],
+      "related": [
+        "rev-hjm-born-1767"
+      ],
+      "tags": [
+        "printing",
+        "Joy family"
+      ]
+    },
+    {
+      "id": "georgian-charitable-1752",
+      "title": "Belfast Charitable Society founded",
+      "date": "1752-08",
+      "precision": "month",
+      "category": "civic",
+      "people": [],
+      "place": "clifton-house",
+      "historical_location_name": "Belfast Charitable Society",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Belfast Charitable Society was founded in August 1752. Two decades later it built the Poor House on the northern edge of the town.",
+      "sources": [
+        "wiki-clifton-house"
+      ],
+      "tags": [
+        "charity",
+        "Poor House"
+      ]
+    },
+    {
+      "id": "georgian-waring-leases-1767",
+      "title": "Large leases open up north of Waring Street",
+      "date": "1767",
+      "precision": "year",
+      "category": "architecture",
+      "people": [],
+      "place": "waring-street",
+      "historical_location_name": "Waring Street",
+      "confidence": "documented",
+      "status": "single-source",
+      "importance": 1,
+      "summary": "The listed-building notes for Cotton Court record that Waring Street was largely developed in the 1670s and 1680s, and that large-scale leases granted in 1767 led to redevelopment of the land to its north.",
+      "sources": [
+        "dfc-hb26-50-278"
+      ],
+      "tags": [
+        "Waring Street",
+        "development"
+      ]
+    },
+    {
+      "id": "georgian-exchange-1769",
+      "title": "The Exchange opens at the Four Corners",
+      "date": "1769",
+      "precision": "year",
+      "category": "architecture",
+      "people": [
+        "Arthur Chichester, 1st Marquess of Donegall"
+      ],
+      "place": "assembly-rooms",
+      "historical_location_name": "The Exchange",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Lord Donegall built a single-storey neo-classical Exchange at the Four Corners, the point from which road distances from Belfast were measured. In 1776 he added an upper floor of Assembly Rooms designed by Robert Taylor, creating the building that would host the 1792 Harp Festival and the courts-martial of 1798.",
+      "sources": [
+        "wiki-assembly-rooms",
+        "bcc-assembly-rooms"
+      ],
+      "landmark": "exchange-assembly-rooms",
+      "tags": [
+        "Assembly Rooms",
+        "Four Corners"
+      ]
+    },
+    {
+      "id": "georgian-poor-house-1774",
+      "title": "The Poor House opens",
+      "date": "1774-09-17",
+      "precision": "day",
+      "category": "civic",
+      "people": [],
+      "place": "clifton-house",
+      "historical_location_name": "The Poor House",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "The Belfast Charitable Society laid the foundation stone of its Poor House on 7 August 1771 and opened it on 17 September 1774. Thomas McCabe, John McCracken and Robert Joy later financed cotton-spinning machinery there to teach a trade; Clifton House describes it as the first water-powered cotton spinning mill in Ireland in 1784.",
+      "sources": [
+        "wiki-clifton-house",
+        "clifton-mccabe-2019",
+        "wiki-mccabe"
+      ],
+      "interpretations": [
+        {
+          "label": "1784 water-powered mill",
+          "claim": "Clifton House dates the water-powered cotton spinning mill to 1784.",
+          "source_ids": [
+            "clifton-mccabe-2019"
+          ]
+        },
+        {
+          "label": "1770s machinery",
+          "claim": "Wikipedia's McCabe article places the installation of machinery in the 1770s.",
+          "source_ids": [
+            "wiki-mccabe"
+          ]
+        }
+      ],
+      "landmark": "poor-house",
+      "tags": [
+        "Clifton House",
+        "cotton"
+      ]
+    },
+    {
+      "id": "georgian-corporation-church-1774",
+      "title": "Old Corporation Church demolished",
+      "date": "1774",
+      "precision": "year",
+      "category": "religion",
+      "people": [],
+      "place": "st-georges",
+      "historical_location_name": "Corporation Church",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "By the late eighteenth century the Corporation Church was in poor repair. It was demolished in 1774, while the site continued in use as a graveyard; a new parish church was built on Donegall Street.",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-st-georges"
+      ],
+      "landmark": "chapel-of-the-ford",
+      "tags": [
+        "church"
+      ]
+    },
+    {
+      "id": "georgian-st-annes-1776",
+      "title": "St Anne's parish church built on Donegall Street",
+      "date": "1776",
+      "precision": "year",
+      "category": "religion",
+      "people": [
+        "Francis Hiorne"
+      ],
+      "place": "st-annes",
+      "historical_location_name": "St Anne's parish church",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "A new parish church designed by Francis Hiorne opened on Donegall Street in 1776. It served until 31 December 1903, when it was demolished as the present cathedral rose around it.",
+      "sources": [
+        "wiki-st-annes"
+      ],
+      "landmark": "st-annes-1776",
+      "tags": [
+        "church",
+        "Donegall Street"
+      ]
+    },
+    {
+      "id": "georgian-volunteers-1778",
+      "title": "The Volunteers are formed",
+      "date": "1778",
+      "precision": "year",
+      "category": "military",
+      "people": [
+        "John Paul Jones"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast Lough",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "After the American privateer Ranger captured HMS Drake in Belfast Lough, the town raised its own Volunteer corps — a citizen militia that also became a forum for reform politics. In 1784 Belfast Volunteers voted to admit Catholics to their ranks.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Volunteers",
+        "reform"
+      ]
+    },
+    {
+      "id": "georgian-st-marys-1784",
+      "title": "First Mass at St Mary's, Chapel Lane",
+      "date": "1784-05-30",
+      "precision": "day",
+      "category": "religion",
+      "people": [],
+      "place": "chapel-lane",
+      "historical_location_name": "St Mary's Chapel",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "St Mary's Chapel in Chapel Lane held its first Mass on 30 May 1784, when Belfast's Catholic population was about 400, according to the Timeline of Belfast history.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Catholic",
+        "chapel"
+      ]
+    },
+    {
+      "id": "georgian-white-linen-hall",
+      "title": "The White Linen Hall and Donegall Square",
+      "date": "1784",
+      "end": "1788",
+      "precision": "range",
+      "category": "industry",
+      "people": [
+        "Roger Mulholland"
+      ],
+      "place": "city-hall",
+      "historical_location_name": "White Linen Hall",
+      "confidence": "probable",
+      "status": "competing-dates",
+      "importance": 5,
+      "summary": "Plans drawn up in 1784 created the White Linen Hall and the new streets of Donegall Square and Donegall Place, completed by 1788. The hall, designed by Roger Mulholland, was a two-storey quadrangle with a tower and spire set in the middle of the square; it was the town's linen exchange and later housed the Linen Hall Library. It stood until 1896, when it was cleared for City Hall.",
+      "sources": [
+        "wiki-timeline",
+        "archiseek-white-linen-hall",
+        "wiki-city-hall",
+        "wiki-linen-hall"
+      ],
+      "interpretations": [
+        {
+          "label": "1785",
+          "claim": "Archiseek dates the hall to 1785.",
+          "source_ids": [
+            "archiseek-white-linen-hall"
+          ]
+        },
+        {
+          "label": "Plans 1784; square complete 1788",
+          "claim": "The Timeline of Belfast history records plans in 1784 and completion of Donegall Square and Donegall Place in 1788.",
+          "source_ids": [
+            "wiki-timeline"
+          ]
+        }
+      ],
+      "landmark": "white-linen-hall",
+      "tags": [
+        "linen",
+        "Donegall Square",
+        "City Hall site"
+      ]
+    },
+    {
+      "id": "georgian-ballast-board-1785",
+      "title": "The Ballast Board takes charge of the port",
+      "date": "1785",
+      "precision": "year",
+      "category": "maritime",
+      "people": [],
+      "place": "custom-house",
+      "historical_location_name": "Ballast Office",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "An Act of the Irish Parliament in 1785 created the corporation known as the Ballast Board to preserve and improve the port and harbour, taking it over from the town corporation. Its Ballast Office stood on the site of the present Custom House.",
+      "sources": [
+        "wiki-belfast-harbour"
+      ],
+      "tags": [
+        "harbour",
+        "port"
+      ]
+    },
+    {
+      "id": "georgian-slave-ship-1786",
+      "title": "Belfast rejects a slave-trading company",
+      "date": "1786",
+      "precision": "year",
+      "category": "political",
+      "people": [
+        "Thomas McCabe"
+      ],
+      "place": "assembly-rooms",
+      "historical_location_name": "The Exchange and Assembly Rooms",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "A proposal to establish a slave-trading company in Belfast was rejected at a meeting in the Exchange in 1786. Thomas McCabe is credited with leading the opposition, reputedly declaring that the first subscriber should be damned.",
+      "sources": [
+        "bcc-assembly-rooms",
+        "wiki-mccabe"
+      ],
+      "related": [
+        "rev-vicinage"
+      ],
+      "tags": [
+        "abolition",
+        "slavery"
+      ]
+    },
+    {
+      "id": "georgian-farset-covered",
+      "title": "The Farset disappears beneath High Street",
+      "date": "1786",
+      "end": "1804",
+      "precision": "range",
+      "category": "architecture",
+      "people": [],
+      "place": "ford-of-belfast",
+      "historical_location_name": "River Farset, High Street",
+      "confidence": "probable",
+      "status": "competing-dates",
+      "importance": 3,
+      "summary": "The Farset once ran openly along High Street to the Lagan, with docks beside it. It was covered over in stages during the eighteenth century, and the river now runs in a tunnel beneath High Street.",
+      "sources": [
+        "wiki-timeline",
+        "wiki-farset"
+      ],
+      "interpretations": [
+        {
+          "label": "Covered 1786",
+          "claim": "The Timeline of Belfast history dates the covering of the Farset to create High Street to 1786.",
+          "source_ids": [
+            "wiki-timeline"
+          ]
+        },
+        {
+          "label": "Gradual, finished 1804",
+          "claim": "The River Farset article describes gradual covering through the 18th century, with the final section near Princes Street culverted in 1804.",
+          "source_ids": [
+            "wiki-farset"
+          ]
+        }
+      ],
+      "tags": [
+        "Farset",
+        "High Street",
+        "river"
+      ]
+    },
+    {
+      "id": "georgian-reading-society-1788",
+      "title": "Belfast Reading Society founded",
+      "date": "1788",
+      "precision": "year",
+      "category": "culture",
+      "people": [
+        "Thomas Russell"
+      ],
+      "place": "linen-hall-library",
+      "historical_location_name": "Belfast Reading Society",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "A group of artisans founded the Belfast Reading Society in 1788. It became the Belfast Society for Promoting Knowledge in 1792, moved into the White Linen Hall in 1802 — hence the name Linen Hall Library — and survived the crackdown that followed 1798. Its present home is on Donegall Square North.",
+      "sources": [
+        "wiki-linen-hall"
+      ],
+      "tags": [
+        "library",
+        "Linen Hall"
+      ]
+    },
+    {
+      "id": "georgian-sunday-school-1788",
+      "title": "Mary Ann McCracken's class at the Market House",
+      "date": "1788",
+      "precision": "year",
+      "category": "culture",
+      "people": [
+        "Mary Ann McCracken",
+        "Henry Joy McCracken"
+      ],
+      "place": "market-house-site",
+      "historical_location_name": "Market House schoolroom",
+      "confidence": "documented",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "In 1788 Mary Ann McCracken and her brother Henry ran a Sunday reading and writing class for the poor in a schoolroom at the Market House; an Anglican rector broke it up.",
+      "sources": [
+        "wiki-mam"
+      ],
+      "related": [
+        "rev-execution-1798"
+      ],
+      "tags": [
+        "education",
+        "Mary Ann McCracken"
+      ]
+    },
+    {
+      "id": "rev-hjm-born-1767",
+      "title": "Henry Joy McCracken is born on High Street",
+      "date": "1767-08-31",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "John McCracken",
+        "Ann Joy"
+      ],
+      "place": "hjm-birthplace",
+      "historical_location_name": "McCracken family house, High Street",
+      "confidence": "documented",
+      "status": "disputed",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Henry Joy McCracken was born on 31 August 1767 into two prominent Presbyterian families: his father John McCracken was a ship-owner and his mother Ann was a daughter of Francis Joy. Blue plaques mark the birth site on High Street and above Joy's Entry. The house number differs between sources.",
+      "sources": [
+        "wiki-hjm",
+        "uhc-hjm",
+        "belfasttimes-joys"
+      ],
+      "interpretations": [
+        {
+          "label": "37 High Street",
+          "claim": "The Ulster History Circle plaque (unveiled 27 January 1999) is at 37 High Street.",
+          "source_ids": [
+            "uhc-hjm"
+          ]
+        },
+        {
+          "label": "39 High Street",
+          "claim": "Wikipedia gives 39 High Street.",
+          "source_ids": [
+            "wiki-hjm"
+          ]
+        }
+      ],
+      "tags": [
+        "McCracken",
+        "birthplace"
+      ]
+    },
+    {
+      "id": "rev-mam-born-1770",
+      "title": "Mary Ann McCracken is born",
+      "date": "1770-07-08",
+      "precision": "day",
+      "category": "culture",
+      "people": [
+        "Mary Ann McCracken"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "Mary Ann McCracken, Henry's younger sister, was born on 8 July 1770. Educated at David Manson's progressive school on Donegall Street, she became a businesswoman, social reformer and abolitionist, and lived to 96.",
+      "sources": [
+        "wiki-mam"
+      ],
+      "tags": [
+        "Mary Ann McCracken"
+      ]
+    },
+    {
+      "id": "rev-april-1791",
+      "title": "A resolution to form a new association",
+      "date": "1791-04-01",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "Samuel Neilson",
+        "John Robb",
+        "Alexander Lowry",
+        "Thomas McCabe"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "According to Wikipedia's biography of McCracken, on 1 April 1791 McCracken, Samuel Neilson, John Robb, Alexander Lowry and Thomas McCabe resolved to form the association that became the Society of United Irishmen. McCracken's name is absent from the society's early records, though he was in the confidence of its leaders from the start.",
+      "sources": [
+        "wiki-hjm"
+      ],
+      "related": [
+        "rev-founding-1791"
+      ],
+      "tags": [
+        "United Irishmen",
+        "origins"
+      ]
+    },
+    {
+      "id": "rev-founding-1791",
+      "title": "The Society of United Irishmen is founded in Belfast",
+      "date": "1791-10-14",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Theobald Wolfe Tone",
+        "Thomas Russell",
+        "Samuel Neilson",
+        "William Drennan",
+        "Henry Joy McCracken",
+        "Thomas McCabe",
+        "Gilbert McIlveen"
+      ],
+      "place": "crown-entry",
+      "historical_location_name": "Crown Tavern, Crown Entry (reported)",
+      "confidence": "documented",
+      "status": "disputed",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "In October 1791 a group of Belfast Presbyterian reformers, joined by Thomas Russell and Theobald Wolfe Tone at Russell's invitation, met in a Belfast tavern and formed the Society of United Irishmen. They resolved that only a complete and radical reform of parliamentary representation, including Irishmen of every religious persuasion, could counter English influence over Ireland's government. Tone returned to Dublin and helped set up the Dublin society the following month.\n\nThe founding itself is well documented; the day and the room are not settled. Wikipedia's 1791 chronology gives 14 October, and this project's original brief proposed 18 October. Local tradition and the Belfast Entries project place the meeting in the Crown Tavern in Crown Entry; a local historian quoted in 2025 also points to Joy's Entry; the Wikipedia article on the society names no tavern.",
+      "sources": [
+        "wiki-sui",
+        "wiki-1791",
+        "wiki-mcilveen",
+        "extramural-entries",
+        "irishnews-entries"
+      ],
+      "details": [
+        {
+          "label": "Formally documented at the founding",
+          "value": "Nine Belfast Presbyterians of the Northern Whig circle with Thomas Russell and Theobald Wolfe Tone (Tone and Russell were the only non-Presbyterians)",
+          "source_ids": [
+            "wiki-1791",
+            "wiki-sui"
+          ]
+        },
+        {
+          "label": "Associated with the society's early development",
+          "value": "Samuel Neilson, William Drennan, Henry Joy McCracken (name absent from early records), Thomas McCabe",
+          "source_ids": [
+            "wiki-sui",
+            "wiki-hjm",
+            "wiki-mccabe"
+          ]
+        },
+        {
+          "label": "Aims (paraphrased)",
+          "value": "Union of Irish people across religious divisions; complete and radical reform of parliamentary representation",
+          "source_ids": [
+            "wiki-sui"
+          ]
+        }
+      ],
+      "interpretations": [
+        {
+          "label": "14 October 1791",
+          "claim": "Wikipedia's '1791 in Ireland' and its article on Gilbert McIlveen give 14 October.",
+          "source_ids": [
+            "wiki-1791",
+            "wiki-mcilveen"
+          ]
+        },
+        {
+          "label": "18 October 1791",
+          "claim": "Proposed in this project's provisional catalogue; not confirmed in the sources consulted for this build.",
+          "source_ids": []
+        },
+        {
+          "label": "Crown Tavern, Crown Entry",
+          "claim": "The Belfast Entries project states the society was founded in the Crown Tavern (now Crown House).",
+          "source_ids": [
+            "extramural-entries"
+          ]
+        },
+        {
+          "label": "Joy's Entry",
+          "claim": "A local historian quoted by the Irish News links the foundation to Joy's Entry, while also placing the Crown Tavern a few feet from Crown Entry.",
+          "source_ids": [
+            "irishnews-entries"
+          ]
+        }
+      ],
+      "related": [
+        "rev-april-1791",
+        "rev-peggy-barclays",
+        "rev-thatched-house"
+      ],
+      "trail_stop": 1,
+      "camera": {
+        "heading": 20,
+        "tilt": 72,
+        "range": 260
+      },
+      "tags": [
+        "United Irishmen",
+        "Crown Entry",
+        "founding"
+      ]
+    },
+    {
+      "id": "rev-northern-star-1792",
+      "title": "The Northern Star begins publication",
+      "date": "1792-01-01",
+      "precision": "day",
+      "category": "culture",
+      "people": [
+        "Samuel Neilson",
+        "Thomas Russell",
+        "William Orr"
+      ],
+      "place": null,
+      "historical_location_name": "Northern Star office (location not established)",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "The United Irishmen's newspaper first appeared on 1 January 1792, published twice weekly in Belfast with Samuel Neilson as editor and twelve Presbyterian merchant backers. Read aloud at meetings, each copy is estimated to have reached about five readers. Its office is not mapped here because its location has not been established from the sources consulted.",
+      "sources": [
+        "wiki-northern-star"
+      ],
+      "related": [
+        "rev-northern-star-1797"
+      ],
+      "tags": [
+        "press",
+        "Northern Star"
+      ]
+    },
+    {
+      "id": "rev-harp-festival-1792",
+      "title": "The Belfast Harp Festival",
+      "date": "1792-07",
+      "precision": "month",
+      "category": "culture",
+      "people": [
+        "Edward Bunting",
+        "Mary Ann McCracken"
+      ],
+      "place": "assembly-rooms",
+      "historical_location_name": "Assembly Rooms",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "In July 1792 harpers gathered in the Assembly Rooms for a festival organised for the Belfast Charitable Society. Edward Bunting transcribed their music; Mary Ann McCracken later worked closely with him and contributed to his 1809 collection.",
+      "sources": [
+        "wiki-assembly-rooms",
+        "bcc-assembly-rooms",
+        "wiki-mam"
+      ],
+      "tags": [
+        "music",
+        "harp",
+        "Bunting"
+      ]
+    },
+    {
+      "id": "rev-peggy-barclays",
+      "title": "Peggy Barclay's: the Dr Franklin Tavern and the Muddler's Club",
+      "date": "1795",
+      "precision": "decade",
+      "category": "rebellion",
+      "people": [
+        "Peggy Barclay",
+        "Thomas Russell",
+        "Samuel Neilson",
+        "Henry Joy McCracken"
+      ],
+      "place": "sugarhouse-entry",
+      "historical_location_name": "Dr Franklin Tavern ('Peggy Barclay's'), Sugar House Entry",
+      "confidence": "probable",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "In Sugarhouse Entry stood the Dr Franklin Tavern, popularly called Peggy Barclay's after its landlady and named for its signboard portrait of Benjamin Franklin. United Irishmen met there under the cover name of the Muddler's Club. A nineteenth-century memoir quoted by Belfast Media says the meetings later moved to the Thatched House in Waring Street when the tavern became too dangerous. The original building does not survive; the Blitz destroyed the hotel later built on the site.",
+      "sources": [
+        "bcc-sugarhouse-2024",
+        "belfastmedia-muddlers",
+        "irishnews-franklin",
+        "geograph-sugarhouse",
+        "wartimeni-sugarhouse",
+        "extramural-entries"
+      ],
+      "details": [
+        {
+          "label": "Status of the building",
+          "value": "Lost. A modern bar, The Benjamin Franklin, opened near the site after the entry reopened in 2024.",
+          "source_ids": [
+            "irishnews-franklin",
+            "wartimeni-sugarhouse"
+          ]
+        },
+        {
+          "label": "Evidence",
+          "value": "Later recollections (Smyth, 1868–69; Fermanagh Herald, 1906) and modern accounts; no contemporary plan of the premises was consulted.",
+          "source_ids": [
+            "belfastmedia-muddlers"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "title": "Sugarhouse Entry from Waring Street (2007)",
+          "url": "https://www.geograph.org.uk/photo/502170",
+          "licence": "CC BY-SA 2.0",
+          "creator": "Albert Bridge"
+        }
+      ],
+      "related": [
+        "rev-thatched-house",
+        "rev-dragoons-1793"
+      ],
+      "trail_stop": 2,
+      "camera": {
+        "heading": 190,
+        "tilt": 70,
+        "range": 220
+      },
+      "tags": [
+        "Muddler's Club",
+        "Peggy Barclay",
+        "Sugarhouse Entry",
+        "tavern"
+      ]
+    },
+    {
+      "id": "rev-thatched-house",
+      "title": "The Thatched House Tavern, Waring Street",
+      "date": "1795",
+      "precision": "decade",
+      "category": "rebellion",
+      "people": [],
+      "place": "waring-street",
+      "historical_location_name": "Thatched House Tavern (premises not located)",
+      "confidence": "tradition",
+      "status": "single-source",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "Accounts drawing on John Smyth's recollections say the United Irishmen moved their meetings from Peggy Barclay's to the Thatched House Tavern in Waring Street when the Muddler's Club became too dangerous. The premises has not been located, so the marker covers the length of the street.",
+      "sources": [
+        "belfastmedia-muddlers"
+      ],
+      "related": [
+        "rev-peggy-barclays"
+      ],
+      "trail_stop": 3,
+      "camera": {
+        "heading": 300,
+        "tilt": 70,
+        "range": 300
+      },
+      "tags": [
+        "Waring Street",
+        "tavern"
+      ]
+    },
+    {
+      "id": "rev-vicinage",
+      "title": "Thomas McCabe's house, the Vicinage",
+      "date": "1791",
+      "end": "1798",
+      "precision": "range",
+      "category": "rebellion",
+      "people": [
+        "Thomas McCabe",
+        "William Putnam McCabe"
+      ],
+      "place": "vicinage",
+      "historical_location_name": "The Vicinage, behind the Poor House",
+      "confidence": "probable",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Thomas McCabe — watchmaker, merchant, abolitionist and founding member of the Charitable Society and of the United Irishmen — lived at the Vicinage, a house and farm behind the Poor House on the site of today's St Malachy's College on the Antrim Road. It was a regular United Irish meeting place, and plans for the attack on Antrim in 1798 are said to have been made there. Too old to fight, McCabe saw his son William Putnam escape to France.",
+      "sources": [
+        "wiki-mccabe",
+        "clifton-mccabe-2019",
+        "wiki-st-malachys"
+      ],
+      "interpretations": [
+        {
+          "label": "Raid on the house (March 1793)",
+          "claim": "Wikipedia says dragoons attacked the house in March 1793.",
+          "source_ids": [
+            "wiki-mccabe"
+          ]
+        },
+        {
+          "label": "Raid on the North Street business (March 1793)",
+          "claim": "Clifton House says the military raided his North Street business.",
+          "source_ids": [
+            "clifton-mccabe-2019"
+          ]
+        }
+      ],
+      "tags": [
+        "McCabe",
+        "Antrim Road",
+        "meeting place"
+      ]
+    },
+    {
+      "id": "rev-dragoons-1793",
+      "title": "Dragoons wreck the signboards",
+      "date": "1793-03-09",
+      "precision": "day",
+      "category": "conflict",
+      "people": [],
+      "place": "sugarhouse-entry",
+      "historical_location_name": "Sugar House Entry and North Street",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "On 9 March 1793 off-duty dragoons, angered by a tune associated with the French Revolution, wrecked the Dr Franklin signboard at Sugar House Entry and the Mirabeau Inn's sign in North Street. The episode shows the growing friction between the military and the town's radicals.",
+      "sources": [
+        "belfastmedia-muddlers",
+        "clifton-mccabe-2019"
+      ],
+      "related": [
+        "rev-peggy-barclays",
+        "rev-vicinage"
+      ],
+      "tags": [
+        "military",
+        "riot"
+      ]
+    },
+    {
+      "id": "rev-cave-hill-1795",
+      "title": "The oath on Cave Hill",
+      "date": "1795-06",
+      "precision": "month",
+      "category": "rebellion",
+      "people": [
+        "Theobald Wolfe Tone",
+        "Thomas Russell",
+        "Samuel Neilson",
+        "Robert Simms",
+        "Henry Joy McCracken"
+      ],
+      "place": "mcarts-fort",
+      "historical_location_name": "McArt's Fort, Cave Hill",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "In June 1795, before Wolfe Tone left for exile in America, he met Belfast friends at McArt's Fort on Cave Hill, where McCracken, Russell, Neilson and Robert Simms swore an oath together. McCracken formally took the United Irish pledge that year and organised across Antrim, Down and Armagh.",
+      "sources": [
+        "wiki-hjm",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Cave Hill",
+        "oath",
+        "Tone"
+      ]
+    },
+    {
+      "id": "rev-hjm-arrest-1796",
+      "title": "McCracken imprisoned in Kilmainham",
+      "date": "1796-10-10",
+      "end": "1797-12",
+      "precision": "range",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken"
+      ],
+      "place": null,
+      "historical_location_name": "Kilmainham Gaol, Dublin",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "McCracken was seized on 10 October 1796 and held in Kilmainham Gaol in Dublin. Serious illness led to his release on bail in December 1797.",
+      "sources": [
+        "wiki-hjm"
+      ],
+      "tags": [
+        "arrest",
+        "Kilmainham"
+      ]
+    },
+    {
+      "id": "rev-burying-ground-1797",
+      "title": "The New Burying Ground opens",
+      "date": "1797-03",
+      "precision": "month",
+      "category": "civic",
+      "people": [],
+      "place": "clifton-street-cemetery",
+      "historical_location_name": "New Burying Ground",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "Prepared from 1795, the Charitable Society's New Burying Ground above the Poor House opened for burials in March 1797. An Act of 1800 then closed the old High Street churchyard to new burials. Known today as Clifton Street Cemetery, it holds many of the town's radicals and reformers.",
+      "sources": [
+        "clifton-burying-ground",
+        "findagrave-clifton",
+        "dfc-hb26-50-045"
+      ],
+      "tags": [
+        "cemetery",
+        "Clifton Street"
+      ]
+    },
+    {
+      "id": "rev-northern-star-1797",
+      "title": "1797: martial law and the wrecking of the Northern Star",
+      "date": "1797-05-19",
+      "precision": "day",
+      "category": "conflict",
+      "people": [
+        "General Gerard Lake",
+        "Samuel Neilson"
+      ],
+      "place": null,
+      "historical_location_name": "Northern Star office (location not established)",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "In 1797 General Lake imposed martial law in Ulster, ordered arms surrendered and seized more than 5,000 weapons in Belfast and Carrickfergus within ten days. On 19 May 1797 militiamen of the Monaghan Militia attacked the Northern Star's offices, smashed the presses and wrecked the building; no action was taken against them.",
+      "sources": [
+        "wiki-northern-star",
+        "wiki-timeline"
+      ],
+      "related": [
+        "rev-northern-star-1792",
+        "rev-orr-1797"
+      ],
+      "content_note": "Political repression and violence.",
+      "tags": [
+        "martial law",
+        "press",
+        "Lake"
+      ]
+    },
+    {
+      "id": "rev-orr-1797",
+      "title": "The execution of William Orr",
+      "date": "1797-10-14",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "William Orr",
+        "John Philpot Curran",
+        "Hugh Wheatly"
+      ],
+      "place": "carrickfergus",
+      "historical_location_name": "Carrickfergus",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "William Orr, an Antrim farmer and Northern Star contributor, was convicted at Carrickfergus of administering the United Irish oath to a soldier — a capital offence under the 1796 Insurrection Act — on the testimony of one witness who later admitted swearing falsely. Despite appeals for clemency he was hanged at Carrickfergus on 14 October 1797. 'Remember Orr' became a United Irish rallying cry; McCracken had it inscribed on the ring he sent to his sister before his own execution.",
+      "sources": [
+        "wiki-orr"
+      ],
+      "related": [
+        "rev-execution-1798"
+      ],
+      "content_note": "Execution.",
+      "tags": [
+        "Orr",
+        "Insurrection Act",
+        "Carrickfergus"
+      ]
+    },
+    {
+      "id": "rev-proclamation-1798",
+      "title": "McCracken takes command in County Antrim",
+      "date": "1798-06-06",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "Robert Simms"
+      ],
+      "place": null,
+      "historical_location_name": "County Antrim",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "When Robert Simms resigned the Antrim command on 1 June 1798, junior officers turned to McCracken. On 6 June he issued a proclamation dated the 'First Year of Liberty' calling the United Irishmen of County Antrim to arms, and local musters began.",
+      "sources": [
+        "wiki-hjm"
+      ],
+      "related": [
+        "rev-antrim-1798"
+      ],
+      "tags": [
+        "rising",
+        "Antrim"
+      ]
+    },
+    {
+      "id": "rev-donegore-1798",
+      "title": "The camp on Donegore Hill",
+      "date": "1798-06-07",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "James Orr"
+      ],
+      "place": "donegore-hill",
+      "historical_location_name": "Donegore Hill",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Donegore Hill was the main United Irish camp before the attack on Antrim. Almost 10,000 gathered there, though probably fewer than 4,000 took part in the assault. The weaver poet James Orr later wrote 'Donegore Hill' about the day.",
+      "sources": [
+        "wiki-donegore",
+        "wiki-antrim-battle"
+      ],
+      "related": [
+        "rev-antrim-1798"
+      ],
+      "tags": [
+        "Donegore",
+        "camp"
+      ]
+    },
+    {
+      "id": "rev-antrim-1798",
+      "title": "The Battle of Antrim",
+      "date": "1798-06-07",
+      "precision": "day",
+      "category": "military",
+      "people": [
+        "Henry Joy McCracken",
+        "James Hope",
+        "William Lumley",
+        "John O'Neill, 1st Viscount O'Neill"
+      ],
+      "place": "antrim-town",
+      "historical_location_name": "Antrim town",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "McCracken led the insurgents against Antrim town, where he hoped to surprise the county magistrates. The garrison formed at the foot of the Antrim Castle demesne wall, its flanks on the Market House and the Presbyterian meeting house. The rebels came close to success, but reinforcements from Lisburn arrived and James Hope's rearguard covered the retreat. Lord O'Neill, the county governor, was fatally wounded. About 400 rebels and some 150 government troops were killed or wounded. Routes into the town are not drawn here because they have not been mapped from verified evidence.",
+      "sources": [
+        "wiki-antrim-battle",
+        "wiki-hjm",
+        "wiki-antrim-town"
+      ],
+      "details": [
+        {
+          "label": "Rebel strength",
+          "value": "Probably fewer than 4,000 engaged (4,000–6,000 in other accounts)",
+          "source_ids": [
+            "wiki-antrim-battle",
+            "wiki-hjm"
+          ]
+        },
+        {
+          "label": "Casualties",
+          "value": "About 400 rebels killed; about 150 government killed or wounded",
+          "source_ids": [
+            "wiki-antrim-battle"
+          ]
+        },
+        {
+          "label": "Mapping",
+          "value": "Town-level only; street positions not yet georeferenced",
+          "source_ids": []
+        }
+      ],
+      "camera": {
+        "heading": 0,
+        "tilt": 60,
+        "range": 6000
+      },
+      "content_note": "Battle and loss of life.",
+      "tags": [
+        "Antrim",
+        "battle"
+      ]
+    },
+    {
+      "id": "rev-saintfield-1798",
+      "title": "Saintfield: the McKee house and the ambush",
+      "date": "1798-06-09",
+      "precision": "day",
+      "category": "military",
+      "people": [
+        "Granville Anson Chetwynd-Stapylton",
+        "Richard Frazer McKinstry",
+        "Thomas Ledlie Birch"
+      ],
+      "place": "saintfield",
+      "historical_location_name": "Saintfield, County Down",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "The rising spread to County Down. Before the battle, insurgents attacked the fortified house of the McKee family, loyalists who had informed on the Presbyterian minister Thomas Ledlie Birch; the house was set alight and all eight family members inside were killed. Colonel Stapylton's column from Newtownards — about 300 men, mostly York Fencibles, with two light guns — was then ambushed where the road twisted through woods near Saintfield. Over fifty soldiers died before canister fire checked the pikemen and the column withdrew. It was a United Irish victory; headstones of men killed lie in the First Presbyterian churchyard.",
+      "sources": [
+        "wiki-saintfield-battle",
+        "wiki-saintfield"
+      ],
+      "details": [
+        {
+          "label": "Casualties",
+          "value": "Government: 58 killed, about 10 captured. Insurgents: 30–40 killed",
+          "source_ids": [
+            "wiki-saintfield-battle"
+          ]
+        },
+        {
+          "label": "Mapping",
+          "value": "The McKee house and the ambush site are not located in this build; marker is town-level",
+          "source_ids": []
+        }
+      ],
+      "camera": {
+        "heading": 0,
+        "tilt": 55,
+        "range": 9000
+      },
+      "content_note": "Killing of civilians and battle.",
+      "tags": [
+        "Saintfield",
+        "County Down",
+        "McKee"
+      ]
+    },
+    {
+      "id": "rev-ballynahinch-1798",
+      "title": "The Battle of Ballynahinch",
+      "date": "1798-06-12",
+      "end": "1798-06-13",
+      "precision": "range",
+      "category": "military",
+      "people": [
+        "Henry Munro",
+        "General George Nugent",
+        "Betsy Gray"
+      ],
+      "place": "ballynahinch",
+      "historical_location_name": "Ballynahinch, Montalto and Ednavady Hill",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "About 4,000 United Irishmen under Henry Munro, a Lisburn linen draper, camped on Lord Moira's Montalto estate and occupied Ballynahinch. General Nugent arrived with about 2,000 troops and artillery on 12 June, shelling Montalto and Ednavady Hill as night fell; Munro declined a night attack and many rebels slipped away. The assault on the morning of 13 June was beaten back. Nugent's troops burned 63 houses. Estimates of rebel dead range from about 100 to 500; government losses were about 40. The story of Betsy Gray, killed fleeing the field, grew in later ballads and has been examined critically by historians.",
+      "sources": [
+        "wiki-ballynahinch-battle",
+        "wiki-ballynahinch-town",
+        "wiki-munro"
+      ],
+      "interpretations": [
+        {
+          "label": "Rebel dead: about 500",
+          "claim": "General Nugent's claim.",
+          "source_ids": [
+            "wiki-ballynahinch-battle"
+          ]
+        },
+        {
+          "label": "Rebel dead: about 100",
+          "claim": "Local estimate.",
+          "source_ids": [
+            "wiki-ballynahinch-battle"
+          ]
+        },
+        {
+          "label": "Betsy Gray",
+          "claim": "A woman of that name was among those killed; the heroic details of her riding into battle derive from later ballads (tradition).",
+          "source_ids": [
+            "wiki-ballynahinch-battle"
+          ]
+        }
+      ],
+      "camera": {
+        "heading": 0,
+        "tilt": 55,
+        "range": 9000
+      },
+      "content_note": "Battle, reprisals and loss of life.",
+      "tags": [
+        "Ballynahinch",
+        "Munro",
+        "Montalto"
+      ]
+    },
+    {
+      "id": "rev-munro-1798",
+      "title": "Henry Munro hanged in Lisburn",
+      "date": "1798-06-16",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Munro"
+      ],
+      "place": "lisburn",
+      "historical_location_name": "Lisburn, opposite Munro's house",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Betrayed by a man he paid to hide him, Munro was taken early on 15 June about six miles from Ballynahinch, court-martialled in Lisburn and hanged opposite his own door; the Battle of Ballynahinch article dates the hanging to 16 June. His head and those of three lieutenants were displayed on the Market House for over a month.",
+      "sources": [
+        "wiki-munro",
+        "wiki-ballynahinch-battle",
+        "wiki-lisburn"
+      ],
+      "content_note": "Execution.",
+      "tags": [
+        "Munro",
+        "Lisburn"
+      ]
+    },
+    {
+      "id": "rev-slemish-1798",
+      "title": "Refuge on Slemish",
+      "date": "1798-06-10",
+      "end": "1798-06-14",
+      "precision": "range",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken"
+      ],
+      "place": "slemish",
+      "historical_location_name": "Slemish",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "On 10 June McCracken took refuge on Slemish near Ballymena with about fifty survivors. Hoping to join the Down rebels, he learned on 14 June of the defeat at Ballynahinch; the group returned to Slemish and dispersed under pursuit by Scottish Fencibles. His movements over the following weeks are not documented well enough to map as a route.",
+      "sources": [
+        "wiki-hjm",
+        "wiki-slemish"
+      ],
+      "tags": [
+        "Slemish",
+        "flight"
+      ]
+    },
+    {
+      "id": "rev-capture-1798",
+      "title": "Capture near Carrickfergus",
+      "date": "1798-07-07",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "Mary Ann McCracken"
+      ],
+      "place": "carrickfergus",
+      "historical_location_name": "Carrickfergus (capture site not located)",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "Mary Ann had arranged a passage to America, but McCracken was seized with two companions while trying to reach a ship. He was arrested on 7 July; on 8 July Mary Ann learned he was in Carrickfergus Gaol, and she later spoke with him through the cell window and received a ring from him. The exact place of capture, and the route by which he was brought to Belfast, are not recorded in the sources consulted, so no route is drawn.",
+      "sources": [
+        "wiki-hjm",
+        "wiki-mam",
+        "wiki-antrim-battle",
+        "uhc-hjm"
+      ],
+      "related": [
+        "rev-court-martial-1798"
+      ],
+      "tags": [
+        "capture",
+        "Carrickfergus"
+      ]
+    },
+    {
+      "id": "rev-court-martial-1798",
+      "title": "Court-martial in the Assembly Rooms",
+      "date": "1798-07-17",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "Mary Ann McCracken",
+        "Robert Simms"
+      ],
+      "place": "assembly-rooms",
+      "historical_location_name": "Exchange and Assembly Rooms",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "McCracken was tried by court-martial in the Assembly Rooms on 17 July 1798, with Mary Ann attending. He was offered his life if he would inform on Robert Simms and other leaders, and refused. Others were tried and sentenced in the same building after the rising. The building survives: Belfast City Council bought it in October 2025.",
+      "sources": [
+        "wiki-hjm",
+        "wiki-assembly-rooms",
+        "bcc-assembly-rooms",
+        "irishnews-last-steps",
+        "wiki-mam"
+      ],
+      "related": [
+        "rev-execution-1798",
+        "regen-assembly-rooms-2025"
+      ],
+      "camera": {
+        "heading": 140,
+        "tilt": 72,
+        "range": 200
+      },
+      "tags": [
+        "court-martial",
+        "Assembly Rooms"
+      ]
+    },
+    {
+      "id": "rev-execution-1798",
+      "title": "The execution of Henry Joy McCracken",
+      "date": "1798-07-17",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Henry Joy McCracken",
+        "Mary Ann McCracken",
+        "General Sir George Nugent",
+        "Rev. William Steel Dickson",
+        "Rev. Sinclair Kelburn",
+        "Thomas Russell"
+      ],
+      "place": "market-house-site",
+      "historical_location_name": "In front of the Market House, High Street at Corn Market",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "chapter": "1798",
+      "summary": "On the afternoon of 17 July 1798 Henry Joy McCracken, aged 30, was hanged from gallows in front of the Market House at the corner of High Street and Corn Market — on ground an ancestor had given to the town. Mary Ann walked beside him to the gallows and stayed until he asked her to go. His last message for Thomas Russell was that he had done his duty. General Nugent allowed the body to be cut down promptly and returned to his sister, who had a surgeon waiting; the attempt to revive him failed.",
+      "sources": [
+        "wiki-hjm",
+        "wiki-mam",
+        "clifton-mccracken-execution",
+        "uhc-hjm",
+        "belfaststreetnames-cornmarket",
+        "wiki-timeline"
+      ],
+      "details": [
+        {
+          "label": "Date",
+          "value": "17 July 1798 (afternoon)",
+          "source_ids": [
+            "wiki-hjm",
+            "clifton-mccracken-execution"
+          ]
+        },
+        {
+          "label": "Age",
+          "value": "30 (born 31 August 1767). A 2024 news report gives 33; the birth date supports 30.",
+          "source_ids": [
+            "wiki-hjm",
+            "uhc-hjm",
+            "irishnews-statue-2024"
+          ]
+        },
+        {
+          "label": "Role in 1798",
+          "value": "Commander of the United Irish forces in County Antrim; led the attack on Antrim town on 7 June",
+          "source_ids": [
+            "wiki-hjm",
+            "uhc-hjm"
+          ]
+        },
+        {
+          "label": "Court-martial",
+          "value": "Same day, in the Assembly Rooms; refused clemency offered in return for naming Robert Simms",
+          "source_ids": [
+            "wiki-hjm",
+            "wiki-assembly-rooms"
+          ]
+        },
+        {
+          "label": "Mary Ann McCracken",
+          "value": "Attended the trial, walked with him to the gallows, received the body and called a surgeon",
+          "source_ids": [
+            "wiki-mam",
+            "clifton-mccracken-execution"
+          ]
+        },
+        {
+          "label": "Site",
+          "value": "Gallows in front of the Market House at High Street/Corn Market; the Market House was demolished about 1810 and the corner is now a 20th-century commercial building",
+          "source_ids": [
+            "wiki-hjm",
+            "belfaststreetnames-cornmarket",
+            "archiseek-market-house"
+          ]
+        },
+        {
+          "label": "Archival trail",
+          "value": "Mary Ann McCracken's letters to R. R. Madden (1840s); Madden, The United Irishmen, their Lives and Times (1842–60); McNeill, The Life and Times of Mary Ann McCracken (1960)",
+          "source_ids": [
+            "clifton-mccracken-execution",
+            "wiki-mam"
+          ]
+        }
+      ],
+      "related": [
+        "rev-court-martial-1798",
+        "rev-revival-1798",
+        "rev-wake-tradition",
+        "rev-burial-1798",
+        "rev-orr-1797"
+      ],
+      "trail_stop": 5,
+      "camera": {
+        "heading": 255,
+        "tilt": 74,
+        "range": 170,
+        "approach": "high-street"
+      },
+      "landmark": "market-house",
+      "content_note": "Describes an execution. Presented without graphic detail.",
+      "tags": [
+        "execution",
+        "Market House",
+        "Cornmarket",
+        "High Street"
+      ]
+    },
+    {
+      "id": "rev-revival-1798",
+      "title": "The attempt to revive him",
+      "date": "1798-07-17",
+      "precision": "day",
+      "category": "rebellion",
+      "people": [
+        "Mary Ann McCracken"
+      ],
+      "place": "sugarhouse-entry",
+      "historical_location_name": "Sugar House Entry (reported)",
+      "confidence": "tradition",
+      "status": "single-source",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "Belfast City Council's 2024 account of Sugarhouse Entry says Mary Ann brought her brother's body to the entry for medical attention in an attempt to revive him. Biographical sources confirm the attempt by a surgeon but do not name the place, so the location is shown as a reported association.",
+      "sources": [
+        "bcc-sugarhouse-2024",
+        "wiki-hjm",
+        "wiki-mam"
+      ],
+      "related": [
+        "rev-execution-1798"
+      ],
+      "tags": [
+        "Mary Ann McCracken",
+        "Sugarhouse Entry"
+      ]
+    },
+    {
+      "id": "rev-wake-tradition",
+      "title": "The wake tradition: Pottinger's Entry and the Morning Star",
+      "date": "1798-07",
+      "precision": "month",
+      "category": "commemoration",
+      "people": [
+        "Henry Joy McCracken"
+      ],
+      "place": "pottingers-entry",
+      "historical_location_name": "Pottinger's Entry (reported tradition)",
+      "confidence": "tradition",
+      "status": "tradition-unverified",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "A local tradition holds that McCracken was waked in a public house in Pottinger's Entry, today associated with the Morning Star. This research found no contemporary or early source for that claim, and none of the biographical sources consulted mention a wake there. The Morning Star is described as licensed since about 1810, first serving as a stop on the Belfast–Dublin mail-coach route; its Victorian frontage is later still. The tradition is therefore shown as unverified and must not be read as evidence that the present pub existed in 1798.",
+      "sources": [
+        "tourismni-morningstar",
+        "irishnews-morningstar-2018",
+        "wiki-entries",
+        "wiki-hjm"
+      ],
+      "details": [
+        {
+          "label": "Earliest record of the Morning Star",
+          "value": "Licensed since about 1810",
+          "source_ids": [
+            "tourismni-morningstar",
+            "irishnews-morningstar-2018"
+          ]
+        },
+        {
+          "label": "Building",
+          "value": "Victorian pub; the Ann Street arch was kept when the original building on one side of the entry was demolished in the 1990s",
+          "source_ids": [
+            "wiki-entries"
+          ]
+        },
+        {
+          "label": "Evidence for a 1798 wake here",
+          "value": "None found in the sources consulted",
+          "source_ids": []
+        }
+      ],
+      "media": [
+        {
+          "title": "Pottinger's Entry with the Morning Star (2007)",
+          "url": "https://www.geograph.org.uk/photo/432119",
+          "licence": "CC BY-SA 2.0",
+          "creator": "Albert Bridge"
+        }
+      ],
+      "related": [
+        "rev-execution-1798",
+        "rev-burial-1798"
+      ],
+      "trail_stop": 6,
+      "camera": {
+        "heading": 10,
+        "tilt": 72,
+        "range": 200
+      },
+      "tags": [
+        "Morning Star",
+        "Pottinger's Entry",
+        "wake",
+        "tradition"
+      ]
+    },
+    {
+      "id": "rev-burial-1798",
+      "title": "Burial in St George's churchyard",
+      "date": "1798-07",
+      "precision": "month",
+      "category": "commemoration",
+      "people": [
+        "Henry Joy McCracken"
+      ],
+      "place": "st-georges",
+      "historical_location_name": "Old churchyard, High Street",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "McCracken was buried in the old churchyard on High Street, the site of today's St George's. The ground was closed to new burials by an Act of 1800, most memorials were destroyed in 1806, and parts were sold as building lots in 1811 before the present church was built (1813–16).",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-st-georges",
+        "uhc-hjm"
+      ],
+      "related": [
+        "rev-reburial-1909"
+      ],
+      "trail_stop": 7,
+      "camera": {
+        "heading": 330,
+        "tilt": 70,
+        "range": 240
+      },
+      "tags": [
+        "burial",
+        "St George's"
+      ]
+    },
+    {
+      "id": "rev-poorhouse-military",
+      "title": "The Poor House requisitioned by the military",
+      "date": "1798",
+      "end": "1800",
+      "precision": "range",
+      "category": "military",
+      "people": [],
+      "place": "clifton-house",
+      "historical_location_name": "The Poor House",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "chapter": "1798",
+      "summary": "The military requisitioned the Poor House throughout the rebellion and for some time after. The Charitable Society's committee met in the Exchange until 1800, when it was allowed back in.",
+      "sources": [
+        "clifton-poorhouse-1798"
+      ],
+      "tags": [
+        "Poor House",
+        "military"
+      ]
+    },
+    {
+      "id": "rev-union-1800",
+      "title": "The Act of Union",
+      "date": "1800",
+      "end": "1801-01-01",
+      "precision": "range",
+      "category": "political",
+      "people": [
+        "William Pitt the Younger"
+      ],
+      "place": null,
+      "historical_location_name": "Ireland",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "In the aftermath of 1798 the Irish Parliament voted itself out of existence. The Act of Union created the United Kingdom of Great Britain and Ireland, taking effect in 1801.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Union"
+      ]
+    },
+    {
+      "id": "rev-reburial-1909",
+      "title": "Remains believed to be McCracken's reinterred at Clifton Street",
+      "date": "1909",
+      "precision": "year",
+      "category": "commemoration",
+      "people": [
+        "Francis Joseph Bigger",
+        "Robert May",
+        "Mary Ann McCracken",
+        "Maria McCracken"
+      ],
+      "place": "clifton-street-cemetery",
+      "historical_location_name": "Clifton Street Cemetery",
+      "confidence": "probable",
+      "status": "disputed",
+      "importance": 4,
+      "chapter": "1798",
+      "summary": "When the old High Street graveyard was cleared for redevelopment, bones thought to be McCracken's were kept by Robert May. In 1909 the antiquarian Francis Joseph Bigger reinterred them in Clifton Street Cemetery beside Mary Ann and Henry's daughter Maria. The listed-building record and Wikipedia both describe these as remains thought or believed to be his: the identification has not been confirmed.",
+      "sources": [
+        "wiki-hjm",
+        "dfc-hb26-50-045",
+        "findagrave-clifton",
+        "wiki-mam"
+      ],
+      "details": [
+        {
+          "label": "Original burial",
+          "value": "St George's churchyard, High Street, July 1798",
+          "source_ids": [
+            "dfc-hb26-50-045"
+          ]
+        },
+        {
+          "label": "Exhumation",
+          "value": "Graveyard cleared; bones kept by Robert May",
+          "source_ids": [
+            "wiki-hjm"
+          ]
+        },
+        {
+          "label": "Reinterment",
+          "value": "1909, Clifton Street Cemetery, beside Mary Ann McCracken",
+          "source_ids": [
+            "wiki-hjm",
+            "dfc-hb26-50-045"
+          ]
+        },
+        {
+          "label": "Identification",
+          "value": "Attributed, not confirmed",
+          "source_ids": [
+            "wiki-hjm",
+            "dfc-hb26-50-045"
+          ]
+        }
+      ],
+      "related": [
+        "rev-burial-1798",
+        "metro-mam-death-1866"
+      ],
+      "trail_stop": 8,
+      "camera": {
+        "heading": 200,
+        "tilt": 70,
+        "range": 260
+      },
+      "tags": [
+        "reburial",
+        "Clifton Street",
+        "Bigger"
+      ]
+    },
+    {
+      "id": "ind-union-1801",
+      "title": "Belfast in the Union",
+      "date": "1801",
+      "precision": "year",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "As the Union took effect, Belfast's population was about 19,000; the Belfast Literary Society was founded the same year. By 1811 the cotton industry employed some 22,000 people directly, before declining after the Napoleonic Wars.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "population",
+        "cotton"
+      ]
+    },
+    {
+      "id": "ind-library-1802",
+      "title": "The library moves into the White Linen Hall",
+      "date": "1802",
+      "precision": "year",
+      "category": "culture",
+      "people": [],
+      "place": "city-hall",
+      "historical_location_name": "White Linen Hall",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Belfast Society for Promoting Knowledge took permanent rooms in the White Linen Hall in 1802, giving the Linen Hall Library its name.",
+      "sources": [
+        "wiki-linen-hall"
+      ],
+      "tags": [
+        "library"
+      ]
+    },
+    {
+      "id": "ind-st-georges-1816",
+      "title": "St George's Church opens",
+      "date": "1816-06-16",
+      "precision": "day",
+      "category": "religion",
+      "people": [
+        "John Bowden",
+        "Earl of Massereene"
+      ],
+      "place": "st-georges",
+      "historical_location_name": "St George's Church",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "On the old chapel site, the foundation stone of St George's was laid on 4 June 1813 and the church opened on 16 June 1816. Its Corinthian portico of 1788 came from the Earl of Bristol's unfinished Ballyscullion House, carried by cart and barge to Belfast.",
+      "sources": [
+        "dfc-hb26-50-045",
+        "wiki-st-georges"
+      ],
+      "landmark": "st-georges-1816",
+      "tags": [
+        "church",
+        "Ballyscullion"
+      ]
+    },
+    {
+      "id": "ind-botanic-1828",
+      "title": "Botanic Gardens open",
+      "date": "1828",
+      "precision": "year",
+      "category": "culture",
+      "people": [],
+      "place": "botanic-gardens",
+      "historical_location_name": "Belfast Botanic Garden",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The Botanic Gardens opened to the public in 1828, on what was then the southern edge of the town.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "parks"
+      ]
+    },
+    {
+      "id": "ind-york-street-mill-1828",
+      "title": "Mulholland's York Street mill rebuilt",
+      "date": "1828",
+      "precision": "year",
+      "category": "industry",
+      "people": [
+        "Mulholland family"
+      ],
+      "place": "york-street-mill",
+      "historical_location_name": "York Street mill",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "Mulholland's cotton mill on York Street was rebuilt larger in 1828, with 15,300 spindles and a 186-foot chimney. Wet-spinning of flax was developed in 1825, and by 1830 Belfast had become the world's leading linen producer.",
+      "sources": [
+        "wiki-timeline",
+        "wiki-belfast"
+      ],
+      "tags": [
+        "linen",
+        "mills",
+        "Linenopolis"
+      ]
+    },
+    {
+      "id": "ind-cholera-1832",
+      "title": "Cholera reaches Belfast",
+      "date": "1832",
+      "precision": "year",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The cholera pandemic reached Belfast in 1832 and killed 418 people. Further outbreaks in 1848 (1,163 deaths) and 1854 (677) followed the rapid, crowded growth of the industrial town.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "content_note": "Epidemic deaths.",
+      "tags": [
+        "public health"
+      ]
+    },
+    {
+      "id": "ind-st-malachys-1833",
+      "title": "St Malachy's College opens on the Vicinage",
+      "date": "1833-11-03",
+      "precision": "day",
+      "category": "culture",
+      "people": [
+        "Bishop William Crolly"
+      ],
+      "place": "vicinage",
+      "historical_location_name": "Vicinage House",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "Bishop Crolly leased an eleven-acre site that included Thomas McCabe's former Vicinage House, and St Malachy's College opened there on 3 November 1833.",
+      "sources": [
+        "wiki-st-malachys"
+      ],
+      "related": [
+        "rev-vicinage"
+      ],
+      "tags": [
+        "education",
+        "Vicinage"
+      ]
+    },
+    {
+      "id": "ind-ulster-railway-1839",
+      "title": "The first railway: Belfast to Lisburn",
+      "date": "1839-08",
+      "precision": "month",
+      "category": "transport",
+      "people": [],
+      "place": "gvs-station",
+      "historical_location_name": "Ulster Railway terminus",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "The Ulster Railway opened its first 7¾ miles between Belfast and Lisburn in August 1839, from a terminus that became Great Victoria Street. Lines reached Lurgan in 1841, Portadown in 1842 and Armagh in 1848.",
+      "sources": [
+        "wiki-ulster-railway"
+      ],
+      "tags": [
+        "railway"
+      ]
+    },
+    {
+      "id": "ind-victoria-channel",
+      "title": "Cutting the channel: Dargan's Island rises from the mudflats",
+      "date": "1841",
+      "end": "1849-07-10",
+      "precision": "range",
+      "category": "maritime",
+      "people": [
+        "William Dargan"
+      ],
+      "place": "queens-island",
+      "historical_location_name": "Dargan's Island",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Between 1841 and 1846 the harbour authorities, to William Dargan's design, cut a straight channel through the Lagan's mudflats so ships could reach the quays at any tide. The spoil was dumped to the east of the cut, creating an artificial island — Dargan's Island. The completed Victoria Channel opened on 10 July 1849.",
+      "sources": [
+        "wiki-queens-island",
+        "wiki-belfast-harbour",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "harbour",
+        "reclamation",
+        "Victoria Channel"
+      ]
+    },
+    {
+      "id": "ind-queens-bridge-1843",
+      "title": "Queen's Bridge opens",
+      "date": "1843-01",
+      "precision": "month",
+      "category": "transport",
+      "people": [
+        "Thomas Jackson",
+        "John Fraser",
+        "Charles Lanyon"
+      ],
+      "place": "queens-bridge",
+      "historical_location_name": "Queen's Bridge",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Designed by the county surveyors Thomas Jackson and John Fraser and supervised by Charles Lanyon, the stone Queen's Bridge opened in January 1843, replacing the Long Bridge on the old crossing. It was widened in 1885.",
+      "sources": [
+        "wiki-queens-bridge"
+      ],
+      "landmark": "queens-bridge",
+      "tags": [
+        "bridge",
+        "Lanyon"
+      ]
+    },
+    {
+      "id": "ind-bank-1845",
+      "title": "Lanyon remodels the Exchange as a bank",
+      "date": "1845",
+      "precision": "year",
+      "category": "architecture",
+      "people": [
+        "Charles Lanyon"
+      ],
+      "place": "assembly-rooms",
+      "historical_location_name": "Belfast Banking Company",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Charles Lanyon extended the Exchange and Assembly Rooms and converted them into the head office of the Belfast Banking Company in 1845. The building served as a bank — later the Northern Bank — until 2000.",
+      "sources": [
+        "wiki-assembly-rooms",
+        "archiseek-market-house"
+      ],
+      "tags": [
+        "bank",
+        "Lanyon"
+      ]
+    },
+    {
+      "id": "ind-famine-1847",
+      "title": "Famine refugees reach Belfast",
+      "date": "1847",
+      "precision": "year",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "During the Great Famine, migrants from the countryside poured into Belfast; hospitals overflowed and people died in the streets. The Harbour Commissioners were constituted the same year.",
+      "sources": [
+        "wiki-timeline",
+        "wiki-belfast-harbour"
+      ],
+      "content_note": "Famine and disease.",
+      "tags": [
+        "famine"
+      ]
+    },
+    {
+      "id": "ind-railways-1848",
+      "title": "Two new railway termini",
+      "date": "1848",
+      "precision": "year",
+      "category": "transport",
+      "people": [],
+      "place": "york-road-station",
+      "historical_location_name": "York Road and Queen's Quay",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "The Belfast and Ballymena Railway opened from York Road on 11 April 1848, and the Belfast and County Down Railway opened from Queen's Quay to Holywood on 2 August 1848, giving the town rail links north and east.",
+      "sources": [
+        "wiki-york-road",
+        "wiki-bcdr"
+      ],
+      "tags": [
+        "railway",
+        "York Road",
+        "Queen's Quay"
+      ]
+    },
+    {
+      "id": "ind-queens-college-1849",
+      "title": "Queen's College opens; the royal visit",
+      "date": "1849-08",
+      "end": "1849-10",
+      "precision": "range",
+      "category": "culture",
+      "people": [
+        "Queen Victoria",
+        "Prince Albert",
+        "Charles Lanyon"
+      ],
+      "place": "qub",
+      "historical_location_name": "Queen's College, Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Queen Victoria and Prince Albert visited Belfast in August 1849; Dargan's Island was renamed Queen's Island in their honour. Queen's College, chartered on 30 December 1845 with Lanyon's main building, opened that October.",
+      "sources": [
+        "wiki-qub",
+        "wiki-queens-island",
+        "wiki-timeline"
+      ],
+      "landmark": "lanyon-building",
+      "tags": [
+        "university",
+        "royal visit"
+      ]
+    },
+    {
+      "id": "metro-clarendon-1851",
+      "title": "Clarendon Dock opens",
+      "date": "1851",
+      "precision": "year",
+      "category": "maritime",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Clarendon Dock",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Clarendon Dock opened in 1851; the next year Belfast is recorded as overtaking Dublin as Ireland's first port.",
+      "sources": [
+        "wiki-belfast-harbour",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "docks"
+      ]
+    },
+    {
+      "id": "metro-hickson-1853",
+      "title": "A shipyard on Queen's Island",
+      "date": "1853",
+      "precision": "year",
+      "category": "maritime",
+      "people": [
+        "Robert Hickson",
+        "Edward Harland"
+      ],
+      "place": "harland-wolff-yard",
+      "historical_location_name": "Queen's Island",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Queen's Island began as a pleasure ground with a glass conservatory, gardens and a small zoo. In 1853 Robert Hickson cleared part of it for a shipyard and hired Edward Harland as manager.",
+      "sources": [
+        "wiki-queens-island"
+      ],
+      "tags": [
+        "shipbuilding"
+      ]
+    },
+    {
+      "id": "metro-custom-house-1857",
+      "title": "The Custom House is completed",
+      "date": "1854",
+      "end": "1857",
+      "precision": "range",
+      "category": "architecture",
+      "people": [
+        "Charles Lanyon"
+      ],
+      "place": "custom-house",
+      "historical_location_name": "Custom House",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Charles Lanyon's Custom House, designed in 1847, was built between 1854 and 1857 on poor ground near the quays — the site of the old Ballast Office.",
+      "sources": [
+        "wiki-custom-house",
+        "geograph-custom-house",
+        "wiki-belfast-harbour"
+      ],
+      "landmark": "custom-house",
+      "tags": [
+        "Lanyon",
+        "quays"
+      ]
+    },
+    {
+      "id": "metro-morning-news-1855",
+      "title": "The Belfast Morning News is born in Crown Entry",
+      "date": "1855",
+      "precision": "year",
+      "category": "culture",
+      "people": [],
+      "place": "crown-entry",
+      "historical_location_name": "Crown Entry",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 1,
+      "summary": "Crown Entry was the birthplace of the Belfast Morning News in 1855; the title was later absorbed by The Irish News.",
+      "sources": [
+        "irishnews-entries"
+      ],
+      "tags": [
+        "press",
+        "Crown Entry"
+      ]
+    },
+    {
+      "id": "metro-hw-1861",
+      "title": "Harland & Wolff",
+      "date": "1861",
+      "precision": "year",
+      "category": "industry",
+      "people": [
+        "Edward Harland",
+        "Gustav Wilhelm Wolff",
+        "Gustav Schwab"
+      ],
+      "place": "harland-wolff-yard",
+      "historical_location_name": "Queen's Island yard",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Edward Harland bought Hickson's small yard in 1858 and formed Harland & Wolff with Gustav Wolff in 1861. With orders from the White Star Line, founded in 1869, Belfast's yards were building up to a quarter of UK tonnage by the early 1900s.",
+      "sources": [
+        "wiki-harland-wolff",
+        "wiki-queens-island",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "shipbuilding",
+        "White Star"
+      ]
+    },
+    {
+      "id": "metro-ulster-hall-1862",
+      "title": "Ulster Hall opens",
+      "date": "1862-05-12",
+      "precision": "day",
+      "category": "culture",
+      "people": [
+        "William J. Barre"
+      ],
+      "place": "ulster-hall",
+      "historical_location_name": "Ulster Hall",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "W. J. Barre's Ulster Hall on Bedford Street opened on 12 May 1862 and became the town's principal concert and meeting hall.",
+      "sources": [
+        "wiki-ulster-hall"
+      ],
+      "landmark": "ulster-hall",
+      "tags": [
+        "music",
+        "Barre"
+      ]
+    },
+    {
+      "id": "metro-mam-death-1866",
+      "title": "Mary Ann McCracken dies, aged 96",
+      "date": "1866-07-26",
+      "precision": "day",
+      "category": "commemoration",
+      "people": [
+        "Mary Ann McCracken",
+        "Maria McCracken"
+      ],
+      "place": "clifton-street-cemetery",
+      "historical_location_name": "Clifton Street Cemetery",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Mary Ann McCracken died on 26 July 1866 at the home of her niece Maria and was buried in Clifton Street Cemetery near the Poor House. Over seven decades after 1798 she had led the Charitable Society's Ladies' Committee, campaigned against slavery and recorded the end of slavery in the United States months before her death.",
+      "sources": [
+        "wiki-mam"
+      ],
+      "related": [
+        "rev-reburial-1909"
+      ],
+      "tags": [
+        "Mary Ann McCracken",
+        "abolition"
+      ]
+    },
+    {
+      "id": "metro-albert-clock-1869",
+      "title": "The Albert Memorial Clock",
+      "date": "1865",
+      "end": "1869",
+      "precision": "range",
+      "category": "architecture",
+      "people": [
+        "W. J. Barre"
+      ],
+      "place": "albert-clock",
+      "historical_location_name": "Queen's Square",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "W. J. Barre won the 1865 competition for a memorial to Prince Albert; the 113-foot clock tower was completed in 1869. Built on timber piles in marshy reclaimed ground near the old Farset outfall, it leans about four feet from vertical; its foundations were strengthened in 2002.",
+      "sources": [
+        "wiki-albert-clock"
+      ],
+      "landmark": "albert-clock",
+      "tags": [
+        "clock",
+        "reclaimed land"
+      ]
+    },
+    {
+      "id": "metro-belfast-castle-1870",
+      "title": "A new Belfast Castle on Cave Hill",
+      "date": "1867",
+      "end": "1870",
+      "precision": "range",
+      "category": "architecture",
+      "people": [
+        "3rd Marquess of Donegall",
+        "Lanyon, Lynn and Lanyon"
+      ],
+      "place": "belfast-castle-cave-hill",
+      "historical_location_name": "Belfast Castle",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "With the old town castle long gone, the Marquess of Donegall built a new Belfast Castle on the slopes of Cave Hill in 1867–70. It was given to the city in January 1934.",
+      "sources": [
+        "wiki-belfast-castle"
+      ],
+      "tags": [
+        "castle",
+        "Cave Hill"
+      ]
+    },
+    {
+      "id": "metro-riots-1886",
+      "title": "The Home Rule riots of 1886",
+      "date": "1886",
+      "precision": "year",
+      "category": "conflict",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The first Home Rule Bill was followed by prolonged rioting in Belfast; the official death toll was 31. Earlier serious sectarian rioting had broken out in 1857 and 1864.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "content_note": "Communal violence.",
+      "tags": [
+        "Home Rule",
+        "riots"
+      ]
+    },
+    {
+      "id": "metro-city-1888",
+      "title": "Belfast becomes a city",
+      "date": "1888",
+      "precision": "year",
+      "category": "civic",
+      "people": [
+        "Queen Victoria",
+        "William Henry Lynn"
+      ],
+      "place": "central-library",
+      "historical_location_name": "Free Public Library, Royal Avenue",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Queen Victoria granted Belfast city status in 1888, when it was the world's largest centre of linen manufacture. The same year the Central Library on Royal Avenue, designed by W. H. Lynn, opened, along with new public parks.",
+      "sources": [
+        "wiki-belfast",
+        "wiki-central-library",
+        "wiki-timeline"
+      ],
+      "landmark": "central-library",
+      "tags": [
+        "city status",
+        "Linenopolis"
+      ]
+    },
+    {
+      "id": "metro-st-georges-market-1890",
+      "title": "St George's Market",
+      "date": "1890-06-20",
+      "end": "1896",
+      "precision": "range",
+      "category": "civic",
+      "people": [
+        "J. C. Bretland"
+      ],
+      "place": "st-georges-market",
+      "historical_location_name": "St George's Market",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The city surveyor J. C. Bretland's red-brick market hall opened on 20 June 1890 and was completed in three phases by 1896.",
+      "sources": [
+        "wiki-st-georges-market"
+      ],
+      "landmark": "st-georges-market",
+      "tags": [
+        "market"
+      ]
+    },
+    {
+      "id": "metro-opera-house-1895",
+      "title": "The Grand Opera House",
+      "date": "1895-12-23",
+      "precision": "day",
+      "category": "culture",
+      "people": [
+        "Frank Matcham"
+      ],
+      "place": "grand-opera-house",
+      "historical_location_name": "Grand Opera House",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Frank Matcham's theatre on Great Victoria Street opened on 23 December 1895. Badly damaged by bombs in 1991 and 1993, it has been restored several times since.",
+      "sources": [
+        "wiki-opera-house"
+      ],
+      "landmark": "grand-opera-house",
+      "tags": [
+        "theatre",
+        "Matcham"
+      ]
+    },
+    {
+      "id": "metro-crown-1885",
+      "title": "The Crown Liquor Saloon is remodelled",
+      "date": "1885",
+      "precision": "year",
+      "category": "architecture",
+      "people": [
+        "Patrick Flanagan"
+      ],
+      "place": "crown-bar",
+      "historical_location_name": "The Railway Tavern",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "Opened as the Railway Tavern, the pub opposite the railway terminus was renamed and lavishly renovated by Patrick Flanagan in 1885. The National Trust bought it in 1978.",
+      "sources": [
+        "wiki-crown"
+      ],
+      "tags": [
+        "pub",
+        "Victorian"
+      ]
+    },
+    {
+      "id": "metro-linen-hall-demolished-1896",
+      "title": "The White Linen Hall is demolished",
+      "date": "1896",
+      "precision": "year",
+      "category": "architecture",
+      "people": [],
+      "place": "city-hall",
+      "historical_location_name": "White Linen Hall",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "The eighteenth-century linen exchange was cleared in 1896 to make way for City Hall; the Linen Hall Library moved to a warehouse on Donegall Square. The city boundary was extended the same year.",
+      "sources": [
+        "archiseek-white-linen-hall",
+        "wiki-linen-hall",
+        "wiki-timeline"
+      ],
+      "landmark": "white-linen-hall",
+      "tags": [
+        "demolition",
+        "City Hall"
+      ]
+    },
+    {
+      "id": "metro-docks-1897",
+      "title": "Dufferin and Spencer Docks",
+      "date": "1897",
+      "precision": "year",
+      "category": "maritime",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast Harbour",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "Dufferin and Spencer Docks opened in 1897 as the harbour continued to expand onto reclaimed land.",
+      "sources": [
+        "wiki-belfast-harbour"
+      ],
+      "tags": [
+        "docks"
+      ]
+    },
+    {
+      "id": "metro-oceanic-1899",
+      "title": "Oceanic launched",
+      "date": "1899-01-14",
+      "precision": "day",
+      "category": "maritime",
+      "people": [],
+      "place": "harland-wolff-yard",
+      "historical_location_name": "Queen's Island",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "The White Star liner Oceanic was launched from Queen's Island on 14 January 1899, described as the largest moving object built to that time.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "shipbuilding",
+        "White Star"
+      ]
+    },
+    {
+      "id": "edw-population-1901",
+      "title": "Ireland's largest city",
+      "date": "1901",
+      "precision": "year",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "The 1901 census counted 349,180 people. By the early 1900s the yards built up to a quarter of UK tonnage, and Belfast also had the world's largest tobacco factory and major ropeworks and linen mills.",
+      "sources": [
+        "wiki-demographics",
+        "wiki-belfast",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "population",
+        "industry"
+      ]
+    },
+    {
+      "id": "edw-st-annes-1904",
+      "title": "St Anne's Cathedral: the nave is consecrated",
+      "date": "1904-06-02",
+      "precision": "day",
+      "category": "religion",
+      "people": [
+        "Countess of Shaftesbury"
+      ],
+      "place": "st-annes",
+      "historical_location_name": "St Anne's Cathedral",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "The cathedral's foundation stone was laid on 6 September 1899 and the nave consecrated on 2 June 1904. The 1776 church was demolished at the end of 1903 as the new building rose around it. A 40-metre stainless-steel 'Spire of Hope' was added in 2007.",
+      "sources": [
+        "wiki-st-annes"
+      ],
+      "landmark": "st-annes-cathedral",
+      "tags": [
+        "cathedral"
+      ]
+    },
+    {
+      "id": "edw-city-hall-1906",
+      "title": "City Hall opens",
+      "date": "1906-08-01",
+      "precision": "day",
+      "category": "civic",
+      "people": [
+        "Sir Alfred Brumwell Thomas"
+      ],
+      "place": "city-hall",
+      "historical_location_name": "Belfast City Hall",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Begun in 1898 on the White Linen Hall site, Sir Alfred Brumwell Thomas's Baroque Revival City Hall opened on 1 August 1906. Its green copper dome rises about 53 metres.",
+      "sources": [
+        "wiki-city-hall"
+      ],
+      "details": [
+        {
+          "label": "Construction",
+          "value": "1898–1906",
+          "source_ids": [
+            "wiki-city-hall"
+          ]
+        },
+        {
+          "label": "Dome",
+          "value": "c. 173–174 ft (53 m)",
+          "source_ids": [
+            "wiki-city-hall"
+          ]
+        },
+        {
+          "label": "Cost",
+          "value": "c. £360,000–£369,000",
+          "source_ids": [
+            "wiki-city-hall"
+          ]
+        }
+      ],
+      "landmark": "city-hall",
+      "camera": {
+        "heading": 180,
+        "tilt": 70,
+        "range": 420
+      },
+      "tags": [
+        "City Hall",
+        "Brumwell Thomas"
+      ]
+    },
+    {
+      "id": "edw-dock-strike-1907",
+      "title": "The 1907 dock strike",
+      "date": "1907",
+      "precision": "year",
+      "category": "industry",
+      "people": [
+        "James Larkin"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast docks",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "Led by James Larkin, around 10,000 dock and carting workers struck in 1907; police mutinied and the Army was deployed.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "labour",
+        "Larkin"
+      ]
+    },
+    {
+      "id": "edw-olympic-titanic-keels",
+      "title": "Olympic and Titanic laid down under the Arrol Gantry",
+      "date": "1908-12-16",
+      "end": "1909-03-31",
+      "precision": "range",
+      "category": "maritime",
+      "people": [
+        "Sir William Arrol & Co."
+      ],
+      "place": "titanic-belfast",
+      "historical_location_name": "Olympic and Titanic slipways",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Harland & Wolff demolished three slipways and built two new ones for the Olympic-class liners, spanned by a giant gantry from Sir William Arrol & Co. Olympic's keel was laid on 16 December 1908 and Titanic's on 31 March 1909. The gantry stood until 1971; Titanic Belfast now stands at the head of the slipways.",
+      "sources": [
+        "wiki-titanic",
+        "wiki-harland-wolff",
+        "wiki-titanic-belfast"
+      ],
+      "landmark": "arrol-gantry",
+      "tags": [
+        "Titanic",
+        "Olympic",
+        "gantry"
+      ]
+    },
+    {
+      "id": "edw-thompson-dock-1911",
+      "title": "Thompson Graving Dock opens",
+      "date": "1911-04-01",
+      "precision": "day",
+      "category": "maritime",
+      "people": [],
+      "place": "thompson-dock",
+      "historical_location_name": "Thompson Graving Dock",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Begun in October 1903 and delayed by subsidence, the Thompson Graving Dock — about 850 feet long for working purposes — opened on 1 April 1911 with Olympic towed in during the ceremony. Titanic was in the dock from 3 February to 6 March 1912 for her propellers and final hull work.",
+      "sources": [
+        "wiki-thompson-dock"
+      ],
+      "landmark": "thompson-dock",
+      "tags": [
+        "dock",
+        "Titanic"
+      ]
+    },
+    {
+      "id": "edw-titanic-launch-1911",
+      "title": "Titanic is launched",
+      "date": "1911-05-31",
+      "precision": "day",
+      "category": "maritime",
+      "people": [],
+      "place": "titanic-belfast",
+      "historical_location_name": "Queen's Island slipway",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Titanic slid down the slipway at 12:15 pm on 31 May 1911 — the largest ship afloat when launched. Olympic left Belfast the same day.",
+      "sources": [
+        "wiki-titanic",
+        "wiki-belfast",
+        "wiki-thompson-dock"
+      ],
+      "camera": {
+        "heading": 320,
+        "tilt": 68,
+        "range": 900
+      },
+      "tags": [
+        "Titanic",
+        "launch"
+      ]
+    },
+    {
+      "id": "edw-titanic-departs-1912",
+      "title": "Titanic leaves Belfast",
+      "date": "1912-04-02",
+      "precision": "day",
+      "category": "maritime",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast Lough",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Titanic ran her sea trials on 2 April 1912 and left Belfast that evening for Southampton. She struck an iceberg on the night of 14 April and sank early on 15 April; around 1,500 of the 2,208 people aboard died.",
+      "sources": [
+        "wiki-titanic"
+      ],
+      "content_note": "Mass loss of life at sea.",
+      "tags": [
+        "Titanic"
+      ]
+    },
+    {
+      "id": "edw-covenant-1912",
+      "title": "The Ulster Covenant",
+      "date": "1912",
+      "precision": "year",
+      "category": "political",
+      "people": [
+        "Edward Carson"
+      ],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Opposition to the third Home Rule Bill produced the Ulster Covenant of 1912, which gathered nearly 500,000 signatures. Rival Ulster and Irish Volunteer forces were armed in the following years.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Home Rule",
+        "Covenant"
+      ]
+    },
+    {
+      "id": "edw-1920-act",
+      "title": "Violence and the Government of Ireland Act",
+      "date": "1920-07-21",
+      "end": "1920-12-23",
+      "precision": "range",
+      "category": "conflict",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Rioting broke out in Belfast on 21 July 1920 and thousands of Catholic and left-wing Protestant workers were expelled from the shipyards and other workplaces. The Government of Ireland Act, which created Northern Ireland, received Royal Assent on 23 December 1920.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "content_note": "Communal violence.",
+      "tags": [
+        "partition",
+        "1920"
+      ]
+    },
+    {
+      "id": "part-parliament-1921",
+      "title": "The first Northern Ireland Parliament opens in City Hall",
+      "date": "1921-06-22",
+      "precision": "day",
+      "category": "political",
+      "people": [
+        "King George V",
+        "James Craig"
+      ],
+      "place": "city-hall",
+      "historical_location_name": "Belfast City Hall",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "City Hall served as the provisional seat of the new Parliament of Northern Ireland, which King George V opened there on 22 June 1921. James Craig had become the first Prime Minister after the May election.",
+      "sources": [
+        "wiki-city-hall",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "partition",
+        "parliament"
+      ]
+    },
+    {
+      "id": "part-violence-1922",
+      "title": "1920–22: the city's worst years of conflict before the Troubles",
+      "date": "1922",
+      "precision": "year",
+      "category": "conflict",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "Belfast became the capital of Northern Ireland amid intense political and sectarian violence. The Timeline of Belfast history records about 465 deaths in the city by the end of 1922, most of them civilians, after which killings fell away for a decade.",
+      "sources": [
+        "wiki-timeline",
+        "wiki-belfast"
+      ],
+      "content_note": "Communal violence and loss of life.",
+      "tags": [
+        "partition",
+        "conflict"
+      ]
+    },
+    {
+      "id": "part-stormont-1932",
+      "title": "Parliament Buildings at Stormont",
+      "date": "1928-05-19",
+      "end": "1932-11-16",
+      "precision": "range",
+      "category": "political",
+      "people": [
+        "Sir Arnold Thornely",
+        "Prince of Wales (later Edward VIII)"
+      ],
+      "place": "stormont",
+      "historical_location_name": "Parliament Buildings",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Arnold Thornely's Parliament Buildings were begun on 19 May 1928 and opened by the Prince of Wales on 16 November 1932, east of the city at Stormont.",
+      "sources": [
+        "wiki-stormont"
+      ],
+      "camera": {
+        "heading": 270,
+        "tilt": 65,
+        "range": 1400
+      },
+      "tags": [
+        "Stormont"
+      ]
+    },
+    {
+      "id": "part-courts-1933",
+      "title": "Royal Courts of Justice",
+      "date": "1928",
+      "end": "1933",
+      "precision": "range",
+      "category": "architecture",
+      "people": [
+        "Sir Richard Allison",
+        "James Grey West"
+      ],
+      "place": "royal-courts",
+      "historical_location_name": "Royal Courts of Justice",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The neoclassical Royal Courts of Justice on Chichester Street were built between 1928 and 1933 and opened by the Governor, the Duke of Abercorn.",
+      "sources": [
+        "wiki-royal-courts"
+      ],
+      "landmark": "royal-courts",
+      "tags": [
+        "courts"
+      ]
+    },
+    {
+      "id": "part-workman-clark-1935",
+      "title": "Depression in the yards",
+      "date": "1935",
+      "precision": "year",
+      "category": "industry",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast shipyards",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "Harland & Wolff launched no ships between December 1931 and May 1934, and the rival yard Workman, Clark and Company closed for good in 1935.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "shipbuilding",
+        "Depression"
+      ]
+    },
+    {
+      "id": "part-sydenham-1938",
+      "title": "Sydenham Airport opens",
+      "date": "1938-03-16",
+      "precision": "day",
+      "category": "transport",
+      "people": [
+        "Short Brothers"
+      ],
+      "place": "sydenham-airport",
+      "historical_location_name": "Sydenham Airport",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Shorts established an airfield beside its new Sydenham aircraft factory; it opened on 16 March 1938. After wartime use it reopened for commercial flights as Belfast Harbour Airport in 1983, becoming George Best Belfast City Airport in 2006.",
+      "sources": [
+        "wiki-city-airport"
+      ],
+      "tags": [
+        "aviation",
+        "Shorts"
+      ]
+    },
+    {
+      "id": "blitz-1941-april-7",
+      "title": "Belfast Blitz: the first raid",
+      "date": "1941-04-07",
+      "end": "1941-04-08",
+      "precision": "range",
+      "category": "blitz",
+      "people": [],
+      "place": "harland-wolff-yard",
+      "historical_location_name": "Docks and Queen's Island",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "A small raid, possibly a test of the city's defences, targeted the docks on the night of 7–8 April 1941 and also struck nearby homes. Thirteen people were killed; a Harland & Wolff power station and a factory floor for Stirling bomber fuselages were among the losses.",
+      "sources": [
+        "wiki-blitz"
+      ],
+      "content_note": "Air raid deaths.",
+      "tags": [
+        "Blitz",
+        "1941"
+      ]
+    },
+    {
+      "id": "blitz-1941-easter",
+      "title": "Belfast Blitz: the Easter Tuesday raid",
+      "date": "1941-04-15",
+      "end": "1941-04-16",
+      "precision": "range",
+      "category": "blitz",
+      "people": [],
+      "place": null,
+      "historical_location_name": "North and west Belfast, docks and waterworks",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "About 200 bombers attacked on Easter Tuesday, mainly with high explosives, aiming at the waterworks, the shipyard and the power station but devastating densely packed housing in north and west Belfast. About 987 people were killed and around 1,500 injured — the greatest loss of life in any air raid outside London. The individual sites are mapped separately.",
+      "sources": [
+        "wiki-blitz",
+        "wiki-belfast"
+      ],
+      "related": [
+        "blitz-york-street-mill",
+        "blitz-st-georges-market",
+        "blitz-clonard"
+      ],
+      "content_note": "Mass civilian deaths in an air raid.",
+      "camera": {
+        "heading": 200,
+        "tilt": 55,
+        "range": 4500
+      },
+      "tags": [
+        "Blitz",
+        "1941",
+        "Easter Tuesday"
+      ]
+    },
+    {
+      "id": "blitz-york-street-mill",
+      "title": "York Street mill collapse",
+      "date": "1941-04-15",
+      "precision": "day",
+      "category": "blitz",
+      "people": [],
+      "place": "york-street-mill",
+      "historical_location_name": "York Street mill, Sussex Street and Vere Street",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "During the raids a side wall of the great York Street mill collapsed onto the terraces of Sussex Street and Vere Street, killing people in their homes. The mill's exact outline is not yet mapped, so the marker shows the general area.",
+      "sources": [
+        "wiki-blitz"
+      ],
+      "content_note": "Civilian deaths.",
+      "tags": [
+        "Blitz",
+        "York Street"
+      ]
+    },
+    {
+      "id": "blitz-st-georges-market",
+      "title": "St George's Market as a temporary mortuary",
+      "date": "1941-04-16",
+      "end": "1941-04-21",
+      "precision": "range",
+      "category": "blitz",
+      "people": [],
+      "place": "st-georges-market",
+      "historical_location_name": "St George's Market",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "After the Easter raid, 255 bodies were laid out in St George's Market for identification; about 150 more lay in the Falls Road baths, many unidentified. A public funeral for the unclaimed dead was held on 21 April 1941.",
+      "sources": [
+        "wiki-blitz",
+        "wiki-st-georges-market"
+      ],
+      "content_note": "Deaths and mortuary arrangements, described without detail.",
+      "tags": [
+        "Blitz",
+        "mortuary"
+      ]
+    },
+    {
+      "id": "blitz-clonard",
+      "title": "Shelter in Clonard Monastery",
+      "date": "1941-04-15",
+      "precision": "day",
+      "category": "blitz",
+      "people": [],
+      "place": "clonard",
+      "historical_location_name": "Clonard Monastery crypt",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Nearly 300 people, many from the Shankill, sheltered in the crypt of Clonard Monastery off the Falls Road during the raids.",
+      "sources": [
+        "wiki-blitz"
+      ],
+      "tags": [
+        "Blitz",
+        "shelter"
+      ]
+    },
+    {
+      "id": "blitz-1941-may",
+      "title": "Belfast Blitz: the fire raids",
+      "date": "1941-05-04",
+      "end": "1941-05-06",
+      "precision": "range",
+      "category": "blitz",
+      "people": [],
+      "place": "city-hall",
+      "historical_location_name": "Harbour Estate, Queen's Island, east Belfast and the city centre",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "On 4–5 May 1941 incendiaries rained on the harbour estate and Queen's Island, spreading fires through east Belfast and the city centre; over 200 people were killed, and a further raid followed the next night. The roof over City Hall's Banqueting Hall was destroyed, St George's Church was damaged by fire, and a bomb almost destroyed St Anne's Cathedral. Across all four raids more than 1,300 houses were demolished and tens of thousands damaged.",
+      "sources": [
+        "wiki-blitz",
+        "wiki-city-hall",
+        "wiki-st-annes",
+        "wartimeni-sugarhouse"
+      ],
+      "content_note": "Air raid deaths and destruction.",
+      "camera": {
+        "heading": 40,
+        "tilt": 60,
+        "range": 3200
+      },
+      "tags": [
+        "Blitz",
+        "1941",
+        "fire raid"
+      ]
+    },
+    {
+      "id": "conf-population-1951",
+      "title": "Peak population",
+      "date": "1951",
+      "precision": "year",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The 1951 census recorded 443,671 people, the highest figure in the historic series; numbers within the old boundary fell steadily thereafter as housing redevelopment and suburban growth moved people outward.",
+      "sources": [
+        "wiki-demographics",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "id": "conf-divis-1966",
+      "title": "Divis Flats and Divis Tower",
+      "date": "1966",
+      "precision": "year",
+      "category": "architecture",
+      "people": [],
+      "place": "divis-tower",
+      "historical_location_name": "Divis Flats complex",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "Divis Tower was built in 1966 as part of the Divis Flats redevelopment of the lower Falls, on the site of a Methodist church of 1854. In the 1970s the Army installed an observation post on its roof, removed from 2005; the surrounding flats have since been demolished.",
+      "sources": [
+        "wiki-divis-tower"
+      ],
+      "landmark": "divis-tower",
+      "tags": [
+        "housing",
+        "redevelopment"
+      ]
+    },
+    {
+      "id": "conf-1969",
+      "title": "August 1969 and the first peace lines",
+      "date": "1969-08-12",
+      "end": "1969-08-16",
+      "precision": "range",
+      "category": "conflict",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast interfaces",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Rioting between 12 and 16 August 1969 led to the deployment of the British Army on 14 August. The first peace lines went up between neighbourhoods as temporary barriers to reduce inter-communal violence and became long-standing structures. In 2013 the Executive committed to removing them by consent by 2023; that target was missed, and Department of Justice figures reported in 2026 counted 39 official peace walls. Locations are not mapped individually in this build.",
+      "sources": [
+        "wiki-timeline",
+        "wiki-peace-lines"
+      ],
+      "content_note": "Civil disturbance.",
+      "tags": [
+        "Troubles",
+        "peace lines"
+      ]
+    },
+    {
+      "id": "conf-goliath-1969",
+      "title": "Goliath and Samson rise over Queen's Island",
+      "date": "1969",
+      "end": "1974",
+      "precision": "range",
+      "category": "industry",
+      "people": [],
+      "place": "samson-goliath",
+      "historical_location_name": "Harland & Wolff building dock",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "As part of a modernisation programme Harland & Wolff erected the gantry crane Goliath (96 m) in 1969 and Samson (106 m) in 1974, each spanning 140 m. They are now scheduled historic monuments.",
+      "sources": [
+        "wiki-samson-goliath",
+        "wiki-harland-wolff"
+      ],
+      "landmark": "samson-goliath",
+      "tags": [
+        "cranes",
+        "shipbuilding"
+      ]
+    },
+    {
+      "id": "conf-europa-1971",
+      "title": "The Europa Hotel opens",
+      "date": "1971-07",
+      "precision": "month",
+      "category": "architecture",
+      "people": [],
+      "place": "gvs-station",
+      "historical_location_name": "Europa Hotel",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Europa opened in July 1971 on the site of the former Great Northern Railway station. It suffered 28 bomb attacks during the Troubles, earning it a reputation as the 'most bombed hotel' — in Europe or the world, depending on the account.",
+      "sources": [
+        "wiki-europa"
+      ],
+      "landmark": "europa-hotel",
+      "tags": [
+        "hotel",
+        "Troubles"
+      ]
+    },
+    {
+      "id": "conf-mcgurks-1971",
+      "title": "McGurk's Bar bombing",
+      "date": "1971-12-04",
+      "precision": "day",
+      "category": "conflict",
+      "people": [],
+      "place": "mcgurks",
+      "historical_location_name": "McGurk's Bar, North Queen Street",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "A bomb planted by the Ulster Volunteer Force destroyed McGurk's Bar in the New Lodge area on 4 December 1971, killing fifteen Catholic civilians, including two children. A UVF member was later convicted. In 2011 the Police Ombudsman found that the RUC investigation had been biased towards the view that the IRA was responsible, causing the bereaved lasting distress. A memorial stands at the site.",
+      "sources": [
+        "wiki-mcgurks"
+      ],
+      "content_note": "Bombing and civilian deaths. Described factually without detail of injuries.",
+      "tags": [
+        "Troubles"
+      ]
+    },
+    {
+      "id": "conf-bloody-friday-1972",
+      "title": "Bloody Friday",
+      "date": "1972-07-21",
+      "precision": "day",
+      "category": "conflict",
+      "people": [],
+      "place": "oxford-street-bus-station",
+      "historical_location_name": "Oxford Street bus station and other sites",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "On the afternoon of 21 July 1972 the Provisional IRA's Belfast Brigade exploded around twenty bombs across the city in little over an hour. Nine people were killed — six of them at Oxford Street bus station and three at shops on the Cavehill Road — and 130 injured. In 2002 the IRA issued a statement of apology to the families of non-combatants.",
+      "sources": [
+        "wiki-bloody-friday"
+      ],
+      "content_note": "Bombings and deaths. Described factually without detail of injuries.",
+      "tags": [
+        "Troubles"
+      ]
+    },
+    {
+      "id": "conf-direct-rule-1972",
+      "title": "Direct rule",
+      "date": "1972-03-30",
+      "precision": "day",
+      "category": "political",
+      "people": [],
+      "place": "stormont",
+      "historical_location_name": "Stormont",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 3,
+      "summary": "The Stormont Parliament was prorogued and direct rule from Westminster imposed on 30 March 1972.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Stormont",
+        "direct rule"
+      ]
+    },
+    {
+      "id": "conf-uwc-1974",
+      "title": "The Ulster Workers' Council strike",
+      "date": "1974-05-15",
+      "end": "1974-05-28",
+      "precision": "range",
+      "category": "political",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Northern Ireland",
+      "confidence": "probable",
+      "status": "single-source",
+      "importance": 2,
+      "summary": "A general strike called by the Ulster Workers' Council between 15 and 28 May 1974 brought down the power-sharing executive created after the Sunningdale Agreement.",
+      "sources": [
+        "wiki-timeline"
+      ],
+      "tags": [
+        "Sunningdale",
+        "strike"
+      ]
+    },
+    {
+      "id": "conf-westlink",
+      "title": "The Westlink opens",
+      "date": "1981-02",
+      "end": "1983-03",
+      "precision": "range",
+      "category": "transport",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Westlink (A12)",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Westlink was opened in two phases (February 1981 and March 1983), joining the M1 and M2 through the west of the inner city; public opposition and funding shortfalls meant the full urban motorway originally planned was never completed.",
+      "sources": [
+        "wiki-westlink"
+      ],
+      "tags": [
+        "roads"
+      ]
+    },
+    {
+      "id": "conf-sean-graham-1992",
+      "title": "Sean Graham bookmakers' shooting",
+      "date": "1992-02-05",
+      "precision": "day",
+      "category": "conflict",
+      "people": [],
+      "place": "sean-graham",
+      "historical_location_name": "Sean Graham bookmakers, Ormeau Road",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Gunmen of the Ulster Defence Association, using the cover name Ulster Freedom Fighters, killed five civilians at a bookmakers' shop on the Ormeau Road on 5 February 1992. In 2022 the Police Ombudsman found 'collusive behaviour' by police with the South Belfast UDA and significant investigative failures, though no evidence that the attack could have been prevented.",
+      "sources": [
+        "wiki-sean-graham"
+      ],
+      "content_note": "Shooting and civilian deaths. Described factually without detail of injuries.",
+      "tags": [
+        "Troubles"
+      ]
+    },
+    {
+      "id": "conf-shankill-1993",
+      "title": "Shankill Road bombing",
+      "date": "1993-10-23",
+      "precision": "day",
+      "category": "conflict",
+      "people": [],
+      "place": "frizzells",
+      "historical_location_name": "Frizzell's fish shop, Shankill Road",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "On 23 October 1993 a Provisional IRA bomb exploded prematurely in Frizzell's fish shop on the Shankill Road in an attempt to target the UDA leadership. Ten people were killed, including one of the bombers.",
+      "sources": [
+        "wiki-shankill-bombing"
+      ],
+      "content_note": "Bombing and civilian deaths. Described factually without detail of injuries.",
+      "tags": [
+        "Troubles"
+      ]
+    },
+    {
+      "id": "conf-lagan-weir-1994",
+      "title": "The Lagan Weir ends the low-tide mudflats",
+      "date": "1991-03-07",
+      "end": "1994-03",
+      "precision": "range",
+      "category": "regeneration",
+      "people": [],
+      "place": "lagan-weir",
+      "historical_location_name": "Lagan Weir",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "Before the weir, falling tides exposed unsightly, foul-smelling mudflats along the river through the city. The Laganside Corporation's weir, piled from March 1991 and opened in March 1994, holds the river at a constant level and became the catalyst for waterfront regeneration.",
+      "sources": [
+        "wiki-lagan-weir"
+      ],
+      "landmark": "lagan-weir",
+      "tags": [
+        "Laganside",
+        "river"
+      ]
+    },
+    {
+      "id": "conf-stormont-fire-1995",
+      "title": "Fire at Stormont",
+      "date": "1995-01-02",
+      "precision": "day",
+      "category": "architecture",
+      "people": [],
+      "place": "stormont",
+      "historical_location_name": "Parliament Buildings",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "On 2 January 1995 a fire, attributed to an electrical fault, destroyed the former House of Commons chamber at Parliament Buildings.",
+      "sources": [
+        "wiki-stormont"
+      ],
+      "tags": [
+        "Stormont"
+      ]
+    },
+    {
+      "id": "conf-waterfront-1997",
+      "title": "Waterfront Hall opens",
+      "date": "1997",
+      "precision": "year",
+      "category": "regeneration",
+      "people": [
+        "Robinson McIlwaine"
+      ],
+      "place": "waterfront-hall",
+      "historical_location_name": "Waterfront Hall, Lanyon Place",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "summary": "The £32 million Waterfront Hall, planned from 1989 and begun in 1995, opened in 1997 as the flagship of the Laganside Corporation's Lanyon Place development.",
+      "sources": [
+        "wiki-waterfront"
+      ],
+      "landmark": "waterfront-hall",
+      "tags": [
+        "Laganside",
+        "regeneration"
+      ]
+    },
+    {
+      "id": "regen-gfa-1998",
+      "title": "The Good Friday Agreement",
+      "date": "1998-04-10",
+      "precision": "day",
+      "category": "political",
+      "people": [],
+      "place": "stormont",
+      "historical_location_name": "Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "On 10 April 1998 the British and Irish governments and eight Northern Ireland parties reached the Belfast (Good Friday) Agreement. Referendums on 22 May 1998 endorsed it — 71.1% in favour in Northern Ireland and 94.4% in the Republic of Ireland — and it entered into force on 2 December 1999, restoring a power-sharing assembly and executive at Stormont.",
+      "sources": [
+        "wiki-gfa",
+        "wiki-belfast"
+      ],
+      "details": [
+        {
+          "label": "Northern Ireland referendum",
+          "value": "71.11% yes; turnout 81.1%",
+          "source_ids": [
+            "wiki-gfa"
+          ]
+        },
+        {
+          "label": "Republic of Ireland referendum",
+          "value": "94.39% yes; turnout 56.26%",
+          "source_ids": [
+            "wiki-gfa"
+          ]
+        },
+        {
+          "label": "In force",
+          "value": "2 December 1999",
+          "source_ids": [
+            "wiki-gfa"
+          ]
+        }
+      ],
+      "tags": [
+        "peace process",
+        "agreement"
+      ]
+    },
+    {
+      "id": "regen-odyssey-2000",
+      "title": "The Odyssey opens on the east bank",
+      "date": "2000-12",
+      "precision": "month",
+      "category": "regeneration",
+      "people": [],
+      "place": "odyssey",
+      "historical_location_name": "Odyssey complex",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Odyssey complex opened in December 2000 with its arena; W5 followed on 31 March 2001. The arena became the SSE Arena in 2015 and The O2 Belfast on 1 July 2026.",
+      "sources": [
+        "wiki-sse-arena"
+      ],
+      "landmark": "odyssey",
+      "tags": [
+        "arena",
+        "Titanic Quarter"
+      ]
+    },
+    {
+      "id": "regen-titanic-quarter",
+      "title": "Titanic Quarter",
+      "date": "2001",
+      "end": "2003",
+      "precision": "range",
+      "category": "regeneration",
+      "people": [],
+      "place": "queens-island",
+      "historical_location_name": "Queen's Island",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "The derelict shipyard lands on Queen's Island were renamed Titanic Quarter in 2001 and redevelopment of about 185 acres of reclaimed land began in 2003.",
+      "sources": [
+        "wiki-titanic-belfast",
+        "wiki-belfast"
+      ],
+      "tags": [
+        "regeneration",
+        "Titanic Quarter"
+      ]
+    },
+    {
+      "id": "regen-spire-2007",
+      "title": "The Spire of Hope",
+      "date": "2007-04",
+      "precision": "month",
+      "category": "religion",
+      "people": [],
+      "place": "st-annes",
+      "historical_location_name": "St Anne's Cathedral",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 1,
+      "summary": "A 40-metre stainless-steel spire was installed on St Anne's Cathedral in April 2007. In May 2007 the Northern Ireland Assembly reconvened at Stormont.",
+      "sources": [
+        "wiki-st-annes",
+        "wiki-timeline"
+      ],
+      "tags": [
+        "cathedral"
+      ]
+    },
+    {
+      "id": "regen-victoria-square-2008",
+      "title": "Victoria Square opens",
+      "date": "2008-03-06",
+      "precision": "day",
+      "category": "regeneration",
+      "people": [],
+      "place": "victoria-square",
+      "historical_location_name": "Victoria Square",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The Victoria Square shopping centre opened on 6 March 2008 beneath a 37-metre glass dome.",
+      "sources": [
+        "wiki-victoria-square"
+      ],
+      "landmark": "victoria-square",
+      "tags": [
+        "retail",
+        "regeneration"
+      ]
+    },
+    {
+      "id": "regen-titanic-belfast-2012",
+      "title": "Titanic Belfast opens",
+      "date": "2012-03-31",
+      "precision": "day",
+      "category": "regeneration",
+      "people": [
+        "Eric Kuhne and Associates",
+        "Todd Architects"
+      ],
+      "place": "titanic-belfast",
+      "historical_location_name": "Titanic Belfast",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 5,
+      "summary": "Begun in May 2009 at the head of the Olympic and Titanic slipways, the 38.5-metre Titanic Belfast opened on 31 March 2012, the centenary year of the ship's loss.",
+      "sources": [
+        "wiki-titanic-belfast"
+      ],
+      "landmark": "titanic-belfast",
+      "camera": {
+        "heading": 300,
+        "tilt": 70,
+        "range": 700
+      },
+      "tags": [
+        "Titanic Quarter",
+        "museum"
+      ]
+    },
+    {
+      "id": "regen-census-2021",
+      "title": "Census 2021",
+      "date": "2021-03-21",
+      "precision": "day",
+      "category": "demography",
+      "people": [],
+      "place": null,
+      "historical_location_name": "Belfast Local Government District",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The 2021 census counted 345,418 residents within the Belfast local government district as enlarged in 2015, and 704,406 in the wider metropolitan area. Because boundaries have changed repeatedly, these figures are not directly comparable with the historic series.",
+      "sources": [
+        "wiki-belfast",
+        "wiki-demographics"
+      ],
+      "tags": [
+        "population",
+        "census"
+      ]
+    },
+    {
+      "id": "regen-statues-2024",
+      "title": "Mary Ann McCracken and Winifred Carney statues at City Hall",
+      "date": "2024-03-08",
+      "precision": "day",
+      "category": "commemoration",
+      "people": [
+        "Mary Ann McCracken",
+        "Winifred Carney"
+      ],
+      "place": "city-hall",
+      "historical_location_name": "City Hall grounds",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Bronze statues of Mary Ann McCracken and Winifred Carney were unveiled at City Hall on International Women's Day, 8 March 2024 — the first non-royal women to be honoured with statues in the civic grounds. The statue shows Mary Ann handing out an abolitionist leaflet.",
+      "sources": [
+        "wiki-city-hall",
+        "irishnews-statue-2024",
+        "wiki-mam"
+      ],
+      "tags": [
+        "Mary Ann McCracken",
+        "statue"
+      ]
+    },
+    {
+      "id": "regen-sugarhouse-2024",
+      "title": "Sugarhouse Entry reopens",
+      "date": "2024-08",
+      "precision": "month",
+      "category": "regeneration",
+      "people": [],
+      "place": "sugarhouse-entry",
+      "historical_location_name": "Sugarhouse Entry",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Closed in 1972 as part of the city-centre security cordon, Sugarhouse Entry reopened as a public through-route in summer 2024 as part of the council's entries regeneration.",
+      "sources": [
+        "bcc-sugarhouse-2024",
+        "wiki-entries",
+        "extramural-entries"
+      ],
+      "tags": [
+        "entries",
+        "regeneration"
+      ]
+    },
+    {
+      "id": "regen-grand-central-2024",
+      "title": "Belfast Grand Central opens",
+      "date": "2024-09-08",
+      "end": "2024-10-13",
+      "precision": "range",
+      "category": "transport",
+      "people": [],
+      "place": "grand-central",
+      "historical_location_name": "Belfast Grand Central station",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 4,
+      "summary": "Begun in 2019, the Grand Central transport hub opened to buses on 8 September 2024 and to trains on 13 October 2024, replacing Great Victoria Street station and the Europa Buscentre. The surrounding area is planned as Weavers Cross.",
+      "sources": [
+        "wiki-grand-central"
+      ],
+      "landmark": "grand-central",
+      "tags": [
+        "transport hub",
+        "railway"
+      ]
+    },
+    {
+      "id": "regen-hw-navantia",
+      "title": "Harland & Wolff passes to Navantia",
+      "date": "2024-12-19",
+      "end": "2025-01",
+      "precision": "range",
+      "category": "industry",
+      "people": [],
+      "place": "harland-wolff-yard",
+      "historical_location_name": "Harland & Wolff",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "After entering administration in September 2024 for the second time in five years, Harland & Wolff agreed a sale to the Spanish shipbuilder Navantia in December 2024, completed in January 2025. The workforce, around 35,000 at its Second World War peak, numbered about 800 in 2023.",
+      "sources": [
+        "wiki-harland-wolff"
+      ],
+      "tags": [
+        "shipbuilding"
+      ]
+    },
+    {
+      "id": "regen-assembly-rooms-2025",
+      "title": "The Assembly Rooms return to public ownership",
+      "date": "2025-10-24",
+      "precision": "day",
+      "category": "regeneration",
+      "people": [],
+      "place": "assembly-rooms",
+      "historical_location_name": "Exchange and Assembly Rooms",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 3,
+      "chapter": "1798",
+      "summary": "Vacant since the bank left in 2000 and on the Buildings at Risk register since 2003, the 1769 Exchange and Assembly Rooms — scene of the 1792 Harp Festival and the 1798 courts-martial — were bought by Belfast City Council on 24 October 2025. The council is exploring future uses.",
+      "sources": [
+        "bcc-assembly-rooms",
+        "wiki-assembly-rooms"
+      ],
+      "related": [
+        "rev-court-martial-1798"
+      ],
+      "tags": [
+        "heritage",
+        "Assembly Rooms"
+      ]
+    },
+    {
+      "id": "regen-o2-2026",
+      "title": "Belfast in 2026",
+      "date": "2026-07-01",
+      "precision": "day",
+      "category": "regeneration",
+      "people": [],
+      "place": "odyssey",
+      "historical_location_name": "Titanic Quarter",
+      "confidence": "documented",
+      "status": "established",
+      "importance": 2,
+      "summary": "The arena at the heart of the Titanic Quarter took the name The O2 Belfast on 1 July 2026. A 2026 re-enactment retraced Henry Joy McCracken's last steps from the Assembly Rooms through the city centre — a sign of renewed public interest in the city's 1790s history.",
+      "sources": [
+        "wiki-sse-arena",
+        "irishnews-last-steps"
+      ],
+      "tags": [
+        "present day"
+      ]
+    }
+  ]
+}

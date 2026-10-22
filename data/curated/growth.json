@@ -1,0 +1,383 @@
+{
+  "$comment": "SCHEMATIC GROWTH MODEL — an explicit, author-estimated envelope of built-up extent used only to sequence illustrative massing and to animate growth. It is NOT digitised from historical maps. Radii are metres from the centre in the directions N, NE, E, SE, S, SW, W, NW. Hills (Cave Hill, Divis, Black Mountain) and Belfast Lough constrain the W, NW and NE radii. To replace: digitise dated extents from IHTA Belfast Map 12 or OSNI six-inch editions and supply them as data/extents/*.geojson (see README, 'Digitised extents'); from the earliest digitised year onwards the build uses them for the envelope, the footprint chart and the timing of streets and massing.",
+  "centre": [
+    -5.9285,
+    54.5998
+  ],
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "benchmarks": [
+    {
+      "year": 600,
+      "radii": [
+        45,
+        45,
+        45,
+        45,
+        45,
+        45,
+        45,
+        45
+      ]
+    },
+    {
+      "year": 1200,
+      "radii": [
+        90,
+        90,
+        110,
+        80,
+        95,
+        80,
+        90,
+        90
+      ]
+    },
+    {
+      "year": 1500,
+      "radii": [
+        110,
+        110,
+        130,
+        100,
+        115,
+        100,
+        110,
+        110
+      ]
+    },
+    {
+      "year": 1613,
+      "radii": [
+        220,
+        200,
+        280,
+        170,
+        220,
+        160,
+        200,
+        220
+      ]
+    },
+    {
+      "year": 1660,
+      "radii": [
+        330,
+        320,
+        420,
+        250,
+        300,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "year": 1700,
+      "radii": [
+        420,
+        400,
+        520,
+        300,
+        380,
+        280,
+        330,
+        400
+      ]
+    },
+    {
+      "year": 1757,
+      "radii": [
+        600,
+        560,
+        600,
+        420,
+        520,
+        380,
+        450,
+        560
+      ]
+    },
+    {
+      "year": 1791,
+      "radii": [
+        860,
+        700,
+        660,
+        600,
+        860,
+        520,
+        600,
+        760
+      ]
+    },
+    {
+      "year": 1823,
+      "radii": [
+        1100,
+        900,
+        1150,
+        900,
+        1150,
+        800,
+        820,
+        1000
+      ]
+    },
+    {
+      "year": 1858,
+      "radii": [
+        1700,
+        1300,
+        1950,
+        1500,
+        1950,
+        1500,
+        1450,
+        1650
+      ]
+    },
+    {
+      "year": 1901,
+      "radii": [
+        3000,
+        1900,
+        3200,
+        2800,
+        3300,
+        2600,
+        2600,
+        2900
+      ]
+    },
+    {
+      "year": 1938,
+      "radii": [
+        3900,
+        2300,
+        4200,
+        3600,
+        4300,
+        3400,
+        3200,
+        3600
+      ]
+    },
+    {
+      "year": 1960,
+      "radii": [
+        4600,
+        2500,
+        5000,
+        4300,
+        5000,
+        4000,
+        3600,
+        4200
+      ]
+    },
+    {
+      "year": 2026,
+      "radii": [
+        5600,
+        2800,
+        6200,
+        5200,
+        5900,
+        4600,
+        4000,
+        4800
+      ]
+    }
+  ],
+  "step_years": 5,
+  "outline_noise": 0.06,
+  "seed": 1613,
+  "massing": {
+    "frontage_spacing_m": [
+      14,
+      24
+    ],
+    "frontage_depth_m": [
+      11,
+      19
+    ],
+    "frontage_offset_m": 10,
+    "terrace_length_m": [
+      50,
+      80
+    ],
+    "terrace_depth_m": 22,
+    "terrace_row_spacing_m": [
+      {
+        "until_m": 650,
+        "step": 34
+      },
+      {
+        "until_m": 1800,
+        "step": 44
+      },
+      {
+        "until_m": 3400,
+        "step": 64
+      },
+      {
+        "until_m": 6500,
+        "step": 104
+      }
+    ],
+    "terrace_max_year": 1975,
+    "core_radius_m": 650,
+    "replacement_radius_m": 1300,
+    "clearance_ring_m": [
+      800,
+      2600
+    ],
+    "clearance_share": 0.3,
+    "clearance_years": [
+      1960,
+      1982
+    ],
+    "fade_to_modern": [
+      1986,
+      2008
+    ],
+    "max_features": 12000,
+    "yards": [
+      {
+        "id": "queens-island-shipyard",
+        "name": "Shipyard sheds on Queen's Island (illustrative)",
+        "land": "queens-island",
+        "from": 1853,
+        "full_by": 1912,
+        "seed_point": [
+          -5.9112,
+          54.6072
+        ],
+        "rotation_deg": 135,
+        "step_along_m": 118,
+        "step_across_m": 40,
+        "shed_length_m": [
+          70,
+          105
+        ],
+        "shed_depth_m": [
+          20,
+          32
+        ],
+        "height_m": [
+          14,
+          26
+        ],
+        "end_years": [
+          1985,
+          2006
+        ],
+        "surviving_share": 0.15,
+        "source_ids": [
+          "wiki-queens-island",
+          "wiki-harland-wolff"
+        ],
+        "note": "Sourced: Robert Hickson's shipyard opened on Queen's Island in 1853 and became Harland & Wolff in 1861. Illustrative: the sheds' positions, sizes and dates, and the assumption that the yard filled the island by 1912 (the year Titanic sailed)."
+      }
+    ]
+  },
+  "styles": {
+    "medieval": {
+      "label": "Medieval",
+      "from": 0,
+      "height": [
+        4,
+        6
+      ]
+    },
+    "plantation": {
+      "label": "Plantation (17th c.)",
+      "from": 1613,
+      "height": [
+        5,
+        8
+      ]
+    },
+    "georgian": {
+      "label": "Georgian",
+      "from": 1700,
+      "height": [
+        8,
+        12
+      ]
+    },
+    "regency": {
+      "label": "Late Georgian/Regency",
+      "from": 1800,
+      "height": [
+        9,
+        13
+      ]
+    },
+    "victorian": {
+      "label": "Victorian",
+      "from": 1840,
+      "height": [
+        11,
+        17
+      ]
+    },
+    "edwardian": {
+      "label": "Edwardian",
+      "from": 1900,
+      "height": [
+        13,
+        20
+      ]
+    },
+    "interwar": {
+      "label": "Interwar",
+      "from": 1921,
+      "height": [
+        10,
+        16
+      ]
+    },
+    "postwar": {
+      "label": "Post-war",
+      "from": 1945,
+      "height": [
+        10,
+        30
+      ]
+    },
+    "industrial": {
+      "label": "Industrial",
+      "from": 1830,
+      "height": [
+        16,
+        24
+      ]
+    },
+    "terrace": {
+      "label": "Terraced housing",
+      "from": 1820,
+      "height": [
+        7,
+        9
+      ]
+    },
+    "modern": {
+      "label": "Contemporary",
+      "from": 1990,
+      "height": [
+        12,
+        40
+      ]
+    }
+  }
+}

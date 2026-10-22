@@ -1,0 +1,25 @@
+{
+  "$comment": "1798 walking trail. Stops are documented or reported places; the connecting line is an ILLUSTRATIVE modern walking line along the schematic street alignments — it is not a reconstructed historic route and no historic movement is implied.",
+  "id": "trail-1798",
+  "title": "The Streets of Revolution — walking trail",
+  "path_basis": "illustrative-modern-walking-line",
+  "stops": [
+    { "order": 1, "place": "crown-entry",             "event_id": "rev-founding-1791",   "label": "Crown Entry" },
+    { "order": 2, "place": "sugarhouse-entry",        "event_id": "rev-peggy-barclays",  "label": "Sugarhouse Entry" },
+    { "order": 3, "place": "waring-street",           "event_id": "rev-thatched-house",  "label": "Waring Street" },
+    { "order": 4, "place": "joys-entry",              "event_id": "rev-hjm-born-1767",   "label": "Joy's Entry" },
+    { "order": 5, "place": "market-house-site",       "event_id": "rev-execution-1798",  "label": "Historic Market House" },
+    { "order": 6, "place": "pottingers-entry",        "event_id": "rev-wake-tradition",  "label": "Pottinger's Entry" },
+    { "order": 7, "place": "st-georges",              "event_id": "rev-burial-1798",     "label": "St George's" },
+    { "order": 8, "place": "clifton-street-cemetery", "event_id": "rev-reburial-1909",   "label": "Clifton Street Cemetery" }
+  ],
+  "path": [
+    [-5.92738, 54.59945], [-5.92735, 54.59985], [-5.92690, 54.59988], [-5.92684, 54.60040], [-5.92680, 54.60082],
+    [-5.92600, 54.60088], [-5.92550, 54.60095], [-5.92680, 54.60082], [-5.92808, 54.60089], [-5.92785, 54.60030],
+    [-5.92760, 54.59980], [-5.92650, 54.59992], [-5.92643, 54.59955], [-5.92650, 54.59992], [-5.92780, 54.59978],
+    [-5.92840, 54.59966], [-5.92780, 54.59978], [-5.92593, 54.59997], [-5.92592, 54.59960], [-5.92593, 54.59997],
+    [-5.92500, 54.60005], [-5.92492, 54.60022], [-5.92500, 54.60005], [-5.92374, 54.60009], [-5.92374, 54.60150],
+    [-5.92420, 54.60120], [-5.92550, 54.60095], [-5.92740, 54.60110], [-5.92830, 54.60230], [-5.92960, 54.60360],
+    [-5.93120, 54.60470], [-5.93200, 54.60520], [-5.93400, 54.60640], [-5.93500, 54.60700], [-5.93495, 54.60753]
+  ]
+}

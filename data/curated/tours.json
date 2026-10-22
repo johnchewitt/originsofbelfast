@@ -1,0 +1,49 @@
+{
+  "$comment": "Guided story tours. Each step either references an event (camera from the event or the step) or sets a year with narration written for this project.",
+  "tours": [
+    {
+      "id": "tour-1798",
+      "title": "Belfast 1798 — The Streets of Revolution",
+      "subtitle": "From the founding of the United Irishmen to the execution of Henry Joy McCracken",
+      "accent": "amber",
+      "intro": {
+        "year": 1791.6,
+        "camera": { "target": [-5.9270, 54.6002], "heading": 35, "tilt": 66, "range": 900 },
+        "title": "Belfast, 1791",
+        "text": "A town of about 18,000 people gathered around High Street, the quays and a web of narrow entries. Reform clubs, a radical press and Presbyterian congregations made it the cradle of a movement. Markers show documented places in cyan, approximate places in pale gold and unverified traditions as amber triangles; the shaded discs show how far each position could be out."
+      },
+      "steps": [
+        "rev-founding-1791", "rev-northern-star-1792", "rev-harp-festival-1792", "rev-peggy-barclays", "rev-dragoons-1793",
+        "rev-thatched-house", "rev-vicinage", "rev-cave-hill-1795", "rev-hjm-arrest-1796", "rev-burying-ground-1797",
+        "rev-northern-star-1797", "rev-orr-1797", "rev-proclamation-1798", "rev-donegore-1798", "rev-antrim-1798",
+        "rev-saintfield-1798", "rev-ballynahinch-1798", "rev-munro-1798", "rev-slemish-1798", "rev-capture-1798",
+        "rev-court-martial-1798", "rev-execution-1798", "rev-revival-1798", "rev-wake-tradition", "rev-burial-1798",
+        "rev-poorhouse-military", "rev-reburial-1909", "regen-statues-2024", "regen-sugarhouse-2024", "regen-assembly-rooms-2025"
+      ]
+    },
+    {
+      "id": "tour-shipbuilders",
+      "title": "City of Shipbuilders",
+      "subtitle": "From the mudflats to the Titanic slipways",
+      "accent": "cyan",
+      "intro": { "year": 1840, "camera": { "target": [-5.9080, 54.6090], "heading": 300, "tilt": 62, "range": 2600 }, "title": "The Lagan mudflats, 1840", "text": "Before 1841 ships could reach the town quays only at high tide across shifting mudflats. Watch the channel being cut and an island rise from the spoil." },
+      "steps": ["ind-victoria-channel", "ind-queens-college-1849", "metro-hickson-1853", "metro-hw-1861", "metro-oceanic-1899", "edw-olympic-titanic-keels", "edw-thompson-dock-1911", "edw-titanic-launch-1911", "edw-titanic-departs-1912", "blitz-1941-may", "conf-goliath-1969", "regen-titanic-quarter", "regen-titanic-belfast-2012", "regen-hw-navantia"]
+    },
+    {
+      "id": "tour-blitz",
+      "title": "The Belfast Blitz, 1941",
+      "subtitle": "Four raids in April and May 1941",
+      "accent": "cyan",
+      "intro": { "year": 1941.25, "camera": { "target": [-5.9300, 54.6040], "heading": 200, "tilt": 58, "range": 4200 }, "title": "Spring 1941", "text": "Belfast's war industries made it a target, yet the city had few shelters and little anti-aircraft cover. This tour visits documented sites, shown without graphic detail." },
+      "steps": ["blitz-1941-april-7", "blitz-1941-easter", "blitz-york-street-mill", "blitz-clonard", "blitz-st-georges-market", "blitz-1941-may"]
+    },
+    {
+      "id": "tour-growth",
+      "title": "Four Centuries of Growth",
+      "subtitle": "Watch the town become a city",
+      "accent": "cyan",
+      "intro": { "year": 1613, "camera": { "target": [-5.9285, 54.6000], "heading": 20, "tilt": 55, "range": 3200 }, "title": "A charter town", "text": "The growth envelope and building massing on this tour are a schematic model — they show the pattern of growth, not surveyed buildings." },
+      "steps": ["plantation-charter-1613", "plantation-long-bridge", "georgian-white-linen-hall", "rev-founding-1791", "ind-ulster-railway-1839", "metro-city-1888", "edw-city-hall-1906", "part-parliament-1921", "conf-population-1951", "conf-lagan-weir-1994", "regen-titanic-belfast-2012", "regen-grand-central-2024"]
+    }
+  ]
+}

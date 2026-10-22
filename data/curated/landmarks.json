@@ -1,0 +1,264 @@
+{
+  "$comment": "Landmark reconstructions. Each landmark is anchored to a gazetteer place and has one or more phases (construction start, completion, end). Parts are simple massing primitives in metres in the landmark's local frame (x = along 'rot', counter-clockwise degrees from east). height_basis: documented (a published height), inferred (from storeys/descriptions) or illustrative (placeholder massing). footprint_basis: 'site-documented' means the site is documented but the outline is illustrative. Nothing here is a surveyed reconstruction.",
+  "landmarks": [
+    {
+      "id": "castle-medieval", "name": "Belfast Castle (medieval)", "place": "belfast-castle-town-site", "rot": 0,
+      "status": "lost", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-belfast-castle", "wiki-timeline"],
+      "notes": "Recorded by the 1220s; pulled down in 1503 and rebuilt in 1552. No plan survives in the sources consulted — massing is a generic tower and bawn.",
+      "phases": [
+        { "build_start": 1200, "start": 1220, "end": 1503, "style": "medieval", "parts": [ { "shape": "rect", "w": 13, "d": 11, "h": 14 }, { "shape": "court", "w": 42, "d": 36, "t": 1.6, "h": 4, "dy": -8 } ] },
+        { "build_start": 1550, "start": 1552, "end": 1610, "style": "medieval", "parts": [ { "shape": "rect", "w": 13, "d": 11, "h": 13 }, { "shape": "court", "w": 42, "d": 36, "t": 1.6, "h": 4, "dy": -8 } ] }
+      ]
+    },
+    {
+      "id": "castle-chichester", "name": "Belfast Castle (Chichester's)", "place": "belfast-castle-town-site", "rot": 0,
+      "status": "lost", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-belfast-castle", "wiki-timeline"],
+      "notes": "Rebuilt mainly in brick in the early 1610s; burned in April 1708 and never rebuilt.",
+      "phases": [
+        { "build_start": 1610, "start": 1612, "end": 1708.31, "style": "plantation", "parts": [ { "shape": "rect", "w": 32, "d": 15, "h": 13 }, { "shape": "rect", "w": 7, "d": 7, "dx": -18, "dy": 2, "h": 18 }, { "shape": "rect", "w": 7, "d": 7, "dx": 18, "dy": 2, "h": 18 }, { "shape": "court", "w": 90, "d": 70, "t": 1.2, "h": 2.5, "dy": -40 } ] }
+      ]
+    },
+    {
+      "id": "chapel-of-the-ford", "name": "Chapel of the Ford / Corporation Church", "place": "st-georges", "rot": 12,
+      "status": "replaced", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "site-documented",
+      "source_ids": ["dfc-hb26-50-045", "wiki-st-georges"],
+      "notes": "Recorded in 1306; enlarged in the 1650s; demolished 1774. Site documented (HB26/50/045), outline illustrative.",
+      "phases": [
+        { "build_start": 1290, "start": 1306, "end": 1655, "style": "medieval", "parts": [ { "shape": "rect", "w": 20, "d": 8, "h": 7 }, { "shape": "rect", "w": 5, "d": 5, "dx": -11, "h": 11 } ] },
+        { "build_start": 1650, "start": 1655, "end": 1774, "style": "plantation", "parts": [ { "shape": "rect", "w": 28, "d": 11, "h": 9 }, { "shape": "rect", "w": 6, "d": 6, "dx": -15, "h": 15 } ] }
+      ]
+    },
+    {
+      "id": "st-georges-1816", "name": "St George's Church", "place": "st-georges", "rot": 12,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "site-documented",
+      "source_ids": ["dfc-hb26-50-045", "wiki-st-georges"],
+      "phases": [
+        { "build_start": 1813.42, "start": 1816.46, "end": null, "style": "regency", "parts": [ { "shape": "rect", "w": 30, "d": 15, "h": 13 }, { "shape": "rect", "w": 6, "d": 13, "dx": -18, "h": 12 } ] }
+      ]
+    },
+    {
+      "id": "market-house", "name": "Market House (High Street at Corn Market)", "place": "market-house-site", "rot": 22,
+      "status": "lost", "confidence": "approximate", "height_basis": "inferred", "footprint_basis": "illustrative",
+      "source_ids": ["archiseek-market-house", "belfaststreetnames-cornmarket", "wiki-hjm"],
+      "notes": "Massing follows the published description — arcaded ground floor, courthouse above (after 1663) and a three-stage tower with an ogival turret. Dimensions are illustrative; no measured plan or verified engraving was used. Construction date disputed (1639 or 1665); demolished about 1810.",
+      "phases": [
+        { "build_start": 1638, "start": 1639, "end": 1810, "style": "plantation", "parts": [ { "shape": "rect", "w": 18, "d": 11, "h": 9.5 }, { "shape": "rect", "w": 4.6, "d": 4.6, "dx": 0, "dy": 1.5, "h": 19 }, { "shape": "rect", "w": 2.4, "d": 2.4, "dy": 1.5, "base": 19, "h": 4 } ] }
+      ]
+    },
+    {
+      "id": "exchange-assembly-rooms", "name": "Exchange and Assembly Rooms", "place": "assembly-rooms", "rot": 30,
+      "status": "surviving", "confidence": "documented", "height_basis": "inferred", "footprint_basis": "site-documented",
+      "source_ids": ["wiki-assembly-rooms", "bcc-assembly-rooms"],
+      "notes": "Single storey (1769), upper storey added 1776, extended by Lanyon 1845. Heights inferred from storey counts.",
+      "phases": [
+        { "build_start": 1767.5, "start": 1769, "end": 1776, "style": "georgian", "parts": [ { "shape": "rect", "w": 26, "d": 16, "h": 6 } ] },
+        { "build_start": 1775.5, "start": 1776, "end": 1845, "style": "georgian", "parts": [ { "shape": "rect", "w": 26, "d": 16, "h": 12 } ] },
+        { "build_start": 1844.5, "start": 1845.5, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 30, "d": 18, "h": 15 }, { "shape": "rect", "w": 18, "d": 14, "dx": 22, "h": 14 } ] }
+      ]
+    },
+    {
+      "id": "poor-house", "name": "The Poor House (Clifton House)", "place": "clifton-house", "rot": 35,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "site-documented",
+      "source_ids": ["wiki-clifton-house"],
+      "phases": [
+        { "build_start": 1771.6, "start": 1774.71, "end": null, "style": "georgian", "parts": [ { "shape": "rect", "w": 46, "d": 13, "h": 10 }, { "shape": "rect", "w": 13, "d": 30, "dx": -20, "dy": -10, "h": 9 }, { "shape": "rect", "w": 13, "d": 30, "dx": 20, "dy": -10, "h": 9 }, { "shape": "rect", "w": 3.2, "d": 3.2, "base": 10, "h": 16 } ] }
+      ]
+    },
+    {
+      "id": "st-annes-1776", "name": "St Anne's parish church (1776)", "place": "st-annes", "rot": 60,
+      "status": "lost", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "site-documented",
+      "source_ids": ["wiki-st-annes"],
+      "phases": [
+        { "build_start": 1774, "start": 1776, "end": 1904.0, "style": "georgian", "parts": [ { "shape": "rect", "w": 26, "d": 14, "h": 11 }, { "shape": "rect", "w": 6, "d": 6, "dx": -16, "h": 26 } ] }
+      ]
+    },
+    {
+      "id": "st-annes-cathedral", "name": "St Anne's Cathedral", "place": "st-annes", "rot": 60,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "site-documented",
+      "source_ids": ["wiki-st-annes"],
+      "notes": "Spire of Hope (2007) height of 40 m is documented; the rest of the massing is illustrative.",
+      "phases": [
+        { "build_start": 1899.68, "start": 1904.42, "end": null, "style": "edwardian", "parts": [ { "shape": "rect", "w": 62, "d": 24, "h": 22 }, { "shape": "rect", "w": 18, "d": 40, "dx": 6, "h": 20 } ] },
+        { "build_start": 2007.0, "start": 2007.29, "end": null, "style": "modern", "parts": [ { "shape": "rect", "w": 1.6, "d": 1.6, "dx": 6, "base": 22, "h": 40 } ] }
+      ]
+    },
+    {
+      "id": "white-linen-hall", "name": "White Linen Hall", "place": "city-hall", "rot": 0,
+      "status": "lost", "confidence": "probable", "height_basis": "inferred", "footprint_basis": "site-documented",
+      "source_ids": ["archiseek-white-linen-hall", "wiki-timeline", "wiki-city-hall"],
+      "notes": "Two-storey quadrangle with a central tower and spire on the north front (Archiseek). The site is documented — City Hall replaced it — but the outline is illustrative.",
+      "phases": [
+        { "build_start": 1783.5, "start": 1785, "end": 1896, "style": "georgian", "parts": [ { "shape": "court", "w": 84, "d": 84, "t": 11, "h": 9 }, { "shape": "rect", "w": 7, "d": 7, "dy": 38.5, "h": 20 }, { "shape": "rect", "w": 2.4, "d": 2.4, "dy": 38.5, "base": 20, "h": 9 } ] }
+      ]
+    },
+    {
+      "id": "city-hall", "name": "Belfast City Hall", "place": "city-hall", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-city-hall"],
+      "notes": "Dome height (c. 53 m) documented; quadrangle outline illustrative.",
+      "phases": [
+        { "build_start": 1898, "start": 1906.58, "end": null, "style": "edwardian", "parts": [ { "shape": "court", "w": 100, "d": 92, "t": 18, "h": 21 }, { "shape": "rect", "w": 26, "d": 20, "dy": 40, "h": 26 }, { "shape": "circle", "r": 10.5, "dy": 40, "base": 26, "h": 27 }, { "shape": "rect", "w": 8, "d": 8, "dx": -46, "dy": 42, "h": 30 }, { "shape": "rect", "w": 8, "d": 8, "dx": 46, "dy": 42, "h": 30 }, { "shape": "rect", "w": 8, "d": 8, "dx": -46, "dy": -42, "h": 30 }, { "shape": "rect", "w": 8, "d": 8, "dx": 46, "dy": -42, "h": 30 } ] }
+      ]
+    },
+    {
+      "id": "custom-house", "name": "Custom House", "place": "custom-house", "rot": 70,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-custom-house"],
+      "phases": [
+        { "build_start": 1854, "start": 1857, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 58, "d": 24, "h": 17 }, { "shape": "rect", "w": 22, "d": 30, "dx": -18, "h": 16 } ] }
+      ]
+    },
+    {
+      "id": "albert-clock", "name": "Albert Memorial Clock", "place": "albert-clock", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-albert-clock"],
+      "notes": "Height 113 ft (34.4 m) documented. The real tower leans about 4 ft; the model is vertical.",
+      "phases": [
+        { "build_start": 1865.5, "start": 1869, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 7, "d": 7, "h": 26 }, { "shape": "rect", "w": 4.2, "d": 4.2, "base": 26, "h": 8.4 } ] }
+      ]
+    },
+    {
+      "id": "long-bridge", "name": "Long Bridge", "place": "queens-bridge", "rot": 0,
+      "status": "lost", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "approximate",
+      "source_ids": ["wiki-queens-bridge"],
+      "notes": "21 arches, c. 840 ft (256 m) long and 20 ft (6.1 m) wide (documented). Alignment assumed to follow the later Queen's Bridge crossing.",
+      "phases": [
+        { "build_start": 1682, "start": 1688, "end": 1841.2, "style": "plantation", "parts": [ { "shape": "deck", "path": [[-5.92110, 54.59944], [-5.91715, 54.59996]], "width": 6.1, "h": 4.2 } ] }
+      ]
+    },
+    {
+      "id": "queens-bridge", "name": "Queen's Bridge", "place": "queens-bridge", "rot": 0,
+      "status": "surviving", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "approximate",
+      "source_ids": ["wiki-queens-bridge", "geograph-queens-bridge"],
+      "notes": "Deck widened from 30 ft (9.1 m) to 62 ft (19 m) in 1885 (documented). Alignment approximate.",
+      "phases": [
+        { "build_start": 1841.2, "start": 1843.04, "end": 1885, "style": "victorian", "parts": [ { "shape": "deck", "path": [[-5.92045, 54.59950], [-5.91790, 54.59985]], "width": 9.1, "h": 5 } ] },
+        { "build_start": 1885, "start": 1885.5, "end": null, "style": "victorian", "parts": [ { "shape": "deck", "path": [[-5.92045, 54.59950], [-5.91790, 54.59985]], "width": 19, "h": 5 } ] }
+      ]
+    },
+    {
+      "id": "ulster-hall", "name": "Ulster Hall", "place": "ulster-hall", "rot": 90,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-ulster-hall"],
+      "phases": [ { "build_start": 1859, "start": 1862.36, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 52, "d": 26, "h": 18 } ] } ]
+    },
+    {
+      "id": "lanyon-building", "name": "Queen's College (Lanyon Building)", "place": "qub", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-qub"],
+      "phases": [ { "build_start": 1845.99, "start": 1849.78, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 96, "d": 15, "h": 14 }, { "shape": "rect", "w": 11, "d": 11, "dy": 2, "h": 30 }, { "shape": "rect", "w": 14, "d": 34, "dx": -42, "dy": -10, "h": 13 }, { "shape": "rect", "w": 14, "d": 34, "dx": 42, "dy": -10, "h": 13 } ] } ]
+    },
+    {
+      "id": "central-library", "name": "Belfast Central Library", "place": "central-library", "rot": 95,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-central-library"],
+      "phases": [ { "build_start": 1883.5, "start": 1888.78, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 40, "d": 26, "h": 19 } ] } ]
+    },
+    {
+      "id": "grand-opera-house", "name": "Grand Opera House", "place": "grand-opera-house", "rot": 90,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-opera-house"],
+      "phases": [ { "build_start": 1894.5, "start": 1895.98, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 42, "d": 30, "h": 20 }, { "shape": "circle", "r": 4, "dx": 0, "dy": 12, "base": 20, "h": 6 } ] } ]
+    },
+    {
+      "id": "st-georges-market", "name": "St George's Market", "place": "st-georges-market", "rot": 0,
+      "status": "surviving", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-st-georges-market"],
+      "phases": [ { "build_start": 1890, "start": 1896, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 110, "d": 58, "h": 12 } ] } ]
+    },
+    {
+      "id": "belfast-castle-cave-hill", "name": "Belfast Castle (Cave Hill)", "place": "belfast-castle-cave-hill", "rot": 20,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-belfast-castle"],
+      "phases": [ { "build_start": 1867, "start": 1870, "end": null, "style": "victorian", "parts": [ { "shape": "rect", "w": 40, "d": 20, "h": 17 }, { "shape": "rect", "w": 9, "d": 9, "dx": 14, "dy": 4, "h": 31 } ] } ]
+    },
+    {
+      "id": "arrol-gantry", "name": "Arrol Gantry (Olympic and Titanic slipways)", "place": "titanic-belfast", "rot": 135,
+      "status": "lost", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-harland-wolff", "wiki-titanic"],
+      "notes": "Built by Sir William Arrol & Co. for the Olympic-class ships; demolished 1971. Position at the slipways is approximate; dimensions illustrative.",
+      "phases": [ { "build_start": 1908, "start": 1909, "end": 1971, "style": "industrial", "parts": [ { "shape": "rect", "w": 250, "d": 4, "dx": 150, "dy": 46, "h": 62 }, { "shape": "rect", "w": 250, "d": 4, "dx": 150, "dy": 0, "h": 62 }, { "shape": "rect", "w": 250, "d": 4, "dx": 150, "dy": -46, "h": 62 }, { "shape": "rect", "w": 250, "d": 96, "dx": 150, "dy": 0, "base": 60, "h": 2.5 } ] } ]
+    },
+    {
+      "id": "thompson-dock", "name": "Thompson Graving Dock", "place": "thompson-dock", "rot": 135,
+      "status": "surviving", "confidence": "approximate", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-thompson-dock"],
+      "notes": "Shown as the dock's rim. Working length about 850 ft (259 m) and width about 96–128 ft (documented); position approximate.",
+      "phases": [ { "build_start": 1903.8, "start": 1911.25, "end": null, "style": "industrial", "parts": [ { "shape": "court", "w": 270, "d": 44, "t": 3, "h": 1.2 } ] } ]
+    },
+    {
+      "id": "royal-courts", "name": "Royal Courts of Justice", "place": "royal-courts", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-royal-courts"],
+      "phases": [ { "build_start": 1928, "start": 1933, "end": null, "style": "interwar", "parts": [ { "shape": "court", "w": 72, "d": 54, "t": 15, "h": 22 } ] } ]
+    },
+    {
+      "id": "divis-tower", "name": "Divis Tower", "place": "divis-tower", "rot": 15,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-divis-tower"],
+      "phases": [ { "build_start": 1964.5, "start": 1966.5, "end": null, "style": "postwar", "parts": [ { "shape": "rect", "w": 24, "d": 18, "h": 58 } ] } ]
+    },
+    {
+      "id": "europa-hotel", "name": "Europa Hotel", "place": "gvs-station", "rot": 90,
+      "status": "surviving", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-europa"],
+      "phases": [ { "build_start": 1969, "start": 1971.5, "end": null, "style": "postwar", "parts": [ { "shape": "rect", "w": 44, "d": 20, "h": 50 }, { "shape": "rect", "w": 60, "d": 36, "dy": -8, "h": 9 } ] } ]
+    },
+    {
+      "id": "samson-goliath", "name": "Goliath (1969) and Samson (1974)", "place": "samson-goliath", "rot": 120,
+      "status": "surviving", "confidence": "approximate", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-samson-goliath"],
+      "notes": "Heights (Goliath 96 m, Samson 106 m) and 140 m spans documented; positions approximate.",
+      "phases": [
+        { "build_start": 1968, "start": 1969, "end": null, "style": "industrial", "parts": [ { "shape": "rect", "w": 8, "d": 12, "dx": -70, "dy": -60, "h": 96 }, { "shape": "rect", "w": 8, "d": 12, "dx": 70, "dy": -60, "h": 96 }, { "shape": "rect", "w": 150, "d": 12, "dy": -60, "base": 86, "h": 10 } ] },
+        { "build_start": 1973, "start": 1974, "end": null, "style": "industrial", "parts": [ { "shape": "rect", "w": 8, "d": 12, "dx": -70, "dy": 60, "h": 106 }, { "shape": "rect", "w": 8, "d": 12, "dx": 70, "dy": 60, "h": 106 }, { "shape": "rect", "w": 150, "d": 12, "dy": 60, "base": 96, "h": 10 } ] }
+      ]
+    },
+    {
+      "id": "lagan-weir", "name": "Lagan Weir", "place": "lagan-weir", "rot": 10,
+      "status": "surviving", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "approximate",
+      "source_ids": ["wiki-lagan-weir"],
+      "phases": [ { "build_start": 1991.18, "start": 1994.2, "end": null, "style": "modern", "parts": [ { "shape": "rect", "w": 130, "d": 7, "h": 4 }, { "shape": "rect", "w": 6, "d": 9, "dx": -40, "h": 9 }, { "shape": "rect", "w": 6, "d": 9, "dx": -13, "h": 9 }, { "shape": "rect", "w": 6, "d": 9, "dx": 13, "h": 9 }, { "shape": "rect", "w": 6, "d": 9, "dx": 40, "h": 9 } ] } ]
+    },
+    {
+      "id": "waterfront-hall", "name": "Waterfront Hall", "place": "waterfront-hall", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-waterfront"],
+      "phases": [ { "build_start": 1995, "start": 1997, "end": null, "style": "modern", "parts": [ { "shape": "circle", "r": 32, "h": 26 }, { "shape": "rect", "w": 40, "d": 50, "dx": -38, "h": 18 } ] } ]
+    },
+    {
+      "id": "odyssey", "name": "Odyssey / SSE Arena / The O2 Belfast", "place": "odyssey", "rot": 20,
+      "status": "surviving", "confidence": "approximate", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-sse-arena"],
+      "phases": [ { "build_start": 1998.5, "start": 2000.92, "end": null, "style": "modern", "parts": [ { "shape": "rect", "w": 120, "d": 90, "h": 24 } ] } ]
+    },
+    {
+      "id": "victoria-square", "name": "Victoria Square", "place": "victoria-square", "rot": 0,
+      "status": "surviving", "confidence": "approximate", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-victoria-square"],
+      "notes": "Glass dome 37 m in diameter and 45 m high (documented). Block outline illustrative.",
+      "phases": [ { "build_start": 2006, "start": 2008.18, "end": null, "style": "modern", "parts": [ { "shape": "court", "w": 120, "d": 80, "t": 22, "h": 24 }, { "shape": "circle", "r": 18.5, "h": 45 } ] } ]
+    },
+    {
+      "id": "titanic-belfast", "name": "Titanic Belfast", "place": "titanic-belfast", "rot": 45,
+      "status": "surviving", "confidence": "documented", "height_basis": "documented", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-titanic-belfast"],
+      "notes": "Height 38.5 m documented. The four hull-shaped wings are represented by rotated blocks.",
+      "phases": [ { "build_start": 2009.4, "start": 2012.25, "end": null, "style": "modern", "parts": [ { "shape": "rect", "w": 34, "d": 30, "dx": 20, "dy": 20, "rot": 10, "h": 38.5 }, { "shape": "rect", "w": 34, "d": 30, "dx": -20, "dy": 20, "rot": -10, "h": 38.5 }, { "shape": "rect", "w": 34, "d": 30, "dx": 20, "dy": -20, "rot": -10, "h": 38.5 }, { "shape": "rect", "w": 34, "d": 30, "dx": -20, "dy": -20, "rot": 10, "h": 38.5 }, { "shape": "rect", "w": 30, "d": 30, "h": 30 } ] } ]
+    },
+    {
+      "id": "grand-central", "name": "Belfast Grand Central", "place": "grand-central", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-grand-central"],
+      "phases": [ { "build_start": 2019, "start": 2024.69, "end": null, "style": "modern", "parts": [ { "shape": "rect", "w": 170, "d": 56, "h": 16 } ] } ]
+    },
+    {
+      "id": "stormont", "name": "Parliament Buildings, Stormont", "place": "stormont", "rot": 0,
+      "status": "surviving", "confidence": "documented", "height_basis": "illustrative", "footprint_basis": "illustrative",
+      "source_ids": ["wiki-stormont"],
+      "phases": [ { "build_start": 1928.38, "start": 1932.87, "end": null, "style": "interwar", "parts": [ { "shape": "rect", "w": 110, "d": 50, "h": 22 }, { "shape": "rect", "w": 34, "d": 12, "dy": -28, "h": 26 } ] } ]
+    }
+  ]
+}

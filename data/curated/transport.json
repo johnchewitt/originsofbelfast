@@ -1,0 +1,8 @@
+{
+  "$comment": "Railway lines. Opening dates are documented; alignments are SCHEMATIC (hand-placed) and should be replaced from OSM or OSNI mapping via the pipeline.",
+  "lines": [
+    { "id": "ulster-railway", "name": "Ulster Railway (Belfast–Lisburn)", "kind": "rail", "start": 1839.6, "end": null, "confidence": "documented", "geometry_basis": "schematic", "source_ids": ["wiki-ulster-railway"], "note": "First 7¾ miles to Lisburn opened August 1839 from the Great Victoria Street terminus.", "coords": [[-5.93480, 54.59450], [-5.93800, 54.59200], [-5.94300, 54.58700], [-5.95000, 54.58000], [-5.96000, 54.57200], [-5.97200, 54.56300]] },
+    { "id": "bcdr", "name": "Belfast and County Down Railway (Queen's Quay–Holywood)", "kind": "rail", "start": 1848.58, "end": null, "confidence": "documented", "geometry_basis": "schematic", "source_ids": ["wiki-bcdr"], "note": "Opened to Holywood 2 August 1848 from Queen's Quay.", "coords": [[-5.91700, 54.60080], [-5.91200, 54.60300], [-5.90300, 54.60450], [-5.89300, 54.60700], [-5.88300, 54.61100], [-5.87000, 54.61900], [-5.85800, 54.62700]] },
+    { "id": "belfast-ballymena", "name": "Belfast and Ballymena Railway (York Road)", "kind": "rail", "start": 1848.27, "end": null, "confidence": "documented", "geometry_basis": "schematic", "source_ids": ["wiki-york-road"], "note": "Opened 11 April 1848 from York Road; the York Road terminus closed in 1992.", "coords": [[-5.92200, 54.61500], [-5.92100, 54.62200], [-5.92300, 54.63000], [-5.93000, 54.64000], [-5.94000, 54.65000]] }
+  ]
+}

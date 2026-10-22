@@ -1,0 +1,35 @@
+{
+  "$comment": "Historic population of Belfast as tabulated in Wikipedia's 'Demographics of Belfast', which compiles Wakefield (1812), Irish census returns, histpop.org and NISRA. The table does not state a boundary for each row; Belfast's boundary was extended in 1841, 1853, 1896 and 2015, so the series is indicative rather than strictly comparable. Pre-1821 values are early counts or estimates.",
+  "source_ids": ["wiki-demographics"],
+  "series": [
+    { "year": 1757, "population": 8549, "note": "Early count/estimate" },
+    { "year": 1782, "population": 13105, "note": "Early count/estimate" },
+    { "year": 1791, "population": 18320, "note": "Early count/estimate" },
+    { "year": 1806, "population": 22095, "note": "Early count/estimate" },
+    { "year": 1821, "population": 37277 },
+    { "year": 1831, "population": 53287 },
+    { "year": 1841, "population": 75308 },
+    { "year": 1851, "population": 97784 },
+    { "year": 1861, "population": 119393 },
+    { "year": 1871, "population": 174412 },
+    { "year": 1881, "population": 208122 },
+    { "year": 1891, "population": 255950 },
+    { "year": 1901, "population": 349180 },
+    { "year": 1911, "population": 386947 },
+    { "year": 1926, "population": 415151 },
+    { "year": 1937, "population": 438086 },
+    { "year": 1951, "population": 443671 },
+    { "year": 1961, "population": 415856 },
+    { "year": 1966, "population": 398405 },
+    { "year": 1971, "population": 362082 },
+    { "year": 1981, "population": 314270 },
+    { "year": 1991, "population": 279237 },
+    { "year": 2001, "population": 277391 },
+    { "year": 2006, "population": 267374, "note": "Table value; definition not stated" },
+    { "year": 2011, "population": 286000, "note": "Rounded table value; definition not stated" },
+    { "year": 2021, "population": 293298, "note": "Table value; the 2015 local government district counted 345,418" }
+  ],
+  "alternates": [
+    { "year": 2021, "population": 345418, "label": "Belfast LGD (2015 boundary)", "source_ids": ["wiki-belfast", "wiki-demographics"] }
+  ]
+}

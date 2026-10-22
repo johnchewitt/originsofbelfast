@@ -1,0 +1,47 @@
+{
+  "name": "belfast-rising",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Belfast Rising — a 3D historical digital twin of Belfast from its origins to 2026 (React, Vite, ArcGIS Maps SDK for JavaScript 5.1).",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "predev": "npm run data:build",
+    "dev": "vite",
+    "build": "npm run data:build && tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "pretest": "npm run data:build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "data:build": "tsx scripts/build-data.ts",
+    "data:validate": "tsx scripts/build-data.ts --validate-only",
+    "data:osm": "tsx scripts/fetch-osm.ts",
+    "assets:copy": "tsx scripts/copy-arcgis-assets.ts"
+  },
+  "dependencies": {
+    "@arcgis/core": "5.1.27",
+    "@arcgis/map-components": "5.1.27",
+    "@esri/calcite-components": "5.2.0",
+    "echarts": "6.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@turf/turf": "7.4.0",
+    "@types/geojson": "7946.0.16",
+    "@types/node": "26.6.5",
+    "@types/proj4": "2.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "proj4": "2.22.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  }
+}
