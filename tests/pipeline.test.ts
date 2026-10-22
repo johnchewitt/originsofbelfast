@@ -205,11 +205,9 @@ describe.skipIf(!built)("built dataset integrity", () => {
       expect(p.lat).toBeLessThan(55);
     }
   });
-  it("never asks the 3D view to draw more massing than its feature cap", () => {
-    const massing = read<{ features: { properties: { b: number; e: number } }[] }>("massing.geojson").features.map((f) => f.properties);
-    let peak = 0;
-    for (let y = 1600; y <= 2026; y += 1) peak = Math.max(peak, massing.filter((p) => p.b <= y && p.e > y).length);
-    expect(peak).toBeLessThanOrEqual(MASSING_FEATURE_CAP);
+  it("fits the whole massing layer under the 3D view's feature cap", () => {
+    const massing = read<{ features: unknown[] }>("massing.geojson").features;
+    expect(massing.length).toBeLessThanOrEqual(MASSING_FEATURE_CAP);
   });
   it("shows the Market House standing in 1798 and gone by 1820", () => {
     const parts = read<{ features: { properties: { landmark_id: string; build_start: number; start_year: number; end_year: number } }[] }>("landmarks.geojson").features

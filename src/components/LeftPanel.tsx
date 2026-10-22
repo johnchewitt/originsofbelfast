@@ -5,20 +5,24 @@ import { ERAS, eraForYear } from "../data/eras";
 import { useThrottled } from "../hooks/useThrottled";
 import { PopulationChart, FootprintChart } from "./Charts";
 import { Icon } from "./Icon";
-import { CONFIDENCE_COLOURS, STYLE_COLOURS } from "../map/palette";
+import { CONFIDENCE_COLOURS } from "../map/palette";
+import { massingColour, type LayerStyles } from "../map/layerStyles";
 
-const LAYERS: { id: string; label: string; basis: string; swatch: string }[] = [
-  { id: "events", label: "Historical events", basis: "Shape = evidence level", swatch: CONFIDENCE_COLOURS.documented },
-  { id: "uncertainty", label: "Positional uncertainty", basis: "Disc radius = how far the position could be out", swatch: "rgba(232,183,107,0.35)" },
-  { id: "landmarks", label: "Landmarks", basis: "Dates sourced · outlines illustrative", swatch: "#F2E8D5" },
-  { id: "massing", label: "Building massing", basis: "Illustrative model", swatch: STYLE_COLOURS.georgian ?? "#c2895c" },
-  { id: "streets", label: "Period streets", basis: "Schematic alignments", swatch: "rgba(242,232,213,0.8)" },
-  { id: "water", label: "Historic water & shoreline", basis: "Schematic", swatch: "#3c5a4f" },
-  { id: "land", label: "New reclaimed land", basis: "Schematic outlines", swatch: "#E8B76B" },
-  { id: "rail", label: "Railways", basis: "Dates sourced · schematic lines", swatch: "#c9d6d8" },
-  { id: "envelope", label: "Built-up envelope", basis: "Schematic growth model", swatch: "rgba(232,183,107,0.4)" },
-  { id: "modern", label: "Present-day buildings", basis: "OpenStreetMap 3D (Esri)", swatch: "rgba(73,234,216,0.5)" },
-];
+/** Layer list; swatches follow the viewer's chosen colours. */
+function layerList(styles: LayerStyles): { id: string; label: string; basis: string; swatch: string }[] {
+  return [
+    { id: "events", label: "Historical events", basis: "Shape = evidence level", swatch: CONFIDENCE_COLOURS.documented },
+    { id: "uncertainty", label: "Positional uncertainty", basis: "Disc radius = how far the position could be out", swatch: "rgba(232,183,107,0.35)" },
+    { id: "landmarks", label: "Landmarks", basis: "Dates sourced · outlines illustrative", swatch: styles.landmarks.surviving },
+    { id: "massing", label: "Building massing", basis: "Illustrative model", swatch: massingColour(styles.massing, "georgian") },
+    { id: "streets", label: "Period streets", basis: "Schematic alignments", swatch: styles.streets.colour },
+    { id: "water", label: "Historic water & shoreline", basis: "Schematic", swatch: styles.water.colour },
+    { id: "land", label: "New reclaimed land", basis: "Schematic outlines", swatch: styles.land.colour },
+    { id: "rail", label: "Railways", basis: "Dates sourced · schematic lines", swatch: styles.rail.colour },
+    { id: "envelope", label: "Built-up envelope", basis: "Schematic growth model", swatch: styles.envelope.colour },
+    { id: "modern", label: "Present-day buildings", basis: "OpenStreetMap 3D (Esri)", swatch: styles.modern.colour },
+  ];
+}
 
 function populationAt(series: { year: number; population: number }[], year: number) {
   let best: { year: number; population: number } | null = null;
@@ -126,7 +130,7 @@ export function LeftPanel({ data }: { data: AppData }) {
           <div className="section-title" id="layers-title">
             <span>Layers &amp; evidence</span>
           </div>
-          {LAYERS.map((l) => (
+          {layerList(state.display.layers).map((l) => (
             <div className="layer-row" key={l.id}>
               <span className="swatch" style={{ background: l.swatch }} aria-hidden="true" />
               <span>
@@ -156,6 +160,9 @@ export function LeftPanel({ data }: { data: AppData }) {
             <input id="mod-op" className="range" type="range" min={0} max={1} step={0.05} value={state.modernOpacity}
               onChange={(e) => dispatch({ type: "modern-opacity", value: Number(e.target.value) })} />
           </div>
+          <button className="btn small" style={{ width: "100%", justifyContent: "center", margin: "4px 0 6px" }} onClick={() => dispatch({ type: "panel", panel: "styles", open: true })}>
+            <Icon name="layers" /> Colours, lighting &amp; performance
+          </button>
           <Legend />
         </section>
       </div>
@@ -171,7 +178,7 @@ function Legend() {
       <div className="layer-row"><span className="glyph probable" /><span>Probable<span className="layer-basis">Reliable secondary account</span></span><span /></div>
       <div className="layer-row"><span className="glyph approximate" /><span>Approximate location<span className="layer-basis">Event documented; place estimated</span></span><span /></div>
       <div className="layer-row"><span className="glyph tradition" /><span>Reported tradition<span className="layer-basis">Later recollection or folklore</span></span><span /></div>
-      <p className="chart-note">Sketch-edged blocks are illustrative massing. Solid-edged landmarks have sourced dates; their outlines are illustrative unless stated.</p>
+      <p className="chart-note">Period-coloured blocks are illustrative massing. Labelled landmarks with bright outlines have sourced dates; their outlines are illustrative unless stated.</p>
     </div>
   );
 }

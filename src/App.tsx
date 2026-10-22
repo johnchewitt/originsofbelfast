@@ -15,6 +15,8 @@ import { StoryOverlay } from "./components/StoryOverlay";
 import { AskPanel } from "./components/AskPanel";
 import { AboutDialog, IntroSplash, LiveRegion, MobileTabs, SettingsDialog, Toasts } from "./components/Dialogs";
 import { BrandMark, Icon } from "./components/Icon";
+import { DisplayDialog } from "./components/DisplaySettings";
+import { performanceProfile } from "./map/layerStyles";
 import { ERAS, eraHomeYear } from "./data/eras";
 
 export default function App() {
@@ -84,6 +86,7 @@ function Shell({ data }: { data: AppData }) {
       <Toasts data={data} />
       <AboutDialog data={data} />
       <SettingsDialog />
+      <DisplayDialog data={data} />
       <IntroSplash />
       <LiveRegion />
     </div>
@@ -99,7 +102,11 @@ function usePlayback(data: AppData) {
   useEffect(() => {
     if (!state.playing) return;
     const major = data.events.filter((e) => e.timeline_importance >= 4);
+    // Every year change re-renders the interface, so advance the shared state
+    // at the performance mode's frame rate rather than on every frame.
+    const minFrameMs = 1000 / performanceProfile(state.display.performance).playbackFps;
     let last = performance.now();
+    let lastDispatch = 0;
     let year = yearRef.current >= 2026 ? 600 : yearRef.current;
     let frame = 0;
     const tick = (now: number) => {
@@ -110,7 +117,10 @@ function usePlayback(data: AppData) {
         dispatch({ type: "toast", text: `${Math.floor(e.start_year)} — ${e.title}`, eventId: e.event_id });
       }
       year = next;
-      dispatch({ type: "set-year", year });
+      if (now - lastDispatch >= minFrameMs || next >= 2026) {
+        lastDispatch = now;
+        dispatch({ type: "set-year", year });
+      }
       if (next >= 2026) {
         dispatch({ type: "play", playing: false });
         return;
@@ -119,7 +129,7 @@ function usePlayback(data: AppData) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [state.playing, state.speed, data, dispatch]);
+  }, [state.playing, state.speed, state.display.performance, data, dispatch]);
 }
 
 function useKeyboard() {

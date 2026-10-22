@@ -4,7 +4,7 @@ import type { AppData } from "../data/loaders";
 import { SourceList } from "./RightPanel";
 import { BrandMark, Icon } from "./Icon";
 
-function Modal({ title, onClose, children, labelledBy }: { title: string; onClose: () => void; children: ReactNode; labelledBy: string }) {
+export function Modal({ title, onClose, children, labelledBy }: { title: string; onClose: () => void; children: ReactNode; labelledBy: string }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -124,6 +124,9 @@ export function SettingsDialog() {
         <span>3D view<span className="layer-basis">Off shows a flat 2D plan from above</span></span>
         <calcite-switch label="3D view" checked={state.viewMode === "3d"} oncalciteSwitchChange={() => dispatch({ type: "view-mode", mode: state.viewMode === "3d" ? "plan" : "3d" })} />
       </div>
+      <button className="btn small" style={{ margin: "6px 0 4px" }} onClick={() => { dispatch({ type: "panel", panel: "settings", open: false }); dispatch({ type: "panel", panel: "styles", open: true }); }}>
+        <Icon name="layers" /> Colours, lighting &amp; performance…
+      </button>
       <div className="slider-row">
         <label htmlFor="s-hist"><span>Historic reconstruction opacity</span><span>{Math.round(state.historicOpacity * 100)}%</span></label>
         <input id="s-hist" className="range" type="range" min={0} max={1} step={0.05} value={state.historicOpacity} onChange={(e) => dispatch({ type: "historic-opacity", value: Number(e.target.value) })} />

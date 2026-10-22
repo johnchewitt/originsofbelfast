@@ -15,6 +15,7 @@ React 19 · TypeScript · Vite · ArcGIS Maps SDK for JavaScript 5.1 (map compon
 - **Dashboard.** Census population (sourced), urban footprint (labelled schematic), counts and era milestones.
 - **Search and Ask.** Search people, places and events. *Ask Belfast Rising* answers the example questions deterministically from the records and moves the map; an optional secure backend can add a generated summary built only from retrieved records.
 - **Compare** two years side by side with linked cameras, toggle 2D plan / 3D, choose a basemap, add a historic map overlay with opacity, export a PNG, GeoJSON or CSV, and share a link that restores the year, camera, selection and story.
+- **Your look, your speed.** *Colours, lighting & performance* (left panel or settings) offers presets (Bright, Classic, Monochrome, High contrast), building colours by period or a single colour, brightness, outlines, colour and opacity for every layer, three lighting modes (Clear daylight, Period atmosphere, Even light) and three performance modes (Fast, Balanced, Detailed). Choices are saved in the visitor's browser.
 - **Accessible.** Keyboard-operable timeline (ARIA slider), focus-trapped dialogs, live announcements, reduced-motion mode (also follows the OS setting), responsive layouts for desktop, tablet and phone.
 
 ## How evidence and reconstruction are kept apart
@@ -147,6 +148,19 @@ data/curated/                the sourced dataset
 server/assistant-proxy/      optional secure LLM backend
 tests/                       pipeline tests
 ```
+
+## Performance
+
+The scene draws up to ~12,000 extruded blocks plus streets, water and landmarks, so it is built to change as little as possible while time moves:
+
+- **Building heights are static by default.** Heights come from a field, so the renderer never has to be rebuilt as the year changes. (Rebuilding a renderer that embeds the year was measured at ~10× the cost of a filter change; *Detailed* mode still does it, to show buildings rising during construction.)
+- **Time is a layer-view filter for buildings.** All blocks load once and the year only changes a filter, instead of reloading features through the layer's definition expression.
+- **Small layers change only when something appears or disappears.** Street, water, landmark and envelope filters snap to the dates in their own data, so they stay unchanged between those dates (unit-tested to show exactly the same features).
+- **Lighting is reassigned only when it changes**, not on every tick, and shadows, animated water and outlines can be switched off (*Fast*).
+- **Playback updates the interface at 24–60 fps** depending on the mode, and the 3D scene a few times a second.
+- **Rendering resolution** is left to the SDK in *Balanced*, forced low in *Fast* and high in *Detailed* (applied on reload).
+
+Phones and narrow screens start in *Fast*; desktops in *Balanced*.
 
 ## Keyboard
 

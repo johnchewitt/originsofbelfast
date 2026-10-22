@@ -16,20 +16,7 @@ export function hexToRgba(hex: string, alpha = 1): Rgba {
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255, alpha];
 }
 
-/** Massing colours by architectural style (indexes follow growth.json styles). */
-export const STYLE_COLOURS: Record<string, string> = {
-  medieval: "#8f7f62",
-  plantation: "#a77d55",
-  georgian: "#c2895c",
-  regency: "#c79a6d",
-  victorian: "#9c5a43",
-  edwardian: "#d9cdb8",
-  interwar: "#b9ad97",
-  postwar: "#8e9a9c",
-  industrial: "#6d5446",
-  terrace: "#8a4e3b",
-  modern: "#a9c9cc",
-};
+/** Massing colours live in layerStyles.ts (configurable by the viewer). */
 
 /** Evidence colours for event markers. */
 export const CONFIDENCE_COLOURS = {

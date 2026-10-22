@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useReducer, useRef, type Dispatch
 import { TIMELINE_END, TIMELINE_START } from "../data/eras";
 import { decodeState, encodeState, type BasemapId, type CameraState, type ShareableState, type ViewMode } from "../engine/urlState";
 import type { CameraRequest } from "../map/SceneController";
+import { loadDisplayPrefs, saveDisplayPrefs, type DisplayPrefs } from "../map/layerStyles";
 
 export type Speed = 0.5 | 1 | 2 | 4;
 export type MobileSheet = "none" | "era" | "story" | "layers";
@@ -42,7 +43,10 @@ export interface AppState {
   askOpen: boolean;
   aboutOpen: boolean;
   settingsOpen: boolean;
+  stylesOpen: boolean;
   introOpen: boolean;
+  /** Layer colours, transparency, lighting and performance (saved in this browser). */
+  display: DisplayPrefs;
   mobileSheet: MobileSheet;
   reducedMotion: boolean;
   camera: CameraState | null;
@@ -67,7 +71,8 @@ export type Action =
   | { type: "select-feature"; feature: FeatureSelection | null }
   | { type: "tour"; tour: { id: string; step: number } | null }
   | { type: "trail"; on: boolean }
-  | { type: "panel"; panel: "left" | "right" | "ask" | "about" | "settings" | "intro"; open: boolean }
+  | { type: "panel"; panel: "left" | "right" | "ask" | "about" | "settings" | "styles" | "intro"; open: boolean }
+  | { type: "display"; display: DisplayPrefs }
   | { type: "sheet"; sheet: MobileSheet }
   | { type: "reduced-motion"; value: boolean }
   | { type: "camera-settled"; camera: CameraState }
@@ -117,9 +122,11 @@ export function reducer(state: AppState, action: Action): AppState {
     case "trail":
       return { ...state, trailMode: action.on, playing: false };
     case "panel": {
-      const key = { left: "leftOpen", right: "rightOpen", ask: "askOpen", about: "aboutOpen", settings: "settingsOpen", intro: "introOpen" }[action.panel] as keyof AppState;
+      const key = { left: "leftOpen", right: "rightOpen", ask: "askOpen", about: "aboutOpen", settings: "settingsOpen", styles: "stylesOpen", intro: "introOpen" }[action.panel] as keyof AppState;
       return { ...state, [key]: action.open };
     }
+    case "display":
+      return { ...state, display: action.display };
     case "sheet":
       return { ...state, mobileSheet: action.sheet };
     case "reduced-motion":
@@ -180,7 +187,9 @@ export function initialState(): AppState {
     askOpen: false,
     aboutOpen: false,
     settingsOpen: false,
+    stylesOpen: false,
     introOpen: !hasLinkState && !hasSeenIntro(),
+    display: loadDisplayPrefs(!desktop),
     mobileSheet: "none",
     reducedMotion: prefersReducedMotion(),
     camera: shared.camera,
@@ -196,6 +205,7 @@ const DispatchContext = createContext<Dispatch<Action> | null>(null);
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
   useUrlSync(state);
+  useEffect(() => saveDisplayPrefs(state.display), [state.display]);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>

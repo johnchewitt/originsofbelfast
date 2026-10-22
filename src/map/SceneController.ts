@@ -23,30 +23,50 @@ import ImageryLayer from "@arcgis/core/layers/ImageryLayer.js";
 import type Layer from "@arcgis/core/layers/Layer.js";
 import type SceneView from "@arcgis/core/views/SceneView.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter.js";
+import type GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer.js";
+import type SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer.js";
+import type UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer.js";
 
 import { eraForYear } from "../data/eras";
 import type { AppData } from "../data/loaders";
 import { cameraFromLookAt, circle, type LonLat } from "../engine/geo";
-import { isEventVisible, MASSING_FEATURE_CAP, presentWhereClause, rampByYear } from "../engine/time";
+import { isEventVisible, MASSING_FEATURE_CAP, presentWhereClause, quantize, rampByYear, snapToBreakpoint } from "../engine/time";
 import type { BasemapId, CameraState, ViewMode } from "../engine/urlState";
 import type { HistoricalEvent, HistoricMapOverlay } from "../types/history";
 import {
   createHistoricLayers,
+  envelopeRenderer,
   LAYER_ORDER,
   landmarkRenderer,
+  landRenderer,
   massingRenderer,
   modernRenderer,
+  railRenderer,
   streetRenderer,
   waterRenderer,
   type HistoricLayers,
   type LayerId,
 } from "./layers";
+import { performanceProfile, styleKey, type DisplayPrefs, type PerformanceProfile } from "./layerStyles";
 import { PALETTE } from "./palette";
 
-/** Minimum interval between expensive layer updates during playback (ms). */
-const UPDATE_INTERVAL_MS = 110;
-/** Renderers with embedded years are refreshed when the year moves this much. */
-const RENDERER_YEAR_STEP = 0.2;
+/** Landmark construction is re-rendered at most this often (years); landmarks are few, so this is cheap. */
+const LANDMARK_YEAR_STEP = 0.25;
+/** Massing time filters move in steps of this many years, per performance mode. */
+const MASSING_YEAR_STEP: Record<DisplayPrefs["performance"], number> = { fast: 1, balanced: 0.25, detailed: 0.05 };
+/** "New street" highlighting is recomputed in steps of this many years, per performance mode. */
+const STREET_HIGHLIGHT_STEP: Record<DisplayPrefs["performance"], number> = { fast: 5, balanced: 2, detailed: 0.5 };
+
+/** Small layers whose time filter is snapped to the dates in their own data (see snapToBreakpoint). */
+const SNAPPED_LAYERS: { id: LayerId; file: string; start: string; end: string }[] = [
+  { id: "envelope", file: "envelope.geojson", start: "start_year", end: "end_year" },
+  { id: "water", file: "water.geojson", start: "build_start", end: "end_year" },
+  { id: "land", file: "land.geojson", start: "start_year", end: "highlight_until" },
+  { id: "streets", file: "streets.geojson", start: "start_year", end: "end_year" },
+  { id: "rail", file: "rail.geojson", start: "start_year", end: "end_year" },
+  { id: "landmarks", file: "landmarks.geojson", start: "build_start", end: "end_year" },
+];
 /** High Street, east to west, for the scripted approach to the Market House. */
 const HIGH_STREET_APPROACH: { from: LonLat; to: LonLat } = { from: [-5.92250, 54.60085], to: [-5.92840, 54.59951] };
 
@@ -63,6 +83,7 @@ export interface SceneSettings {
   selectedEventId: string | null;
   reducedMotion: boolean;
   lightingDate: Date | null;
+  display: DisplayPrefs;
 }
 
 export type CameraRequest =
@@ -85,14 +106,23 @@ const BASEMAPS: Record<Exclude<BasemapId, "none">, string> = {
   topo: "topo-vector",
 };
 
+/**
+ * Sun date for an era's mood. The year is fixed (the sun's path barely
+ * changes between years), so lighting is recomputed only when the era — and
+ * with it the month and hour — changes, not on every year of playback.
+ */
 function lightingFor(year: number, override: Date | null): Date {
   if (override) return override;
   const era = eraForYear(year);
-  const y = Math.max(1, Math.floor(year));
-  const date = new Date(Date.UTC(2000, era.lighting.month - 1, 15, era.lighting.hour, 0, 0));
-  date.setUTCFullYear(y);
-  return date;
+  return new Date(Date.UTC(2000, era.lighting.month - 1, 15, era.lighting.hour, 0, 0));
 }
+
+type WeatherKind = "sunny" | "cloudy" | "foggy" | "rainy" | "clear";
+
+/** Midday sun in early summer: bright, high light with short shadows (fixed, so it never triggers re-lighting). */
+const CLEAR_DAYLIGHT = new Date(Date.UTC(2000, 5, 21, 12, 30, 0));
+
+const round3 = (v: number): number => Math.round(v * 1000) / 1000;
 
 export class SceneController {
   readonly layers: HistoricLayers;
@@ -103,11 +133,13 @@ export class SceneController {
   private pendingYear: number | null = null;
   private lastFlush = 0;
   private flushTimer: number | null = null;
-  private rendererYear = Number.NaN;
-  private rendererFlat = false;
-  private rendererStory = false;
+  private rendererKeys = new Map<string, string>();
+  private lightingKey = "";
+  private breakpoints = new Map<LayerId, number[]>();
+  /** The massing layer view, once created: time filtering then uses its (cheap) filter. */
+  private massingView: { filter: FeatureFilter | null | undefined } | null = null;
+  private massingWhere = "";
   private beaconTimer: number | null = null;
-  private modernMode: "ghost" | "solid" = "ghost";
   /** False when the present-day buildings layer failed to load. */
   private modernAvailable = true;
   private destroyed = false;
@@ -122,8 +154,8 @@ export class SceneController {
     private readonly onNotice?: (text: string) => void,
   ) {
     this.settings = initial;
-    this.layers = createHistoricLayers(data.manifest.styles, initial.year);
-    if (initial.reducedMotion) this.layers.water.renderer = waterRenderer(false);
+    this.layers = createHistoricLayers(data.manifest.styles, initial.year, initial.display);
+    this.applyStyles();
     this.map = new EsriMap({
       basemap: initial.basemap === "none" ? undefined : BASEMAPS[initial.basemap],
       ground: "world-elevation",
@@ -140,6 +172,50 @@ export class SceneController {
     });
     this.drawTrail();
     this.applyLayers(true);
+    void this.loadBreakpoints();
+  }
+
+  private get profile(): PerformanceProfile {
+    return performanceProfile(this.settings.display.performance);
+  }
+
+  /**
+   * Read the start/end dates of the small time-enabled layers so their
+   * filters change only when the year crosses one of those dates. Each
+   * filter change makes the layer view reload, so this avoids reloading six
+   * layers several times a second during playback.
+   */
+  private async loadBreakpoints(): Promise<void> {
+    await Promise.all(
+      SNAPPED_LAYERS.map(async ({ id, file, start, end }) => {
+        try {
+          const response = await fetch((this.layers[id] as GeoJSONLayer).url ?? file);
+          const json = (await response.json()) as { features: { properties: Record<string, unknown> }[] };
+          const values = new Set<number>();
+          for (const f of json.features) {
+            for (const key of [start, end]) {
+              const v = Number(f.properties[key]);
+              if (Number.isFinite(v)) values.add(v);
+            }
+          }
+          this.breakpoints.set(id, [...values].sort((a, b) => a - b));
+        } catch (error) {
+          console.warn(`Could not read dates for ${id}; filtering by exact year instead.`, error);
+        }
+      }),
+    );
+    if (!this.destroyed) this.applyLayers(false);
+  }
+
+  /** Re-apply renderers that depend on the display preferences. */
+  private applyStyles(): void {
+    const L = this.layers;
+    const d = this.settings.display.layers;
+    L.envelope.renderer = envelopeRenderer(d.envelope.colour);
+    L.land.renderer = landRenderer(d.land.colour);
+    L.rail.renderer = railRenderer(d.rail.colour);
+    L.water.renderer = waterRenderer(this.profile.animatedWater && !this.settings.reducedMotion, d.water.colour);
+    this.rendererKeys.clear();
   }
 
   /** The SceneView, available once {@link attach} has been called. */
@@ -156,8 +232,16 @@ export class SceneController {
     void view
       .whenLayerView(this.layers.massing)
       .then((layerView) => {
-        const lv = layerView as unknown as { maximumNumberOfFeatures?: number };
+        if (this.destroyed) return;
+        const lv = layerView as unknown as { maximumNumberOfFeatures?: number; filter: FeatureFilter | null | undefined };
         if (typeof lv.maximumNumberOfFeatures === "number") lv.maximumNumberOfFeatures = Math.max(lv.maximumNumberOfFeatures, MASSING_FEATURE_CAP);
+        // Load every block once and move through time with the layer-view
+        // filter: far cheaper than changing the layer's definition expression,
+        // which reloads the features on every change.
+        this.massingView = lv;
+        this.massingWhere = "";
+        this.layers.massing.definitionExpression = null as unknown as string;
+        this.applyLayers(false);
       })
       .catch((error: unknown) => console.warn("Massing layer view unavailable", error));
     this.handles.push(
@@ -187,11 +271,14 @@ export class SceneController {
     if (prev.overlay?.config.id !== next.overlay?.config.id || prev.overlay?.opacity !== next.overlay?.opacity) this.applyOverlay();
     if (prev.trailVisible !== next.trailVisible) this.layers.trail.visible = next.trailVisible;
     if (prev.selectedEventId !== next.selectedEventId) this.applySelection();
-    if (prev.reducedMotion !== next.reducedMotion) {
-      this.layers.water.renderer = waterRenderer(!next.reducedMotion);
-      this.applySelection();
-    }
+    // Colour, edge or performance changes need new renderers; opacity-only
+    // changes are applied to layer.opacity and cost nothing to redraw.
+    const styleChanged = prev.reducedMotion !== next.reducedMotion || styleKey(prev.display) !== styleKey(next.display);
+    if (styleChanged) this.applyStyles();
+    if (prev.reducedMotion !== next.reducedMotion) this.applySelection();
     const structural =
+      styleChanged ||
+      prev.display !== next.display ||
       prev.viewMode !== next.viewMode ||
       prev.hidden.join() !== next.hidden.join() ||
       prev.modernOpacity !== next.modernOpacity ||
@@ -199,7 +286,8 @@ export class SceneController {
       prev.storyChapter !== next.storyChapter ||
       prev.lightingDate?.getTime() !== next.lightingDate?.getTime();
     if (structural) {
-      this.applyAll(true);
+      // Renderer keys (view mode, story, styles) decide what is rebuilt.
+      this.applyAll(false);
     } else if (prev.year !== next.year) {
       this.scheduleYear(next.year);
     }
@@ -208,7 +296,7 @@ export class SceneController {
   private scheduleYear(year: number): void {
     this.pendingYear = year;
     const now = performance.now();
-    const wait = Math.max(0, UPDATE_INTERVAL_MS - (now - this.lastFlush));
+    const wait = Math.max(0, this.profile.updateIntervalMs - (now - this.lastFlush));
     if (this.flushTimer !== null) return;
     this.flushTimer = window.setTimeout(() => {
       this.flushTimer = null;
@@ -239,47 +327,70 @@ export class SceneController {
       L[id].visible = !hidden.has(id);
     }
 
-    // Time filters (the SQL mirrors isPresent()).
-    L.envelope.definitionExpression = presentWhereClause(year, "start_year", "end_year");
-    L.water.definitionExpression = presentWhereClause(year, "build_start", "end_year");
-    L.land.definitionExpression = `(start_year <= ${year.toFixed(3)}) AND (highlight_until > ${year.toFixed(3)})`;
-    L.streets.definitionExpression = presentWhereClause(year, "start_year", "end_year");
-    L.rail.definitionExpression = presentWhereClause(year, "start_year", "end_year");
-    L.massing.definitionExpression = presentWhereClause(year, "b", "e");
-    L.landmarks.definitionExpression = presentWhereClause(year, "build_start", "end_year");
+    // Time filters (the SQL mirrors isPresent()). Small layers snap to their
+    // own dates; massing moves in fixed steps. Unchanged strings are no-ops.
+    const snapped = (id: LayerId) => snapToBreakpoint(year, this.breakpoints.get(id));
+    const profile = this.profile;
+    const display = s.display;
+    L.envelope.definitionExpression = presentWhereClause(snapped("envelope"), "start_year", "end_year");
+    L.water.definitionExpression = presentWhereClause(snapped("water"), "build_start", "end_year");
+    const landYear = snapped("land").toFixed(3);
+    L.land.definitionExpression = `(start_year <= ${landYear}) AND (highlight_until > ${landYear})`;
+    L.streets.definitionExpression = presentWhereClause(snapped("streets"), "start_year", "end_year");
+    L.rail.definitionExpression = presentWhereClause(snapped("rail"), "start_year", "end_year");
+    L.landmarks.definitionExpression = presentWhereClause(snapped("landmarks"), "build_start", "end_year");
+    const massingWhere = presentWhereClause(quantize(year, MASSING_YEAR_STEP[display.performance]), "b", "e");
+    if (this.massingView) {
+      if (massingWhere !== this.massingWhere) {
+        this.massingView.filter = new FeatureFilter({ where: massingWhere });
+        this.massingWhere = massingWhere;
+      }
+    } else {
+      L.massing.definitionExpression = massingWhere;
+    }
 
     const visibleEvents = this.data.events.filter((e) => e.longitude !== null && isEventVisible(e, year, { chapter: s.storyChapter }));
     L.events.definitionExpression = visibleEvents.length ? `event_id IN (${visibleEvents.map((e) => `'${e.event_id}'`).join(",")})` : "1=0";
     const placeIds = [...new Set(visibleEvents.map((e) => e.place_id).filter((p): p is string => Boolean(p)))];
     L.uncertainty.definitionExpression = placeIds.length ? `place_id IN (${placeIds.map((p) => `'${p}'`).join(",")})` : "1=0";
 
-    // Growth renderers (embed the year) — refreshed in steps.
+    // Renderers are rebuilt only when their inputs change: rebuilding makes
+    // the layer re-draw every feature, which is what made playback stutter.
     const story = s.storyChapter === "1798";
-    if (force || flat !== this.rendererFlat || story !== this.rendererStory || Math.abs(year - this.rendererYear) >= RENDERER_YEAR_STEP) {
-      L.massing.renderer = massingRenderer(year, this.data.manifest.styles, flat);
-      L.landmarks.renderer = landmarkRenderer(year, flat);
-      L.streets.renderer = streetRenderer(year, story);
-      this.rendererYear = year;
-      this.rendererFlat = flat;
-      this.rendererStory = story;
-    }
+    const animate = profile.constructionAnimation && !flat;
+    const massingYear = animate ? quantize(year, profile.rendererYearStep) : null;
+    const edges = profile.edgesOverride ?? display.layers.massing.edges;
+    this.setRenderer("massing", `${flat}|${massingYear}|${edges}`, force, () => massingRenderer(massingYear, this.data.manifest.styles, flat, display.layers.massing, edges));
+    const landmarkYear = flat ? 0 : quantize(year, LANDMARK_YEAR_STEP);
+    this.setRenderer("landmarks", `${flat}|${landmarkYear}`, force, () => landmarkRenderer(landmarkYear || year, flat, display.layers.landmarks));
+    const streetYear = quantize(year, STREET_HIGHLIGHT_STEP[display.performance]);
+    this.setRenderer("streets", `${story}|${streetYear}`, force, () => streetRenderer(streetYear, story, display.layers.streets.colour));
 
     // Illustrative massing hands over to the real present-day city.
     const [fadeStart, fadeEnd] = this.data.manifest.fade_to_modern;
+    const styles = display.layers;
     const handOver = this.modernAvailable ? rampByYear(year, [fadeStart, fadeEnd], 1, 0) : 1;
-    L.massing.opacity = s.historicOpacity * handOver;
-    L.landmarks.opacity = Math.max(0.15, s.historicOpacity);
-    L.envelope.opacity = s.historicOpacity * (this.modernAvailable ? rampByYear(year, [fadeStart, fadeEnd], 1, 0.35) : 1);
+    L.massing.opacity = round3(s.historicOpacity * styles.massing.opacity * handOver);
+    L.landmarks.opacity = round3(Math.max(0.15, s.historicOpacity) * styles.landmarks.opacity);
+    L.envelope.opacity = round3(s.historicOpacity * styles.envelope.opacity * (this.modernAvailable ? rampByYear(year, [fadeStart, fadeEnd], 1, 0.35) : 1));
+    L.streets.opacity = styles.streets.opacity;
+    L.water.opacity = styles.water.opacity;
+    L.land.opacity = styles.land.opacity;
+    L.rail.opacity = styles.rail.opacity;
     const modernSolid = year >= (fadeStart + fadeEnd) / 2;
     const mode = modernSolid ? "solid" : "ghost";
-    if (mode !== this.modernMode || force) {
-      L.modern.renderer = modernRenderer(mode);
-      this.modernMode = mode;
-    }
-    L.modern.opacity = modernSolid ? rampByYear(year, [fadeStart, fadeEnd], s.modernOpacity, 1) : s.modernOpacity;
+    this.setRenderer("modern", `${mode}`, force, () => modernRenderer(mode, styles.modern.colour));
+    L.modern.opacity = round3(modernSolid ? rampByYear(year, [fadeStart, fadeEnd], s.modernOpacity, 1) : s.modernOpacity);
     L.modern.visible = !hidden.has("modern") && !flat && (modernSolid || s.modernOpacity > 0.02);
 
     this.applyBasemapOpacity();
+  }
+
+  /** Assign a renderer only when its key changes (or when forced). */
+  private setRenderer(id: "massing" | "landmarks" | "streets" | "modern", key: string, force: boolean, make: () => SimpleRenderer | UniqueValueRenderer): void {
+    if (!force && this.rendererKeys.get(id) === key) return;
+    (this.layers[id] as { renderer: SimpleRenderer | UniqueValueRenderer }).renderer = make();
+    this.rendererKeys.set(id, key);
   }
 
   private applyBasemap(): void {
@@ -305,26 +416,45 @@ export class SceneController {
 
   private applyEnvironment(): void {
     const s = this.settings;
-    const era = eraForYear(s.year);
     const env = this.viewRef?.environment;
     if (!env) return;
-    env.lighting = { type: "sun", date: lightingFor(s.year, s.lightingDate), directShadowsEnabled: s.viewMode === "3d" };
-    const weatherType = s.viewMode === "plan" ? "sunny" : era.weather;
-    const current = env.weather?.type;
-    if (current !== weatherType) {
-      switch (weatherType) {
-        case "foggy":
-          env.weather = { type: "foggy", fogStrength: 0.25 };
-          break;
-        case "cloudy":
-          env.weather = { type: "cloudy", cloudCover: 0.55 };
-          break;
-        case "rainy":
-          env.weather = { type: "rainy", cloudCover: 0.7, precipitation: 0.15 };
-          break;
-        default:
-          env.weather = { type: "sunny", cloudCover: 0.25 };
-      }
+    const flat = s.viewMode === "plan";
+    const shadows = this.profile.shadows && !flat;
+    const mode = s.display.lighting;
+    const era = eraForYear(s.year);
+    let lighting: { type: "sun"; date: Date; directShadowsEnabled: boolean } | { type: "virtual"; directShadowsEnabled: boolean };
+    let weather: WeatherKind;
+    if (mode === "even") {
+      lighting = { type: "virtual", directShadowsEnabled: false };
+      weather = "sunny";
+    } else if (mode === "clear") {
+      lighting = { type: "sun", date: s.lightingDate ?? CLEAR_DAYLIGHT, directShadowsEnabled: shadows };
+      weather = "clear";
+    } else {
+      lighting = { type: "sun", date: lightingFor(s.year, s.lightingDate), directShadowsEnabled: shadows };
+      weather = flat ? "sunny" : era.weather;
+    }
+    // Reassigning lighting makes the view recompute shading and shadows, so
+    // only do it when something actually changed (not on every year tick).
+    const key = `${lighting.type}|${"date" in lighting ? lighting.date.getTime() : ""}|${lighting.directShadowsEnabled}|${weather}`;
+    if (key === this.lightingKey) return;
+    this.lightingKey = key;
+    env.lighting = lighting;
+    switch (weather) {
+      case "foggy":
+        env.weather = { type: "foggy", fogStrength: 0.25 };
+        break;
+      case "cloudy":
+        env.weather = { type: "cloudy", cloudCover: 0.55 };
+        break;
+      case "rainy":
+        env.weather = { type: "rainy", cloudCover: 0.7, precipitation: 0.15 };
+        break;
+      case "clear":
+        env.weather = { type: "sunny", cloudCover: 0.05 };
+        break;
+      default:
+        env.weather = { type: "sunny", cloudCover: 0.25 };
     }
   }
 

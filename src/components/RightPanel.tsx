@@ -1,4 +1,5 @@
 import { Fragment, useMemo } from "react";
+import { useThrottled } from "../hooks/useThrottled";
 import { useAppState, useDispatch } from "../state/store";
 import type { AppData } from "../data/loaders";
 import type { HistoricalEvent, SourceRecord } from "../types/history";
@@ -281,9 +282,10 @@ function FeatureDetail({ data }: { data: AppData }) {
 function StoriesHome({ data }: { data: AppData }) {
   const state = useAppState();
   const dispatch = useDispatch();
+  const nearbyYear = useThrottled(state.year, 300);
   const nearby = useMemo(
-    () => data.events.filter((e) => Math.abs(e.start_year - state.year) < (state.year > 1790 && state.year < 1801 ? 3 : 25) && e.timeline_importance >= 3).slice(0, 8),
-    [data, state.year],
+    () => data.events.filter((e) => Math.abs(e.start_year - nearbyYear) < (nearbyYear > 1790 && nearbyYear < 1801 ? 3 : 25) && e.timeline_importance >= 3).slice(0, 8),
+    [data, nearbyYear],
   );
   return (
     <div>
@@ -304,7 +306,7 @@ function StoriesHome({ data }: { data: AppData }) {
       </div>
       {nearby.length ? (
         <section className="section">
-          <div className="section-title"><span>Around {Math.floor(state.year)}</span></div>
+          <div className="section-title"><span>Around {Math.floor(nearbyYear)}</span></div>
           <ul className="milestones">
             {nearby.map((e) => (
               <li key={e.event_id}>

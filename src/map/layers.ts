@@ -15,7 +15,8 @@ import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 import PortalItem from "@arcgis/core/portal/PortalItem.js";
 import SolidEdges3D from "@arcgis/core/symbols/edges/SolidEdges3D.js";
 import { heightArcade } from "../engine/time";
-import { CONFIDENCE_COLOURS, hexToRgba, PALETTE, STYLE_COLOURS } from "./palette";
+import { CONFIDENCE_COLOURS, hexToRgba, PALETTE } from "./palette";
+import { adjustBrightness, massingColour, mixColours, type DisplayPrefs, type EdgeStyle, type LandmarkStyle, type MassingStyle } from "./layerStyles";
 import { CONFIG } from "../config";
 
 export type LayerId =
@@ -51,15 +52,15 @@ const url = (file: string): string => `${CONFIG.dataBase}${file}`;
 
 const draped = { mode: "on-the-ground" as const };
 
-export function envelopeRenderer(): SimpleRenderer {
+export function envelopeRenderer(colour: string = PALETTE.amber): SimpleRenderer {
   return new SimpleRenderer({
     symbol: {
       type: "polygon-3d",
       symbolLayers: [
         {
           type: "fill",
-          material: { color: hexToRgba(PALETTE.amber, 0.07) },
-          outline: { color: hexToRgba(PALETTE.amber, 0.55), size: 1.6 },
+          material: { color: hexToRgba(colour, 0.08) },
+          outline: { color: hexToRgba(colour, 0.7), size: 1.6 },
         },
       ],
     },
@@ -70,32 +71,36 @@ export function envelopeRenderer(): SimpleRenderer {
  * Water by kind. Animated water surfaces when motion is allowed; flat fills of
  * the same colours in reduced-motion mode (and on weak GPUs that opt in).
  */
-export function waterRenderer(animated = true): UniqueValueRenderer {
+/** Mud tone mixed into the water colour for intertidal flats. */
+const MUD = "#6e6a4c";
+
+export function waterRenderer(animated = true, colour = "#1d6670"): UniqueValueRenderer {
   const water = (color: string, wave: "calm" | "rippled" | "slight" | "moderate", size: "small" | "medium" | "large") =>
     animated
       ? { type: "polygon-3d" as const, symbolLayers: [{ type: "water" as const, color, waveStrength: wave, waterbodySize: size, waveDirection: 160 }] }
       : { type: "polygon-3d" as const, symbolLayers: [{ type: "fill" as const, material: { color }, outline: { color: hexToRgba(PALETTE.cyan, 0.25), size: 0.8 } }] };
+  // Kinds are shades of the chosen water colour: mudflats mixed with a mud tone, the dredged channel darker.
   return new UniqueValueRenderer({
     field: "kind",
-    defaultSymbol: water("#1d5560", "calm", "medium"),
+    defaultSymbol: water(colour, "calm", "medium"),
     uniqueValueInfos: [
-      { value: "intertidal", label: "Intertidal mudflats and channel (schematic)", symbol: water("#3c5a4f", "calm", "large") },
-      { value: "tidal-river", label: "Tidal river (mudflats at low water, before 1994)", symbol: water("#35564f", "rippled", "medium") },
-      { value: "river", label: "River", symbol: water("#1d6670", "calm", "small") },
-      { value: "channel", label: "Dredged channel", symbol: water("#13606b", "slight", "medium") },
+      { value: "intertidal", label: "Intertidal mudflats and channel (schematic)", symbol: water(mixColours(colour, MUD, 0.5), "calm", "large") },
+      { value: "tidal-river", label: "Tidal river (mudflats at low water, before 1994)", symbol: water(mixColours(colour, MUD, 0.3), "rippled", "medium") },
+      { value: "river", label: "River", symbol: water(colour, "calm", "small") },
+      { value: "channel", label: "Dredged channel", symbol: water(adjustBrightness(colour, 0.85), "slight", "medium") },
     ],
   });
 }
 
-export function landRenderer(): SimpleRenderer {
+export function landRenderer(colour: string = PALETTE.amber): SimpleRenderer {
   return new SimpleRenderer({
     symbol: {
       type: "polygon-3d",
       symbolLayers: [
         {
           type: "fill",
-          material: { color: hexToRgba(PALETTE.amber, 0.16) },
-          outline: { color: hexToRgba(PALETTE.amber, 0.9), size: 2.5, pattern: { type: "style", style: "dash" } },
+          material: { color: hexToRgba(colour, 0.16) },
+          outline: { color: hexToRgba(colour, 0.9), size: 2.5, pattern: { type: "style", style: "dash" } },
         },
       ],
     },
@@ -106,7 +111,7 @@ export function landRenderer(): SimpleRenderer {
  * Streets: newly appeared segments glow cyan for a decade; inferred dates are
  * dashed; the 1798 entries are amber in story mode.
  */
-export function streetRenderer(year: number, storyMode: boolean): UniqueValueRenderer {
+export function streetRenderer(year: number, storyMode: boolean, colour: string = PALETTE.cream): UniqueValueRenderer {
   const line = (color: string, size: number, dashed = false) => ({
     type: "line-3d" as const,
     symbolLayers: [
@@ -131,10 +136,10 @@ export function streetRenderer(year: number, storyMode: boolean): UniqueValueRen
       `return IIf($feature.date_basis == 'documented', 'documented', 'inferred');`,
     ].join("\n"),
     valueExpressionTitle: "Street",
-    defaultSymbol: line(rgba(PALETTE.cream, 0.55), 2.2),
+    defaultSymbol: line(rgba(colour, 0.6), 2.2),
     uniqueValueInfos: [
-      { value: "documented", label: "Street (date from a source)", symbol: line(rgba(PALETTE.cream, 0.85), 3) },
-      { value: "inferred", label: "Street (appearance inferred, schematic alignment)", symbol: line(rgba(PALETTE.cream, 0.45), 2.4, true) },
+      { value: "documented", label: "Street (date from a source)", symbol: line(rgba(colour, 0.9), 3) },
+      { value: "inferred", label: "Street (appearance inferred, schematic alignment)", symbol: line(rgba(colour, 0.55), 2.4, true) },
       { value: "new", label: "Street appearing in the last decade", symbol: line(rgba(PALETTE.cyan, 0.95), 3.4) },
       { value: "motorway", label: "Motorway / urban road", symbol: line(rgba("#8fb3c7", 0.8), 4) },
       { value: "entry", label: "Historic entry", symbol: line(rgba(PALETTE.amber, 0.7), 2.2) },
@@ -149,19 +154,45 @@ function rgba(hex: string, alpha: number): string {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-export function railRenderer(): SimpleRenderer {
+export function railRenderer(colour = "#c9d6d8"): SimpleRenderer {
   return new SimpleRenderer({
     symbol: {
       type: "line-3d",
       symbolLayers: [
-        { type: "line", material: { color: rgba("#c9d6d8", 0.75) }, size: 2.2, pattern: { type: "style", style: "short-dash" } },
+        { type: "line", material: { color: rgba(colour, 0.85) }, size: 2.2, pattern: { type: "style", style: "short-dash" } },
       ],
     },
   });
 }
 
-/** Extruded illustrative massing coloured by style, with sketch edges. */
-export function massingRenderer(year: number, styles: { code: number; id: string; label: string }[], flat: boolean): UniqueValueRenderer {
+/** Edge settings for extruded massing. Sketch edges look hand-drawn but cost the most to draw. */
+function massingEdges(edges: EdgeStyle) {
+  switch (edges) {
+    case "sketch":
+      return { type: "sketch" as const, color: rgba(PALETTE.navy, 0.45), size: 1, extensionLength: 1.5 };
+    case "subtle":
+      return { type: "solid" as const, color: rgba(PALETTE.navy, 0.38), size: 0.7 };
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Extruded illustrative massing coloured by period (or one colour).
+ *
+ * With `year` set, an Arcade expression raises buildings during construction;
+ * the renderer must then be rebuilt as the year changes, which is costly with
+ * thousands of blocks. With `year` null, heights come straight from the `h`
+ * field and the renderer never needs rebuilding while time moves.
+ */
+export function massingRenderer(
+  year: number | null,
+  styles: { code: number; id: string; label: string }[],
+  flat: boolean,
+  style: MassingStyle,
+  edges: EdgeStyle = style.edges,
+): UniqueValueRenderer {
+  const edge = massingEdges(edges);
   const symbol = (colour: string) => ({
     type: "polygon-3d" as const,
     symbolLayers: [
@@ -169,26 +200,28 @@ export function massingRenderer(year: number, styles: { code: number; id: string
         type: "extrude" as const,
         size: 8,
         material: { color: colour },
-        edges: { type: "sketch" as const, color: rgba(PALETTE.navy, 0.45), size: 1, extensionLength: 1.5 },
+        ...(edge ? { edges: edge } : {}),
       },
     ],
   });
+  const size = flat
+    ? { type: "size" as const, valueExpression: "return 0.6;", valueUnit: "meters" as const }
+    : year === null
+      ? { type: "size" as const, field: "h", valueUnit: "meters" as const }
+      : { type: "size" as const, valueExpression: heightArcade(year, { build: "b", start: "s", height: "h" }), valueUnit: "meters" as const };
   return new UniqueValueRenderer({
     field: "k",
-    defaultSymbol: symbol(STYLE_COLOURS.victorian ?? "#999"),
-    uniqueValueInfos: styles.map((s) => ({ value: s.code, label: `${s.label} (illustrative)`, symbol: symbol(STYLE_COLOURS[s.id] ?? "#999") })),
-    visualVariables: [
-      {
-        type: "size",
-        valueExpression: flat ? "return 0.6;" : heightArcade(year, { build: "b", start: "s", height: "h" }),
-        valueUnit: "meters",
-      },
-    ],
+    defaultSymbol: symbol(massingColour(style, "victorian")),
+    uniqueValueInfos: styles.map((s) => ({ value: s.code, label: `${s.label} (illustrative)`, symbol: symbol(massingColour(style, s.id)) })),
+    visualVariables: [size],
   });
 }
 
 /** Documented landmarks: solid edges, colour by survival. */
-export function landmarkRenderer(year: number, flat: boolean): UniqueValueRenderer {
+export function landmarkRenderer(year: number, flat: boolean, style?: LandmarkStyle): UniqueValueRenderer {
+  const surviving = style?.surviving ?? PALETTE.cream;
+  const lost = style?.lost ?? PALETTE.amber;
+  const replaced = style?.replaced ?? "#c9a46a";
   const symbol = (colour: string, edge: string) => ({
     type: "polygon-3d" as const,
     symbolLayers: [
@@ -196,17 +229,17 @@ export function landmarkRenderer(year: number, flat: boolean): UniqueValueRender
         type: "extrude" as const,
         size: 10,
         material: { color: colour },
-        edges: { type: "solid" as const, color: edge, size: 1.2 },
+        edges: { type: "solid" as const, color: edge, size: 1.8 },
       },
     ],
   });
   return new UniqueValueRenderer({
     field: "status",
-    defaultSymbol: symbol(PALETTE.cream, rgba(PALETTE.cyan, 0.8)),
+    defaultSymbol: symbol(surviving, rgba(PALETTE.cyan, 0.8)),
     uniqueValueInfos: [
-      { value: "surviving", label: "Landmark — surviving", symbol: symbol(PALETTE.cream, rgba(PALETTE.cyan, 0.85)) },
-      { value: "lost", label: "Landmark — lost", symbol: symbol(PALETTE.amber, rgba("#fff3d6", 0.9)) },
-      { value: "replaced", label: "Landmark — replaced", symbol: symbol("#c9a46a", rgba("#fff3d6", 0.8)) },
+      { value: "surviving", label: "Landmark — surviving", symbol: symbol(surviving, rgba(PALETTE.cyan, 0.85)) },
+      { value: "lost", label: "Landmark — lost", symbol: symbol(lost, rgba("#fff3d6", 0.9)) },
+      { value: "replaced", label: "Landmark — replaced", symbol: symbol(replaced, rgba("#fff3d6", 0.8)) },
     ],
     visualVariables: [
       {
@@ -291,13 +324,13 @@ export function uncertaintyRenderer(): SimpleRenderer {
 }
 
 /** Present-day buildings: a faint outline in history, solid in the present. */
-export function modernRenderer(mode: "ghost" | "solid"): SimpleRenderer {
+export function modernRenderer(mode: "ghost" | "solid", colour: string = PALETTE.cyan): SimpleRenderer {
   return new SimpleRenderer({
     symbol: {
       type: "mesh-3d",
       symbolLayers: [
         mode === "ghost"
-          ? { type: "fill", material: { color: rgba(PALETTE.cream, 0.05) }, edges: new SolidEdges3D({ color: rgba(PALETTE.cyan, 0.5), size: 0.6 }) }
+          ? { type: "fill", material: { color: rgba(PALETTE.cream, 0.05) }, edges: new SolidEdges3D({ color: rgba(colour, 0.5), size: 0.6 }) }
           : { type: "fill", material: { color: "#cfc6b4" }, edges: new SolidEdges3D({ color: rgba(PALETTE.navy, 0.35), size: 0.5 }) },
       ],
     },
@@ -305,20 +338,21 @@ export function modernRenderer(mode: "ghost" | "solid"): SimpleRenderer {
 }
 
 /** Create every historic layer for one scene. */
-export function createHistoricLayers(styles: { code: number; id: string; label: string }[], year: number): HistoricLayers {
+export function createHistoricLayers(styles: { code: number; id: string; label: string }[], year: number, display: DisplayPrefs): HistoricLayers {
   const common = { outFields: ["*"], popupEnabled: false, copyright: "Belfast Rising — see sources panel" };
-  const envelope = new GeoJSONLayer({ ...common, id: "envelope", title: "Built-up envelope (schematic model)", url: url("envelope.geojson"), renderer: envelopeRenderer(), elevationInfo: draped });
-  const water = new GeoJSONLayer({ ...common, id: "water", title: "Historic water and shoreline (schematic)", url: url("water.geojson"), renderer: waterRenderer(), elevationInfo: draped });
-  const land = new GeoJSONLayer({ ...common, id: "land", title: "Newly reclaimed land (schematic)", url: url("land.geojson"), renderer: landRenderer(), elevationInfo: draped });
-  const streets = new GeoJSONLayer({ ...common, id: "streets", title: "Period streets (schematic alignments)", url: url("streets.geojson"), renderer: streetRenderer(year, false), elevationInfo: draped });
-  const rail = new GeoJSONLayer({ ...common, id: "rail", title: "Railways (schematic alignments)", url: url("rail.geojson"), renderer: railRenderer(), elevationInfo: draped });
-  const massing = new GeoJSONLayer({ ...common, id: "massing", title: "Illustrative building massing", url: url("massing.geojson"), renderer: massingRenderer(year, styles, false), elevationInfo: { mode: "on-the-ground" } });
+  const L = display.layers;
+  const envelope = new GeoJSONLayer({ ...common, id: "envelope", title: "Built-up envelope (schematic model)", url: url("envelope.geojson"), renderer: envelopeRenderer(L.envelope.colour), elevationInfo: draped });
+  const water = new GeoJSONLayer({ ...common, id: "water", title: "Historic water and shoreline (schematic)", url: url("water.geojson"), renderer: waterRenderer(true, L.water.colour), elevationInfo: draped });
+  const land = new GeoJSONLayer({ ...common, id: "land", title: "Newly reclaimed land (schematic)", url: url("land.geojson"), renderer: landRenderer(L.land.colour), elevationInfo: draped });
+  const streets = new GeoJSONLayer({ ...common, id: "streets", title: "Period streets (schematic alignments)", url: url("streets.geojson"), renderer: streetRenderer(year, false, L.streets.colour), elevationInfo: draped });
+  const rail = new GeoJSONLayer({ ...common, id: "rail", title: "Railways (schematic alignments)", url: url("rail.geojson"), renderer: railRenderer(L.rail.colour), elevationInfo: draped });
+  const massing = new GeoJSONLayer({ ...common, id: "massing", title: "Illustrative building massing", url: url("massing.geojson"), renderer: massingRenderer(null, styles, false, L.massing), elevationInfo: { mode: "on-the-ground" } });
   const landmarks = new GeoJSONLayer({
     ...common,
     id: "landmarks",
     title: "Landmarks (dated; outlines illustrative)",
     url: url("landmarks.geojson"),
-    renderer: landmarkRenderer(year, false),
+    renderer: landmarkRenderer(year, false, L.landmarks),
     elevationInfo: { mode: "relative-to-ground", featureExpressionInfo: { expression: "$feature.base_m" } },
     labelingInfo: landmarkLabels(),
     labelsVisible: true,
@@ -327,7 +361,7 @@ export function createHistoricLayers(styles: { code: number; id: string; label: 
     id: "modern",
     title: "Present-day buildings (OpenStreetMap 3D)",
     portalItem: new PortalItem({ id: CONFIG.osmBuildingsItemId }),
-    renderer: modernRenderer("ghost"),
+    renderer: modernRenderer("ghost", L.modern.colour),
     popupEnabled: false,
   });
   const uncertainty = new GeoJSONLayer({ ...common, id: "uncertainty", title: "Positional uncertainty", url: url("uncertainty.geojson"), renderer: uncertaintyRenderer(), elevationInfo: draped, definitionExpression: "1=0" });

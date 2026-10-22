@@ -17,13 +17,10 @@ import { formatDecimalYear, toDecimalYear } from "../engine/dates";
 function lightingDate(state: AppState, year: number): Date | null {
   const in1798 = state.tour?.id === "tour-1798" || state.trailMode;
   if (!in1798 || year < 1791 || year >= 1801) return null;
-  // Late-afternoon light on the actual calendar day being shown.
-  const whole = Math.floor(year);
-  const dayFraction = year - whole;
-  const date = new Date(Date.UTC(2000, 0, 1, 17, 0, 0));
-  date.setUTCFullYear(whole);
-  date.setUTCDate(1 + Math.floor(dayFraction * 365));
-  return date;
+  // Late-afternoon light in the month being shown. Monthly steps keep the
+  // season right without re-lighting the scene on every frame of a story move.
+  const month = Math.min(11, Math.floor((year - Math.floor(year)) * 12));
+  return new Date(Date.UTC(2000, month, 15, 17, 0, 0));
 }
 
 export function toSceneSettings(state: AppState, data: AppData, year: number): SceneSettings {
@@ -41,6 +38,7 @@ export function toSceneSettings(state: AppState, data: AppData, year: number): S
     selectedEventId: state.selectedEventId,
     reducedMotion: state.reducedMotion,
     lightingDate: lightingDate(state, year),
+    display: state.display,
   };
 }
 
@@ -62,7 +60,12 @@ function useSceneController(
     let disposed = false;
     let created: SceneController | null = null;
     el.popupDisabled = true;
-    el.qualityProfile = window.matchMedia("(max-width: 760px)").matches ? "low" : "high";
+    // Rendering quality follows the viewer's performance choice. "Balanced"
+    // leaves it to the SDK, which picks a profile for the device; forcing
+    // "high" renders at full HiDPI resolution, which is slow on many laptops.
+    const performance = settingsRef.current.display.performance;
+    if (performance === "fast") el.qualityProfile = "low";
+    else if (performance === "detailed") el.qualityProfile = "high";
     created = new SceneController(
       data,
       settingsRef.current,

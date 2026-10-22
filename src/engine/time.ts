@@ -10,10 +10,11 @@
 import type { TemporalProps, HistoricalEvent } from "../types/history";
 
 /**
- * Most massing features the 3D view is asked to draw at once. The data build
- * must keep the peak concurrent count below this (a test checks it).
+ * Feature cap for the massing layer view. Every block is loaded once and
+ * time is applied with a layer-view filter, so the whole layer must fit
+ * under this cap (a test checks the built data).
  */
-export const MASSING_FEATURE_CAP = 9000;
+export const MASSING_FEATURE_CAP = 12500;
 
 /** Sentinel stored in layer attributes for "still standing". */
 export const PRESENT_SENTINEL = 9999;
@@ -151,4 +152,29 @@ export function eventsStartingBetween<T extends Pick<HistoricalEvent, "start_yea
   const lo = Math.min(from, to);
   const hi = Math.max(from, to);
   return events.filter((e) => e.start_year > lo && e.start_year <= hi);
+}
+
+/** Round down to a multiple of `step` (stable string output for where clauses). */
+export function quantize(year: number, step: number): number {
+  return Math.round(Math.floor(year / step + 1e-9) * step * 1000) / 1000;
+}
+
+/**
+ * The latest date in `breakpoints` that is not after `year`. Filtering with
+ * `start <= t AND end > t` gives the same features for t and for `year`
+ * whenever no start or end date lies between them — so the filter string only
+ * changes when the visible set does.
+ */
+export function snapToBreakpoint(year: number, breakpoints: number[] | undefined): number {
+  if (!breakpoints || breakpoints.length === 0) return year;
+  let lo = 0;
+  let hi = breakpoints.length - 1;
+  // Before the first date nothing has started: any value below it gives the same (empty) set.
+  if ((breakpoints[0] as number) > year) return (breakpoints[0] as number) - 1;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if ((breakpoints[mid] as number) <= year) lo = mid;
+    else hi = mid - 1;
+  }
+  return breakpoints[lo] as number;
 }

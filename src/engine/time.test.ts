@@ -10,7 +10,9 @@ import {
   isEventVisible,
   isPresent,
   presentWhereClause,
+  quantize,
   rampByYear,
+  snapToBreakpoint,
 } from "./time";
 import type { TemporalProps } from "../types/history";
 
@@ -131,3 +133,41 @@ describe("rampByYear", () => {
     expect(rampByYear(2020, [1986, 2008], 0.3, 1)).toBe(1);
   });
 });
+
+describe("filter stability during playback", () => {
+  it("quantizes years down to a step with stable decimals", () => {
+    expect(quantize(1798.54, 0.25)).toBe(1798.5);
+    expect(quantize(1798.75, 0.25)).toBe(1798.75);
+    expect(quantize(1850.99, 1)).toBe(1850);
+    expect(quantize(1612.4, 5)).toBe(1610);
+  });
+
+  it("snaps to the latest date not after the year", () => {
+    const dates = [1613, 1639, 1810, PRESENT_SENTINEL];
+    expect(snapToBreakpoint(1700, dates)).toBe(1639);
+    expect(snapToBreakpoint(1639, dates)).toBe(1639);
+    expect(snapToBreakpoint(2026, dates)).toBe(1810);
+    expect(snapToBreakpoint(1500, dates)).toBe(1612);
+    expect(snapToBreakpoint(1700, undefined)).toBe(1700);
+  });
+
+  it("shows exactly the same features at the snapped year as at the real year", () => {
+    // Deterministic pseudo-random intervals, including open-ended ones.
+    let seed = 7;
+    const rand = () => {
+      seed = (seed * 16807) % 2147483647;
+      return seed / 2147483647;
+    };
+    const features = Array.from({ length: 300 }, () => {
+      const start = Math.round((1600 + rand() * 420) * 100) / 100;
+      const end = rand() < 0.4 ? PRESENT_SENTINEL : Math.round((start + rand() * 150) * 100) / 100;
+      return { start, end };
+    });
+    const dates = [...new Set(features.flatMap((f) => [f.start, f.end]))].sort((a, b) => a - b);
+    const visibleIds = (t: number) => features.map((f, i) => (f.start <= t && f.end > t ? i : -1)).filter((i) => i >= 0).join();
+    for (let y = 1550; y <= 2030; y += 0.37) {
+      expect(visibleIds(snapToBreakpoint(y, dates))).toBe(visibleIds(y));
+    }
+  });
+});
+
