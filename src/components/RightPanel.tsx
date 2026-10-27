@@ -236,16 +236,25 @@ function FeatureDetail({ data }: { data: AppData }) {
 
   if (feature.layer === "massing") {
     const style = data.manifest.styles.find((s) => s.code === Number(a.k));
+    const redevelopment = Number(a.t) === 3;
+    const handover = Number(a.r);
+    const handsOver = end >= 9999 && Number.isFinite(handover) && handover < 9999;
     return (
       <article>
-        <h2 className="event-title">Illustrative building</h2>
+        <h2 className="event-title">{redevelopment ? "Illustrative redevelopment" : "Illustrative building"}</h2>
         <div className="badges"><span className="badge approximate">Illustrative model</span></div>
         <p className="prose">
           This block is part of a generated massing model that shows the pattern of growth — where and roughly when the town built outward and upward. It does not represent a specific historic building.
         </p>
+        {redevelopment ? (
+          <p className="prose">
+            It stands for the rebuilding of a cleared terrace site as flats, maisonettes or low-rise housing. Clearance followed by redevelopment is documented; this site, its date and its form are illustrative.
+          </p>
+        ) : null}
         <dl className="facts">
           <dt>Style period</dt><dd>{style?.label ?? "—"}</dd>
           <dt>In model</dt><dd>{Math.round(Number(a.s))} – {fmtEnd}</dd>
+          {handsOver ? (<><dt>Hands over</dt><dd>c. {Math.round(handover)}, to present-day buildings</dd></>) : null}
           <dt>Height</dt><dd>{Number(a.h).toFixed(0)} m (illustrative)</dd>
         </dl>
       </article>

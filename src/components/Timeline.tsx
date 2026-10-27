@@ -4,6 +4,7 @@ import type { AppData } from "../data/loaders";
 import { ERAS, eraForYear, eraHomeYear } from "../data/eras";
 import { AXIS_TICKS, positionToYear, snapYear, yearToPosition } from "../engine/timeline";
 import { formatDecimalYear, formatYearNumber } from "../engine/dates";
+import { phasesOf, reconstructionPhase } from "../engine/handover";
 import { CONFIDENCE_COLOURS } from "../map/palette";
 import { Icon } from "./Icon";
 
@@ -22,6 +23,17 @@ export function Timeline({ data }: { data: AppData }) {
   const dragging = useRef<"primary" | "compare" | null>(null);
   const era = eraForYear(state.year);
   const ticks = useMemo(() => data.events.filter((e) => e.timeline_importance >= 3), [data]);
+  const phases = useMemo(() => phasesOf(data.manifest), [data]);
+  const phase = reconstructionPhase(state.year, phases, { modernAvailable: state.modernAvailable });
+  const bands = useMemo(() => {
+    const list: { id: string; from: number; to: number; title: string }[] = [];
+    const [c0, c1] = phases.clearance;
+    const redevEnd = Math.max(c1, phases.redevelopment?.[1] ?? c1);
+    if (redevEnd > c0) list.push({ id: "redevelopment", from: c0, to: redevEnd, title: `${c0}–${Math.round(redevEnd)}: ${phases.redevelopment ? "clearance and redevelopment" : "clearance"} (illustrative blocks)` });
+    const [h0, h1] = phases.handover;
+    list.push({ id: "handover", from: h0, to: h1, title: `${h0}–${h1}: handover from the illustrative model to present-day buildings` });
+    return list;
+  }, [phases]);
 
   const yearFromPointer = (clientX: number): number => {
     const rect = track.current?.getBoundingClientRect();
@@ -99,7 +111,8 @@ export function Timeline({ data }: { data: AppData }) {
   };
 
   const pos = yearToPosition(state.year) * 100;
-  const valueText = `${formatDecimalYear(state.year, state.year >= 1791 && state.year < 1801 ? "month" : "year")}, ${era.title}`;
+  const phaseText = phase.id === "model" ? "" : `; ${phase.label.toLowerCase()}`;
+  const valueText = `${formatDecimalYear(state.year, state.year >= 1791 && state.year < 1801 ? "month" : "year")}, ${era.title}${phaseText}`;
 
   return (
     <section className="timeline glass" aria-label="Historical timeline">
@@ -121,6 +134,12 @@ export function Timeline({ data }: { data: AppData }) {
           <strong className="display" style={{ fontSize: 16, color: "var(--cream)" }}>{era.title}</strong>
           <span>{era.subtitle}</span>
           {state.compareYear !== null ? <span style={{ color: "var(--amber)" }}>compare: {formatDecimalYear(state.compareYear)}</span> : null}
+          {phase.id !== "model" ? (
+            <span className={`tl-phase ${phase.id}`} title={phase.detail}>
+              <span className="tl-phase-dot" aria-hidden="true" />
+              {phase.label}
+            </span>
+          ) : null}
         </div>
         <div className="tl-ticks">
           {ticks.map((e) => (
@@ -165,6 +184,12 @@ export function Timeline({ data }: { data: AppData }) {
             );
           })}
           <div className="tl-fill" style={{ width: `${pos}%` }} />
+          {bands.map((b) => {
+            const left = yearToPosition(b.from) * 100;
+            return (
+              <div key={b.id} className={`tl-band ${b.id}`} style={{ left: `${left}%`, width: `${yearToPosition(b.to) * 100 - left}%` }} title={b.title} aria-hidden="true" />
+            );
+          })}
         </div>
         <div className="tl-head" style={{ left: `${pos}%` }} />
         {state.compareYear !== null ? <div className="tl-head compare" style={{ left: `${yearToPosition(state.compareYear) * 100}%` }} /> : null}

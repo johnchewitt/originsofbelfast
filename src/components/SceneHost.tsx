@@ -71,6 +71,7 @@ function useSceneController(
       settingsRef.current,
       slot === "primary" ? (camera) => dispatch({ type: "camera-settled", camera }) : undefined,
       slot === "primary" ? (text) => dispatch({ type: "toast", text }) : undefined,
+      slot === "primary" ? () => dispatch({ type: "modern-unavailable" }) : undefined,
     );
     el.map = created.map;
     void el.viewOnReady().then(() => {

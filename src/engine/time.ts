@@ -160,6 +160,58 @@ export function quantize(year: number, step: number): number {
 }
 
 /**
+ * Year to embed in a year-dependent renderer so that it is rebuilt only when
+ * its output would change. Inside an "active" interval (a construction period,
+ * during which heights change continuously) the year is used as is; elsewhere
+ * it snaps to the latest date in `breaks`, because between consecutive dates
+ * every feature renders identically (unit-tested). Rebuilding a renderer makes
+ * the layer re-symbolise every feature, which shows as a flicker.
+ */
+export function stableRendererYear(
+  year: number,
+  breaks: readonly number[] | undefined,
+  active: readonly (readonly [number, number])[] = [],
+): number {
+  if (!breaks || breaks.length === 0) return year;
+  for (const [a, b] of active) if (year > a && year < b) return year;
+  return snapToBreakpoint(year, breaks as number[]);
+}
+
+/** Years a street glows as "new" after it first appears (street renderer). */
+export const NEW_STREET_YEARS = 10;
+
+/**
+ * Dates at which a year-dependent renderer's output changes, for
+ * {@link stableRendererYear}. Landmark heights change continuously during
+ * construction ([build_start, start_year]) and are constant otherwise; a
+ * street's class changes when it appears and when it stops being "new".
+ */
+export function rendererBreaksFor(
+  id: "landmarks" | "streets",
+  features: readonly { properties: Record<string, unknown> }[],
+): { breaks: number[]; active: [number, number][] } {
+  const breaks = new Set<number>();
+  const active: [number, number][] = [];
+  for (const f of features) {
+    const p = f.properties;
+    if (id === "landmarks") {
+      const a = Number(p.build_start);
+      const b = Number(p.start_year);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+      breaks.add(a);
+      breaks.add(b);
+      if (b > a) active.push([a, b]);
+    } else {
+      const start = Number(p.start_year);
+      if (!Number.isFinite(start)) continue;
+      breaks.add(start);
+      breaks.add(Math.round((start + NEW_STREET_YEARS) * 1000) / 1000);
+    }
+  }
+  return { breaks: [...breaks].sort((x, y) => x - y), active };
+}
+
+/**
  * The latest date in `breakpoints` that is not after `year`. Filtering with
  * `start <= t AND end > t` gives the same features for t and for `year`
  * whenever no start or end date lies between them — so the filter string only

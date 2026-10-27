@@ -31,7 +31,8 @@ import type UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer
 import { eraForYear } from "../data/eras";
 import type { AppData } from "../data/loaders";
 import { cameraFromLookAt, circle, type LonLat } from "../engine/geo";
-import { isEventVisible, MASSING_FEATURE_CAP, presentWhereClause, quantize, rampByYear, snapToBreakpoint } from "../engine/time";
+import { handoverState, massingWhereClause, type HandoverState } from "../engine/handover";
+import { isEventVisible, MASSING_FEATURE_CAP, presentWhereClause, quantize, rendererBreaksFor, snapToBreakpoint, stableRendererYear } from "../engine/time";
 import type { BasemapId, CameraState, ViewMode } from "../engine/urlState";
 import type { HistoricalEvent, HistoricMapOverlay } from "../types/history";
 import {
@@ -55,6 +56,8 @@ import { PALETTE } from "./palette";
 const LANDMARK_YEAR_STEP = 0.25;
 /** Massing time filters move in steps of this many years, per performance mode. */
 const MASSING_YEAR_STEP: Record<DisplayPrefs["performance"], number> = { fast: 1, balanced: 0.25, detailed: 0.05 };
+/** Opacity of outlined extrusions is applied this long after the last slider change (ms). */
+const OPACITY_SETTLE_MS = 180;
 /** "New street" highlighting is recomputed in steps of this many years, per performance mode. */
 const STREET_HIGHLIGHT_STEP: Record<DisplayPrefs["performance"], number> = { fast: 5, balanced: 2, detailed: 0.5 };
 
@@ -136,6 +139,13 @@ export class SceneController {
   private rendererKeys = new Map<string, string>();
   private lightingKey = "";
   private breakpoints = new Map<LayerId, number[]>();
+  /**
+   * Dates at which year-dependent renderers change their output, and the
+   * intervals in which they change continuously (landmark construction).
+   * Renderers are rebuilt only when the year crosses one of these.
+   */
+  private rendererBreaks = new Map<"landmarks" | "streets", { breaks: number[]; active: [number, number][] }>();
+  private opacityTimers = new Map<"massing" | "landmarks", { timer: number; value: number }>();
   /** The massing layer view, once created: time filtering then uses its (cheap) filter. */
   private massingView: { filter: FeatureFilter | null | undefined } | null = null;
   private massingWhere = "";
@@ -152,6 +162,7 @@ export class SceneController {
     initial: SceneSettings,
     private readonly onCameraSettled?: (camera: CameraState) => void,
     private readonly onNotice?: (text: string) => void,
+    private readonly onModernUnavailable?: () => void,
   ) {
     this.settings = initial;
     this.layers = createHistoricLayers(data.manifest.styles, initial.year, initial.display);
@@ -169,6 +180,7 @@ export class SceneController {
       this.modernAvailable = false;
       if (!this.destroyed) this.applyAll(true);
       this.onNotice?.("Present-day buildings could not be loaded, so the illustrative massing stays on screen after 1986.");
+      this.onModernUnavailable?.();
     });
     this.drawTrail();
     this.applyLayers(true);
@@ -199,6 +211,7 @@ export class SceneController {
             }
           }
           this.breakpoints.set(id, [...values].sort((a, b) => a - b));
+          if (id === "landmarks" || id === "streets") this.rendererBreaks.set(id, rendererBreaksFor(id, json.features));
         } catch (error) {
           console.warn(`Could not read dates for ${id}; filtering by exact year instead.`, error);
         }
@@ -234,7 +247,19 @@ export class SceneController {
       .then((layerView) => {
         if (this.destroyed) return;
         const lv = layerView as unknown as { maximumNumberOfFeatures?: number; filter: FeatureFilter | null | undefined };
-        if (typeof lv.maximumNumberOfFeatures === "number") lv.maximumNumberOfFeatures = Math.max(lv.maximumNumberOfFeatures, MASSING_FEATURE_CAP);
+        // The SDK estimates its own cap only after the layer view has processed
+        // the layer (so it is not yet a number here) and may lower it later —
+        // 8,500 was measured on a software renderer, silently dropping blocks.
+        // All blocks are loaded once (time is a filter), so keep the cap above
+        // the dataset size, unless the view is short of memory.
+        const raiseCap = () => {
+          const quality = view.performanceInfo?.quality ?? 1;
+          if (typeof lv.maximumNumberOfFeatures === "number" && lv.maximumNumberOfFeatures < MASSING_FEATURE_CAP && quality >= 0.9) {
+            lv.maximumNumberOfFeatures = MASSING_FEATURE_CAP;
+          }
+        };
+        raiseCap();
+        this.handles.push(reactiveUtils.watch(() => lv.maximumNumberOfFeatures, raiseCap));
         // Load every block once and move through time with the layer-view
         // filter: far cheaper than changing the layer's definition expression,
         // which reloads the features on every change.
@@ -321,9 +346,9 @@ export class SceneController {
     const hidden = new Set(s.hidden);
     const flat = s.viewMode === "plan";
 
-    // Visibility toggles.
+    // Visibility toggles (massing and modern also depend on the handover; set once, below).
     for (const id of LAYER_ORDER) {
-      if (id === "trail" || id === "selection") continue;
+      if (id === "trail" || id === "selection" || id === "massing" || id === "modern") continue;
       L[id].visible = !hidden.has(id);
     }
 
@@ -339,7 +364,12 @@ export class SceneController {
     L.streets.definitionExpression = presentWhereClause(snapped("streets"), "start_year", "end_year");
     L.rail.definitionExpression = presentWhereClause(snapped("rail"), "start_year", "end_year");
     L.landmarks.definitionExpression = presentWhereClause(snapped("landmarks"), "build_start", "end_year");
-    const massingWhere = presentWhereClause(quantize(year, MASSING_YEAR_STEP[display.performance]), "b", "e");
+
+    // Handover to the present-day city: blocks leave through the filter (one
+    // handover year each) — the massing layer's opacity is never animated,
+    // because each opacity change stalls the 3D renderer for up to 1.5 s.
+    const handover = this.handover(year);
+    const massingWhere = massingWhereClause(quantize(year, MASSING_YEAR_STEP[display.performance]), handover.retireBlocks && this.hasHandoverField);
     if (this.massingView) {
       if (massingWhere !== this.massingWhere) {
         this.massingView.filter = new FeatureFilter({ where: massingWhere });
@@ -361,29 +391,74 @@ export class SceneController {
     const massingYear = animate ? quantize(year, profile.rendererYearStep) : null;
     const edges = profile.edgesOverride ?? display.layers.massing.edges;
     this.setRenderer("massing", `${flat}|${massingYear}|${edges}`, force, () => massingRenderer(massingYear, this.data.manifest.styles, flat, display.layers.massing, edges));
-    const landmarkYear = flat ? 0 : quantize(year, LANDMARK_YEAR_STEP);
+    // Year-dependent renderers are rebuilt only when their output changes:
+    // landmarks while one is under construction or at a construction date,
+    // streets when a street starts or stops glowing as new.
+    const landmarkTimes = this.rendererBreaks.get("landmarks");
+    const landmarkYear = flat ? 0 : stableRendererYear(quantize(year, LANDMARK_YEAR_STEP), landmarkTimes?.breaks, landmarkTimes?.active);
     this.setRenderer("landmarks", `${flat}|${landmarkYear}`, force, () => landmarkRenderer(landmarkYear || year, flat, display.layers.landmarks));
-    const streetYear = quantize(year, STREET_HIGHLIGHT_STEP[display.performance]);
+    const streetYear = stableRendererYear(quantize(year, STREET_HIGHLIGHT_STEP[display.performance]), this.rendererBreaks.get("streets")?.breaks);
     this.setRenderer("streets", `${story}|${streetYear}`, force, () => streetRenderer(streetYear, story, display.layers.streets.colour));
 
-    // Illustrative massing hands over to the real present-day city.
-    const [fadeStart, fadeEnd] = this.data.manifest.fade_to_modern;
+    // Opacities depend on the viewer's settings, and only the stepped
+    // handover values depend on the year — so during playback they change a
+    // handful of times rather than on every tick.
     const styles = display.layers;
-    const handOver = this.modernAvailable ? rampByYear(year, [fadeStart, fadeEnd], 1, 0) : 1;
-    L.massing.opacity = round3(s.historicOpacity * styles.massing.opacity * handOver);
-    L.landmarks.opacity = round3(Math.max(0.15, s.historicOpacity) * styles.landmarks.opacity);
-    L.envelope.opacity = round3(s.historicOpacity * styles.envelope.opacity * (this.modernAvailable ? rampByYear(year, [fadeStart, fadeEnd], 1, 0.35) : 1));
+    // Outlined extrusions (massing, landmarks) take opacity once a slider has settled.
+    this.setExtrusionOpacity("massing", round3(s.historicOpacity * styles.massing.opacity), force);
+    L.massing.visible = !hidden.has("massing") && handover.massingVisible;
+    this.setExtrusionOpacity("landmarks", round3(Math.max(0.15, s.historicOpacity) * styles.landmarks.opacity), force);
+    L.envelope.opacity = round3(s.historicOpacity * styles.envelope.opacity * handover.envelopeFactor);
     L.streets.opacity = styles.streets.opacity;
     L.water.opacity = styles.water.opacity;
     L.land.opacity = styles.land.opacity;
     L.rail.opacity = styles.rail.opacity;
-    const modernSolid = year >= (fadeStart + fadeEnd) / 2;
-    const mode = modernSolid ? "solid" : "ghost";
+    // The present-day buildings fade in at the start of the handover (cheap
+    // on the scene layer), so the city never empties between model and present.
+    const mode = handover.modernMode;
     this.setRenderer("modern", `${mode}`, force, () => modernRenderer(mode, styles.modern.colour));
-    L.modern.opacity = round3(modernSolid ? rampByYear(year, [fadeStart, fadeEnd], s.modernOpacity, 1) : s.modernOpacity);
-    L.modern.visible = !hidden.has("modern") && !flat && (modernSolid || s.modernOpacity > 0.02);
+    L.modern.opacity = handover.modernOpacity;
+    L.modern.visible = !hidden.has("modern") && !flat && (mode === "solid" || s.modernOpacity > 0.02);
 
-    this.applyBasemapOpacity();
+    this.applyBasemapOpacity(handover);
+  }
+
+  /**
+   * Opacity for the outlined extrusion layers. Each change makes the 3D view
+   * rebuild their edges — measured at 0.3–1.5 s on an integrated GPU, and the
+   * SDK's edge renderer can throw ("no object") when changes arrive while it is
+   * still rebuilding. A slider drag would fire one per step, so the value is
+   * applied once the slider has rested; the first and forced values apply at once.
+   */
+  private setExtrusionOpacity(id: "massing" | "landmarks", value: number, force: boolean): void {
+    const layer = this.layers[id];
+    const pending = this.opacityTimers.get(id);
+    // Same target already waiting (e.g. playback ticks while it settles): leave the timer alone.
+    if (pending && pending.value === value && !force) return;
+    if (pending) window.clearTimeout(pending.timer);
+    this.opacityTimers.delete(id);
+    if (layer.opacity === value) return;
+    if (force || !this.viewRef) {
+      layer.opacity = value;
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      this.opacityTimers.delete(id);
+      if (!this.destroyed) layer.opacity = value;
+    }, OPACITY_SETTLE_MS);
+    this.opacityTimers.set(id, { timer, value });
+  }
+
+  /** True when the massing data carries per-block handover years. */
+  private get hasHandoverField(): boolean {
+    return this.data.manifest.phases?.handover_field === "r";
+  }
+
+  private handover(year: number): HandoverState {
+    return handoverState(year, this.data.manifest.fade_to_modern, {
+      modernOpacity: this.settings.modernOpacity,
+      modernAvailable: this.modernAvailable,
+    });
   }
 
   /** Assign a renderer only when its key changes (or when forced). */
@@ -399,18 +474,15 @@ export class SceneController {
     this.applyBasemapOpacity();
   }
 
-  private applyBasemapOpacity(): void {
+  private applyBasemapOpacity(handover: HandoverState = this.handover(this.settings.year)): void {
     const basemap = this.map.basemap;
     if (!basemap) return;
-    const s = this.settings;
-    const [fadeStart, fadeEnd] = this.data.manifest.fade_to_modern;
-    const base = rampByYear(s.year, [fadeStart, fadeEnd], Math.max(0.12, s.modernOpacity), 1);
+    // Stepped values: the draped basemap is re-composited only when a step is crossed.
     basemap.baseLayers.forEach((layer) => {
-      layer.opacity = base;
+      if (layer.opacity !== handover.basemapOpacity) layer.opacity = handover.basemapOpacity;
     });
-    const showLabels = s.year >= fadeStart || s.modernOpacity >= 0.6;
     basemap.referenceLayers.forEach((layer) => {
-      layer.visible = showLabels;
+      if (layer.visible !== handover.showReferenceLabels) layer.visible = handover.showReferenceLabels;
     });
   }
 
@@ -644,6 +716,7 @@ export class SceneController {
     this.destroyed = true;
     if (this.flushTimer !== null) window.clearTimeout(this.flushTimer);
     if (this.beaconTimer !== null) window.clearInterval(this.beaconTimer);
+    for (const t of this.opacityTimers.values()) window.clearTimeout(t.timer);
     for (const h of this.handles) h.remove();
   }
 }

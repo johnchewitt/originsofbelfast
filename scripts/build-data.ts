@@ -45,7 +45,7 @@ import type {
   LocationPrecision,
 } from "../src/types/history";
 import { irishGridToLonLat, itmToLonLat, parseIrishGridReference } from "./lib/grids";
-import { generateMassing, type MassingParams, type StreetForMassing, type StyleDef, type YardZone } from "./lib/massing";
+import { generateMassing, LAST_GENERATED_YEAR, type MassingParams, type StreetForMassing, type StyleDef, type YardZone } from "./lib/massing";
 import { matchStreet, readOsmLines, type OsmLine } from "./lib/osm";
 
 // ── Paths and logging ─────────────────────────────────────────────────────────
@@ -684,6 +684,17 @@ const railFeatures = transport.lines.map((l) => {
 });
 
 // ── Massing ──────────────────────────────────────────────────────────────────
+const [handoverStart, handoverEnd] = growth.massing.fade_to_modern;
+if (!(handoverEnd > handoverStart)) fail("growth.json: fade_to_modern must be [start, end] with end after start");
+if (handoverStart <= LAST_GENERATED_YEAR) fail(`growth.json: fade_to_modern must start after ${LAST_GENERATED_YEAR}, the last year in which illustrative blocks appear`);
+const redevelopment = growth.massing.redevelopment;
+if (redevelopment) {
+  checkSources(redevelopment.source_ids, "Massing redevelopment");
+  if (!(redevelopment.share >= 0 && redevelopment.share <= 1)) fail("growth.json: redevelopment.share must be between 0 and 1");
+  const [g0, g1] = redevelopment.gap_years;
+  if (!(g0 >= 1 && g1 >= g0)) fail("growth.json: redevelopment.gap_years must be [min, max] with min of at least 1 year");
+  if (!growth.styles.redevelopment) fail('growth.json: add a "redevelopment" style so rebuilt blocks are labelled as such');
+}
 const yards: YardZone[] = [];
 for (const y of growth.massing.yards ?? []) {
   checkSources(y.source_ids, `Yard ${y.id}`);
@@ -832,6 +843,12 @@ writeJson("manifest.json", {
   },
   styles: styleIds.map((id, code) => ({ code, id, label: growth.styles[id]?.label ?? id })),
   fade_to_modern: growth.massing.fade_to_modern,
+  phases: {
+    clearance: growth.massing.clearance_years,
+    redevelopment: redevelopment ? [growth.massing.clearance_years[0], LAST_GENERATED_YEAR] : null,
+    handover: growth.massing.fade_to_modern,
+    handover_field: "r",
+  },
   footprint,
   population: { series: population.series, alternates: population.alternates, source_ids: population.source_ids },
   street_geometry_source: osmMatched > 0 ? "openstreetmap" : "schematic",

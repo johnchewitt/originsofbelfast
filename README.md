@@ -8,7 +8,7 @@ React 19 · TypeScript · Vite · ArcGIS Maps SDK for JavaScript 5.1 (map compon
 
 ## What it does
 
-- **A city that grows on a timeline.** Drag, play or step the cinematic slider from before 1600 to 2026 (the 1790s get extra room). Streets lengthen, building massing rises and is rebuilt in successive styles, the estuary is reclaimed into quays and the Queen's Island, bridges replace one another, gantries appear and go, and the present-day city fades in beneath as a cyan outline. Geometry really changes: each feature carries construction, completion and removal years, and the scene filters and extrudes them per year.
+- **A city that grows on a timeline.** Drag, play or step the cinematic slider from before 1600 to 2026 (the 1790s get extra room). Streets lengthen, building massing rises and is rebuilt in successive styles, the estuary is reclaimed into quays and the Queen's Island, bridges replace one another, gantries appear and go, inner-city terraces are cleared and redeveloped from the 1960s, and the present-day city fades in beneath as a cyan outline before taking over between 1986 and 2008. Geometry really changes: each feature carries construction, completion and removal years, and the scene filters and extrudes them per year. Bands on the timeline and a label beside the era name say which phase of the reconstruction is on screen.
 - **Ten eras**, each with its own camera, light, weather and summary, and **145 sourced events** placed on the timeline and the map.
 - **Belfast 1798 mode.** A 30-stop guided story in amber evening light — the founding of the Society of United Irishmen, the meeting places in the entries, the rising in Antrim and Down, McCracken's capture, court-martial and execution at the Market House (with a slow approach down High Street), the wake tradition at the Morning Star, and the burial and later reburial claims — plus an eight-stop **walking trail** from Crown Entry to Clifton Street Cemetery.
 - **Evidence on the surface.** Every event shows its evidence level (documented, probable, approximately located, reported tradition) as a distinct marker shape and colour, a dashed uncertainty disc for its position, competing accounts side by side, and numbered citations.
@@ -26,7 +26,7 @@ React 19 · TypeScript · Vite · ArcGIS Maps SDK for JavaScript 5.1 (map compon
 | Gazetteer (`places.json`) | Positions from Irish Grid references (NI Buildings Database), published coordinates, excavation records, or estimates — each with derivation text and an uncertainty radius | Dashed uncertainty disc; "approximately located" where appropriate |
 | Landmarks (`landmarks.json`) | Dated phases (build, completion, loss) from sources | Dates sourced; outlines and heights marked *illustrative* or *inferred* unless documented |
 | Streets, shoreline, envelope | **Schematic** alignments and outlines, drawn by the author for demonstration | "Schematic" in layer names, legends, details and the About dialog |
-| Building massing | **Illustrative** blocks generated from the schematic model, plus shipyard sheds that spread across Queen's Island between the sourced start of shipbuilding (1853) and 1912 | "Illustrative model"; no block or shed represents a real building |
+| Building massing | **Illustrative** blocks generated from the schematic model, plus shipyard sheds that spread across Queen's Island between the sourced start of shipbuilding (1853) and 1912, and post-war redevelopment of most terrace sites cleared in 1960–82 (clearance and redevelopment sourced; sites, dates and forms illustrative) | "Illustrative model"; no block or shed represents a real building; timeline bands mark clearance & redevelopment and the handover to present-day buildings |
 
 Rules the data build enforces: every event, place, landmark, street date and extent cites a registered source; an event with competing dates needs at least two interpretations; anything labelled a tradition must say so in its text; places must fall inside the study area; envelope radii never shrink. No archival photographs or historic maps are bundled — images are linked to their source pages with their licences, and the only overlay shipped is a generated plan clearly marked *NOT A HISTORIC MAP*.
 
@@ -49,7 +49,7 @@ Other scripts:
 |---|---|
 | `npm run build` | Data build → type-check → production build in `dist/` |
 | `npm run preview` | Serve `dist/` locally |
-| `npm test` | Data build, then Vitest (time filtering, geometry visibility, where-clause/predicate agreement, dates, URL state, search, Ask intents, grid conversions, pipeline outputs) |
+| `npm test` | Data build, then Vitest (time filtering, geometry visibility, where-clause/predicate agreement, the handover never emptying the city, renderer-rebuild equivalence, redevelopment after clearance, dates, URL state, search, Ask intents, grid conversions, pipeline outputs) |
 | `npm run typecheck` | `tsc -b` |
 | `npm run data:build` / `data:validate` | Validate curated data and generate `public/data/` (validate-only for CI) |
 | `npm run data:osm` | Download OpenStreetMap street centrelines (optional, see below) |
@@ -117,9 +117,11 @@ From the earliest digitised year the build uses these for the envelope layer, th
 **3. Historic map overlays.**
 Add a service in `data/curated/historic-maps.json` (or at deploy time in `VITE_HISTORIC_MAP_SERVICES`): `service_type` is `wms`, `wmts`, `map-image`, `imagery`, `tile` or `web-tile`. OpenDataNI lists OSNI historical six-inch editions georeferenced to the Irish Grid; PRONI's Historical Maps viewer is reference-only. For an image you hold the rights to, put it in `public/maps/` with a corner `extent` or control points. Confirm the licence first; where an image cannot be redistributed, link to it instead.
 
-**4. Industrial zones.** `growth.json → massing.yards` fills a reclaimed-land polygon with large sheds spreading out from a seed point between two sourced years (the Queen's Island shipyard ships as the example). Add Workman Clark's yard or the mills of the Falls and Shankill the same way, each with its sources.
+**4. Clearance and redevelopment.** `growth.json → massing.clearance_*` clears a share of inner-ring terraces between two years; `massing.redevelopment` (share, vacant gap, the year before which rebuilds are flats rather than low-rise housing, and its sources) rebuilds most cleared sites before the handover. The build checks the sources and that the handover starts after the last generated block; the tests check that the inner ring never hollows out.
 
-**5. Building footprints.** Add landmarks or phases with surveyed footprints (`footprint_basis`, `height_basis` set to `documented`) as they become available; the massing generator keeps out of landmark sites automatically.
+**5. Industrial zones.** `growth.json → massing.yards` fills a reclaimed-land polygon with large sheds spreading out from a seed point between two sourced years (the Queen's Island shipyard ships as the example). Add Workman Clark's yard or the mills of the Falls and Shankill the same way, each with its sources.
+
+**6. Building footprints.** Add landmarks or phases with surveyed footprints (`footprint_basis`, `height_basis` set to `documented`) as they become available; the massing generator keeps out of landmark sites automatically.
 
 ---
 
@@ -153,9 +155,11 @@ tests/                       pipeline tests
 
 The scene draws up to ~12,000 extruded blocks plus streets, water and landmarks, so it is built to change as little as possible while time moves:
 
+- **The massing layer's opacity is never animated.** On an integrated GPU (Intel UHD 630) each opacity change on the ~7,500 outlined blocks stalled the 3D renderer for 0.3–1.5 s, and the SDK's edge renderer could throw part-way through — buildings blinked out and back from 1986, when the model used to fade. Now each block carries a handover year (`r`, centre first) and the filter removes it; the present-day OSM buildings (which fade without stalling) come in first, so the city never empties. Once the handover is complete the massing layer is not drawn at all. Opacity changes from the sliders are applied once the slider rests.
 - **Building heights are static by default.** Heights come from a field, so the renderer never has to be rebuilt as the year changes. (Rebuilding a renderer that embeds the year was measured at ~10× the cost of a filter change; *Detailed* mode still does it, to show buildings rising during construction.)
-- **Time is a layer-view filter for buildings.** All blocks load once and the year only changes a filter, instead of reloading features through the layer's definition expression.
+- **Time is a layer-view filter for buildings.** All blocks load once and the year only changes a filter, instead of reloading features through the layer's definition expression. The layer view's feature cap is kept above the dataset size (the SDK sets its own cap late and can set it below 12,000, silently dropping blocks), unless the view is short of memory.
 - **Small layers change only when something appears or disappears.** Street, water, landmark and envelope filters snap to the dates in their own data, so they stay unchanged between those dates (unit-tested to show exactly the same features).
+- **Year-dependent renderers are rebuilt only when their output changes.** Landmark heights only while a landmark is under construction; street highlighting only when a street starts or stops being "new" (unit-tested to give identical heights and classes). Faded values during the handover (present-day buildings, basemap, envelope) move in steps, so they change a handful of times rather than on every tick.
 - **Lighting is reassigned only when it changes**, not on every tick, and shadows, animated water and outlines can be switched off (*Fast*).
 - **Playback updates the interface at 24–60 fps** depending on the mode, and the 3D scene a few times a second.
 - **Rendering resolution** is left to the SDK in *Balanced*, forced low in *Fast* and high in *Detailed* (applied on reload).
@@ -172,7 +176,8 @@ Space play/pause · ← → step (months in the 1790s) · PgUp/PgDn step a decad
 
 - Streets, shorelines, the envelope and massing are schematic or illustrative until the pipeline above is fed with digitised data. The OSM download was not run when this repository was assembled (the build environment could not reach Overpass), so street geometry ships schematic.
 - Lost meeting places are placed at their entry or street, not at a precise address: the Crown Entry tavern (±45 m), Peggy Barclay's in Sugarhouse Entry and the Morning Star in Pottinger's Entry (±40 m), and the Thatched House on Waring Street (±150 m).
-- The present-day buildings and basemaps are live Esri services; if they are unreachable the historic layers still render on a plain ground, and the illustrative massing stays on screen after 1986 instead of handing over to the real city (the app says so in a notice).
+- The present-day buildings and basemaps are live Esri services; if they are unreachable the historic layers still render on a plain ground, and the illustrative massing stays on screen after 1986 instead of handing over to the real city (the app says so in a notice and in the timeline's phase label).
+- On integrated graphics *Balanced* runs at roughly 6–8 fps in a wide view of the 1950s–80s city (measured on an Intel UHD 630); *Fast* is the better choice there.
 - The assistant proxy was written and type-checked but not deployed or exercised here.
 
 ## Licences

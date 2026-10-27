@@ -47,6 +47,8 @@ export interface AppState {
   introOpen: boolean;
   /** Layer colours, transparency, lighting and performance (saved in this browser). */
   display: DisplayPrefs;
+  /** False once the present-day buildings failed to load (the model then stays on screen). */
+  modernAvailable: boolean;
   mobileSheet: MobileSheet;
   reducedMotion: boolean;
   camera: CameraState | null;
@@ -73,6 +75,7 @@ export type Action =
   | { type: "trail"; on: boolean }
   | { type: "panel"; panel: "left" | "right" | "ask" | "about" | "settings" | "styles" | "intro"; open: boolean }
   | { type: "display"; display: DisplayPrefs }
+  | { type: "modern-unavailable" }
   | { type: "sheet"; sheet: MobileSheet }
   | { type: "reduced-motion"; value: boolean }
   | { type: "camera-settled"; camera: CameraState }
@@ -127,6 +130,8 @@ export function reducer(state: AppState, action: Action): AppState {
     }
     case "display":
       return { ...state, display: action.display };
+    case "modern-unavailable":
+      return state.modernAvailable ? { ...state, modernAvailable: false } : state;
     case "sheet":
       return { ...state, mobileSheet: action.sheet };
     case "reduced-motion":
@@ -190,6 +195,7 @@ export function initialState(): AppState {
     stylesOpen: false,
     introOpen: !hasLinkState && !hasSeenIntro(),
     display: loadDisplayPrefs(!desktop),
+    modernAvailable: true,
     mobileSheet: "none",
     reducedMotion: prefersReducedMotion(),
     camera: shared.camera,

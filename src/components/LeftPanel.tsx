@@ -179,6 +179,8 @@ function Legend() {
       <div className="layer-row"><span className="glyph approximate" /><span>Approximate location<span className="layer-basis">Event documented; place estimated</span></span><span /></div>
       <div className="layer-row"><span className="glyph tradition" /><span>Reported tradition<span className="layer-basis">Later recollection or folklore</span></span><span /></div>
       <p className="chart-note">Period-coloured blocks are illustrative massing. Labelled landmarks with bright outlines have sourced dates; their outlines are illustrative unless stated.</p>
+      <div className="layer-row"><span className="legend-band redevelopment" aria-hidden="true" /><span>Clearance &amp; redevelopment<span className="layer-basis">Timeline band · cleared terraces mostly rebuilt after a few vacant years</span></span><span /></div>
+      <div className="layer-row"><span className="legend-band handover" aria-hidden="true" /><span>Handover to present-day buildings<span className="layer-basis">Timeline band · today's buildings fade in, then the model steps aside centre first</span></span><span /></div>
     </div>
   );
 }
