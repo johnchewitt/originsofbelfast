@@ -24,7 +24,10 @@ export function Timeline({ data }: { data: AppData }) {
   const era = eraForYear(state.year);
   const ticks = useMemo(() => data.events.filter((e) => e.timeline_importance >= 3), [data]);
   const phases = useMemo(() => phasesOf(data.manifest), [data]);
-  const phase = reconstructionPhase(state.year, phases, { modernAvailable: state.modernAvailable });
+  const phase = reconstructionPhase(state.year, phases, {
+    modernAvailable: state.modernAvailable,
+    modernDrawn: state.viewMode !== "plan" && !state.hiddenLayers.includes("modern"),
+  });
   const bands = useMemo(() => {
     const list: { id: string; from: number; to: number; title: string }[] = [];
     const [c0, c1] = phases.clearance;

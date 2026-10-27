@@ -187,9 +187,25 @@ describe("illustrative massing generator", () => {
         expect(s.properties.e).toBe(9999);
       }
     });
+    const strip = (list: MassingFeature[]) => list.filter((f) => f.properties.t !== KIND_REDEVELOPMENT).map((f) => ({ ...f.properties, i: 0, r: 0, g: f.geometry }));
     it("leaves the rest of the model exactly as it was (separate random stream)", () => {
-      const strip = (list: MassingFeature[]) => list.filter((f) => f.properties.t !== KIND_REDEVELOPMENT).map((f) => ({ ...f.properties, i: 0, r: 0, g: f.geometry }));
       expect(strip(rebuilt)).toEqual(strip(vacant));
+    });
+    it("thins the original rows exactly as before when the budget bites", () => {
+      const budget = Math.round(vacant.length * 0.85);
+      const tight = { ...redevParams, max_features: budget };
+      const thinRebuilt = generateMassing({ ...input(), params: tight, styles: withStyles });
+      const thinVacant = generateMassing({ ...input(), params: { ...tight, redevelopment: undefined }, styles: withStyles });
+      expect(thinVacant.length).toBe(budget); // the budget really bites
+      expect(strip(thinRebuilt)).toEqual(strip(thinVacant));
+      expect(thinRebuilt.length).toBeGreaterThan(budget); // successors come on top of the budget
+    });
+    it("keeps redevelopment out of landmark sites and open spaces", () => {
+      const zone = { centre: offset(centre, 700, 0), radius: 260, from: 1950 };
+      const guarded = generateMassing({ ...input(), exclusions: [...input().exclusions, zone], params: redevParams, styles: withStyles });
+      const inZone = guarded.filter((f) => f.properties.t === KIND_REDEVELOPMENT && distance(centroid(f), zone.centre) < zone.radius);
+      expect(inZone).toHaveLength(0);
+      expect(guarded.filter((f) => f.properties.t === KIND_REDEVELOPMENT).length).toBeGreaterThan(0);
     });
     it("gives every block a handover year inside the handover", () => {
       const [a, b] = retireRange(params.fade_to_modern);
@@ -271,6 +287,16 @@ describe.skipIf(!built)("built dataset integrity", () => {
         const a = standing(massing, y);
         expect((a - standing(massing, y + 5)) / a, `${y}–${y + 5}`).toBeLessThan(0.015);
       }
+    });
+    it("keeps the original rows at the full budget and the total under the cap", () => {
+      const originals = massing.filter((f) => f.properties.t !== KIND_REDEVELOPMENT).length;
+      const growth = JSON.parse(readFileSync(resolve(__dirname, "../data/curated/growth.json"), "utf-8")) as { massing: { max_features: number } };
+      expect(originals).toBe(growth.massing.max_features);
+      expect(massing.length).toBeLessThanOrEqual(MASSING_FEATURE_CAP);
+    });
+    it("leaves late clearances vacant rather than bunching rebuilds at 1985", () => {
+      const at1985 = massing.filter((f) => f.properties.t === KIND_REDEVELOPMENT && Math.abs(f.properties.s - 1985) < 0.01);
+      expect(at1985.length).toBeLessThan(3);
     });
     it("records the handover field and a handover year on every block", () => {
       expect(manifest.phases?.handover_field).toBe("r");

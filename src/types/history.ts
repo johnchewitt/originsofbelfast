@@ -298,6 +298,8 @@ export interface DataManifest {
   counts: Record<string, number>;
   styles: { code: number; id: string; label: string }[];
   fade_to_modern: [number, number];
+  /** Latest completion year of any massing block (no block is under construction after it). */
+  massing_last_complete?: number;
   /**
    * Reconstruction phases shown on the timeline. `handover_field` names the
    * massing attribute holding each block's handover year; older data builds

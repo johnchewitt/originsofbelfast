@@ -4,6 +4,7 @@ import { useAppState, useDispatch } from "../state/store";
 import type { AppData } from "../data/loaders";
 import type { HistoricalEvent, SourceRecord } from "../types/history";
 import { formatEventSpan } from "../engine/dates";
+import { MASSING_KIND } from "../engine/time";
 import { CONFIDENCE_LABELS } from "../map/palette";
 import { Icon } from "./Icon";
 
@@ -236,9 +237,10 @@ function FeatureDetail({ data }: { data: AppData }) {
 
   if (feature.layer === "massing") {
     const style = data.manifest.styles.find((s) => s.code === Number(a.k));
-    const redevelopment = Number(a.t) === 3;
+    const redevelopment = Number(a.t) === MASSING_KIND.redevelopment;
     const handover = Number(a.r);
-    const handsOver = end >= 9999 && Number.isFinite(handover) && handover < 9999;
+    // Shown only when the block leaves at its handover year (not demolished first) and there is a present-day city to hand over to.
+    const handsOver = state.modernAvailable && Number.isFinite(handover) && handover < end;
     return (
       <article>
         <h2 className="event-title">{redevelopment ? "Illustrative redevelopment" : "Illustrative building"}</h2>

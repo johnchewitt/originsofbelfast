@@ -35,7 +35,8 @@ import {
   type LonLat,
   type Ring,
 } from "../src/engine/geo";
-import { PRESENT_SENTINEL } from "../src/engine/time";
+import { retireRange } from "../src/engine/handover";
+import { MASSING_FEATURE_CAP, PRESENT_SENTINEL } from "../src/engine/time";
 import type {
   EventCategory,
   GeometryBasis,
@@ -720,6 +721,13 @@ const massing = generateMassing({
   seed: growth.seed,
 });
 log.info(`Generated ${massing.length} illustrative massing features.`);
+// Every block is loaded once and time is a filter, so the whole layer must fit the 3D view's cap.
+if (massing.length > MASSING_FEATURE_CAP) fail(`Massing has ${massing.length} blocks, more than the layer-view cap of ${MASSING_FEATURE_CAP}: lower massing.max_features or redevelopment.share`);
+// A block must be complete before blocks start handing over, or it would appear during the handover.
+const massingLastComplete = massing.reduce((m, f) => Math.max(m, f.properties.s), -Infinity);
+const [retireFrom] = retireRange(growth.massing.fade_to_modern);
+if (massingLastComplete >= retireFrom) fail(`Massing blocks complete up to ${massingLastComplete}, after the handover begins retiring blocks (${retireFrom.toFixed(2)}): move fade_to_modern later`);
+for (const f of massing) if (!(f.properties.r > f.properties.s)) fail(`Massing block ${f.properties.i} hands over (${f.properties.r}) before it is complete (${f.properties.s})`);
 
 // ── Event points and uncertainty discs ───────────────────────────────────────
 const eventPoints = events
@@ -843,6 +851,8 @@ writeJson("manifest.json", {
   },
   styles: styleIds.map((id, code) => ({ code, id, label: growth.styles[id]?.label ?? id })),
   fade_to_modern: growth.massing.fade_to_modern,
+  /** Latest completion year of any massing block: after it, no block is under construction. */
+  massing_last_complete: massingLastComplete,
   phases: {
     clearance: growth.massing.clearance_years,
     redevelopment: redevelopment ? [growth.massing.clearance_years[0], LAST_GENERATED_YEAR] : null,

@@ -72,9 +72,15 @@ describe("handoverState — model, handover, present", () => {
       expect(h.envelopeFactor).toBe(1);
     }
   });
-  it("respects the viewer's present-day opacity before the handover", () => {
+  it("respects the viewer's present-day opacity before the handover, exactly", () => {
     expect(handoverState(1900, WINDOW, { modernOpacity: 0.8, modernAvailable: true }).modernOpacity).toBe(0.8);
     expect(handoverState(1900, WINDOW, { modernOpacity: 0, modernAvailable: true }).modernOpacity).toBe(0);
+    expect(handoverState(1900, WINDOW, AVAILABLE).basemapOpacity).toBe(0.35);
+    expect(handoverState(1900, WINDOW, { modernOpacity: 0.05, modernAvailable: true }).basemapOpacity).toBe(0.12);
+  });
+  it("turns the present-day buildings solid at the viewer's own opacity", () => {
+    expect(handoverState(1986, WINDOW, AVAILABLE).modernOpacity).toBe(0.35);
+    expect(handoverState(1986, WINDOW, { modernOpacity: 0, modernAvailable: true }).modernOpacity).toBe(0.1);
   });
 });
 
@@ -95,12 +101,24 @@ describe("handover — the city never empties (the 1960–1990 'disappearing bui
     expect(Math.min(...blocks.map((f) => f.r))).toBeGreaterThanOrEqual(retireStart);
     expect(handoverState(retireStart, WINDOW, AVAILABLE).modernOpacity).toBeGreaterThanOrEqual(0.5);
   });
-  it("moves present-day opacity in small steps (no snap from ghost to solid)", () => {
-    let previous = handoverState(WINDOW[0], WINDOW, AVAILABLE).modernOpacity;
-    for (const year of sweep(WINDOW[0], 2026, 0.05)) {
-      const now = handoverState(year, WINDOW, AVAILABLE).modernOpacity;
-      expect(Math.abs(now - previous), `year ${year}`).toBeLessThanOrEqual(0.051);
-      previous = now;
+  it("moves present-day opacity in small steps, including across 1986 (no snap from ghost to solid)", () => {
+    for (const modernOpacity of [0, 0.1, 0.35, 0.6, 1]) {
+      const options = { modernOpacity, modernAvailable: true };
+      let previous = handoverState(1900, WINDOW, options).modernOpacity;
+      for (const year of sweep(1900, 2026, 0.05)) {
+        const now = handoverState(year, WINDOW, options).modernOpacity;
+        // A viewer who switched the ghost off sees today's buildings start faintly at 0.12.
+        const allowed = modernOpacity < 0.12 && year === WINDOW[0] ? 0.121 : 0.051;
+        expect(Math.abs(now - previous), `opacity ${modernOpacity}, year ${year}`).toBeLessThanOrEqual(allowed);
+        previous = now;
+      }
+    }
+  });
+  it("keeps the blocks when the present-day buildings are not drawn (plan view, layer off)", () => {
+    for (const year of [1995, 2008, 2026]) {
+      const h = handoverState(year, WINDOW, { ...AVAILABLE, modernDrawn: false });
+      expect(h.retireBlocks).toBe(false);
+      expect(h.massingVisible).toBe(true);
     }
   });
 });
@@ -163,6 +181,10 @@ describe("reconstructionPhase — words for what the scene shows", () => {
     expect(reconstructionPhase(1984, phases).id).toBe("redevelopment");
     expect(reconstructionPhase(1997, phases).label).toBe("Handing over to present-day buildings · 50%");
     expect(reconstructionPhase(2026, phases).id).toBe("present");
+  });
+  it("says the model stays on screen when the present-day buildings are switched off", () => {
+    expect(reconstructionPhase(1997, phases, { modernAvailable: true, modernDrawn: false }).label).toContain("off");
+    expect(reconstructionPhase(1970, phases, { modernAvailable: true, modernDrawn: false }).id).toBe("redevelopment");
   });
   it("says the model stays on screen when the present-day buildings are unavailable", () => {
     expect(reconstructionPhase(1970, phases, { modernAvailable: false }).id).toBe("redevelopment");

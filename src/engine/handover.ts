@@ -76,6 +76,12 @@ export interface HandoverOptions {
   modernOpacity: number;
   /** False when the present-day buildings failed to load: the model then stays on screen. */
   modernAvailable: boolean;
+  /**
+   * False when the present-day buildings are loaded but not drawn (layer
+   * switched off, or the 2D plan view): blocks then stay, so the scene does
+   * not empty. Defaults to true.
+   */
+  modernDrawn?: boolean;
 }
 
 export interface HandoverState {
@@ -102,17 +108,18 @@ export interface HandoverState {
 export function handoverState(year: number, window: HandoverWindow, options: HandoverOptions): HandoverState {
   const [start, end] = window;
   const progress = end > start ? clamp01((year - start) / (end - start)) : year >= end ? 1 : 0;
+  // Before the handover nothing depends on the year: the viewer's settings apply exactly.
   const ghostBase = Math.max(0.12, options.modernOpacity);
-  const basemapOpacity = stepValue(ghostBase + (1 - ghostBase) * progress, DRAPED_OPACITY_STEP);
+  const basemapOpacity = year < start ? ghostBase : stepValue(ghostBase + (1 - ghostBase) * progress, DRAPED_OPACITY_STEP);
   const showReferenceLabels = year >= start || options.modernOpacity >= 0.6;
 
-  if (!options.modernAvailable) {
-    // No present-day buildings to hand over to: keep the whole model on screen.
+  if (!options.modernAvailable || year < start) {
+    // Before the handover — or with no present-day buildings to hand over to — the whole model stays.
     return {
       phase: "model",
-      progress: 0,
+      progress: options.modernAvailable ? progress : 0,
       modernMode: "ghost",
-      modernOpacity: stepValue(options.modernOpacity, MODERN_OPACITY_STEP),
+      modernOpacity: options.modernOpacity,
       retireBlocks: false,
       massingVisible: true,
       basemapOpacity,
@@ -121,29 +128,20 @@ export function handoverState(year: number, window: HandoverWindow, options: Han
     };
   }
 
-  if (year < start) {
-    return {
-      phase: "model",
-      progress: 0,
-      modernMode: "ghost",
-      modernOpacity: stepValue(options.modernOpacity, MODERN_OPACITY_STEP),
-      retireBlocks: false,
-      massingVisible: true,
-      basemapOpacity,
-      envelopeFactor: 1,
-      showReferenceLabels,
-    };
-  }
-
+  // The present-day buildings turn solid at the opacity the viewer chose for
+  // them (at least a faint MODERN_FADE_FROM), so 1986 brings no jump, and
+  // reach full opacity before the first block steps aside.
+  const from = Math.min(1, Math.max(MODERN_FADE_FROM, options.modernOpacity));
   const fadeIn = smoothstep(year, modernFadeRange(window));
   const present = year >= end;
+  const drawn = options.modernDrawn !== false;
   return {
     phase: present ? "present" : "handover",
     progress,
     modernMode: "solid",
-    modernOpacity: stepValue(MODERN_FADE_FROM + (1 - MODERN_FADE_FROM) * fadeIn, MODERN_OPACITY_STEP),
-    retireBlocks: true,
-    massingVisible: !present,
+    modernOpacity: stepValue(from + (1 - from) * fadeIn, MODERN_OPACITY_STEP),
+    retireBlocks: drawn,
+    massingVisible: !present || !drawn,
     basemapOpacity,
     envelopeFactor: stepValue(1 - (1 - ENVELOPE_PRESENT_FACTOR) * progress, DRAPED_OPACITY_STEP),
     showReferenceLabels,
@@ -177,13 +175,24 @@ export interface PhaseLabel {
  * What the scene is showing at `year`, in words — so a viewer reads clearance,
  * redevelopment and the handover as intended rather than as a glitch.
  */
-export function reconstructionPhase(year: number, phases: ReconstructionPhases, options: { modernAvailable?: boolean } = {}): PhaseLabel {
+export function reconstructionPhase(
+  year: number,
+  phases: ReconstructionPhases,
+  options: { modernAvailable?: boolean; modernDrawn?: boolean } = {},
+): PhaseLabel {
   const [hStart, hEnd] = phases.handover;
   if (year >= hStart && options.modernAvailable === false) {
     return {
       id: "model-only",
       label: "Illustrative model · present-day buildings unavailable",
       detail: "Today's buildings could not be loaded, so the illustrative blocks stay on screen instead of handing over.",
+    };
+  }
+  if (year >= hStart && options.modernDrawn === false) {
+    return {
+      id: "model-only",
+      label: "Illustrative model · present-day buildings off",
+      detail: "Today's buildings are switched off or hidden in the plan view, so the illustrative blocks stay on screen.",
     };
   }
   if (year >= hEnd) {

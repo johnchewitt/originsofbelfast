@@ -32,7 +32,7 @@ import {
 } from "../../src/engine/geo";
 import { envelopeYearAt, seededRandom, type EnvelopeModel } from "../../src/engine/envelope";
 import { handoverYear } from "../../src/engine/handover";
-import { PRESENT_SENTINEL } from "../../src/engine/time";
+import { MASSING_KIND, PRESENT_SENTINEL } from "../../src/engine/time";
 
 export interface StyleDef {
   label: string;
@@ -137,11 +137,11 @@ export interface MassingFeature {
 
 /** Latest year at which illustrative massing is generated (the modern layer takes over). */
 export const LAST_GENERATED_YEAR = 1985;
-/** Kinds encoded in property t. */
-export const KIND_FRONTAGE = 0;
-export const KIND_TERRACE = 1;
-export const KIND_INDUSTRIAL = 2;
-export const KIND_REDEVELOPMENT = 3;
+/** Kinds encoded in property t (shared with the app). */
+export const KIND_FRONTAGE = MASSING_KIND.frontage;
+export const KIND_TERRACE = MASSING_KIND.terrace;
+export const KIND_INDUSTRIAL = MASSING_KIND.industrial;
+export const KIND_REDEVELOPMENT = MASSING_KIND.redevelopment;
 /** Seed offsets for independent random streams (so adding one never reshuffles the others). */
 const REDEVELOPMENT_SEED_OFFSET = 7919;
 const HANDOVER_SEED_OFFSET = 104729;
@@ -444,7 +444,7 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
         const depth = Math.min(params.terrace_depth_m, step * 0.55);
         const group = [makeFeature(rectangle(centre, length, depth, angle), appear - between(rand, [0.5, 1.5]), appear, end, h, code(style), KIND_TERRACE)];
         if (cleared && redev) {
-          const successor = redevelopmentBlock(redevRand, redev, centre, length, depth, angle, end, styles[redevStyle], code(redevStyle));
+          const successor = redevelopmentBlock(redevRand, redev, centre, length, depth, angle, end, styles[redevStyle], code(redevStyle), input.exclusions);
           if (successor) group.push(successor);
         }
         terraceCandidates.push(group);
@@ -453,24 +453,22 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
     inner = outer;
   }
 
-  // Thin terraces uniformly if the total would exceed the feature budget,
-  // keeping each cleared row together with its redevelopment.
+  // Thin terraces uniformly if they would exceed the feature budget. The
+  // budget (`max_features`) counts the original rows only, so they are thinned
+  // exactly as without redevelopment; each kept cleared row brings its
+  // redevelopment block with it (the build checks the total against the 3D
+  // view's feature cap).
   const budget = Math.max(0, params.max_features - features.length);
-  const total = terraceCandidates.reduce((n, g) => n + g.length, 0);
-  const keepEvery = total > budget && budget > 0 ? total / budget : 1;
+  const keepEvery = terraceCandidates.length > budget && budget > 0 ? terraceCandidates.length / budget : 1;
   let cursor = 0;
-  let seen = 0;
-  let kept = 0;
-  for (const group of terraceCandidates) {
-    if (seen >= cursor && kept + group.length <= budget) {
-      for (const f of group) {
+  for (let i = 0; i < terraceCandidates.length; i += 1) {
+    if (i >= cursor) {
+      for (const f of terraceCandidates[i] as MassingFeature[]) {
         f.properties.i = nextId++;
         features.push(f);
       }
-      kept += group.length;
-      cursor += keepEvery * group.length;
+      cursor += keepEvery;
     }
-    seen += group.length;
   }
 
   // ── Handover years: centre first, soft-edged (see src/engine/handover.ts) ──
@@ -491,8 +489,10 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
 }
 
 /**
- * Redevelopment block on a cleared terrace site, or null when the site would
- * only be rebuilt after the handover (it then stays vacant in the model).
+ * Redevelopment block on a cleared terrace site, or null when the site is not
+ * rebuilt: by chance (1 − share), when the rebuild would only come after
+ * {@link LAST_GENERATED_YEAR} (it then stays vacant until the handover), or
+ * when the site has since become a landmark's or an open space's (exclusions).
  * Earlier schemes are taller flats and maisonettes on a narrower footprint;
  * later ones low-rise housing — both illustrative forms.
  */
@@ -506,17 +506,24 @@ function redevelopmentBlock(
   clearedIn: number,
   style: StyleDef | undefined,
   k: number,
+  exclusions: Exclusion[],
 ): MassingFeature | null {
-  if (rand() >= params.share) return null;
-  const appear = Math.min(clearedIn + between(rand, params.gap_years), LAST_GENERATED_YEAR);
-  if (appear < clearedIn + 1) return null;
+  // Draw every value first so the stream stays aligned whatever is decided.
+  const rebuild = rand() < params.share;
+  const appear = clearedIn + between(rand, params.gap_years);
+  const heightDraw = rand();
+  const lengthDraw = rand();
+  const depthDraw = rand();
+  const leadDraw = rand();
+  if (!rebuild || appear > LAST_GENERATED_YEAR || appear < clearedIn + 1) return null;
   const [lo, hi] = style?.height ?? [10, 30];
   const flats = appear < params.flats_until;
-  const height = flats ? between(rand, [lo + (hi - lo) * 0.35, hi]) : between(rand, [lo, lo + (hi - lo) * 0.2]);
-  const blockLength = length * between(rand, flats ? [0.75, 1] : [0.85, 1]);
-  const blockDepth = flats ? Math.min(depth, between(rand, [11, 15])) : depth;
+  const height = flats ? lo + (hi - lo) * (0.35 + 0.65 * heightDraw) : lo + (hi - lo) * 0.2 * heightDraw;
+  const blockLength = length * (flats ? 0.75 + 0.25 * lengthDraw : 0.85 + 0.15 * lengthDraw);
+  const blockDepth = flats ? Math.min(depth, 11 + 4 * depthDraw) : depth;
   // Building starts no earlier than the clearance: the two never stand on the site together.
-  const build = Math.max(clearedIn, appear - between(rand, [1, 2.5]));
+  const build = Math.max(clearedIn, appear - (1 + 1.5 * leadDraw));
+  if (excluded(centre, build, exclusions)) return null;
   return makeFeature(rectangle(centre, blockLength, blockDepth, angle), build, appear, PRESENT_SENTINEL, height, k, KIND_REDEVELOPMENT);
 }
 

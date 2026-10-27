@@ -16,6 +16,9 @@ import type { TemporalProps, HistoricalEvent } from "../types/history";
  */
 export const MASSING_FEATURE_CAP = 12500;
 
+/** Kinds of illustrative massing block (attribute `t`). */
+export const MASSING_KIND = { frontage: 0, terrace: 1, industrial: 2, redevelopment: 3 } as const;
+
 /** Sentinel stored in layer attributes for "still standing". */
 export const PRESENT_SENTINEL = 9999;
 

@@ -58,6 +58,8 @@ const LANDMARK_YEAR_STEP = 0.25;
 const MASSING_YEAR_STEP: Record<DisplayPrefs["performance"], number> = { fast: 1, balanced: 0.25, detailed: 0.05 };
 /** Opacity of outlined extrusions is applied this long after the last slider change (ms). */
 const OPACITY_SETTLE_MS = 180;
+/** …and once the layer view has finished updating, waiting at most this long (ms). */
+const OPACITY_MAX_WAIT_MS = 2500;
 /** "New street" highlighting is recomputed in steps of this many years, per performance mode. */
 const STREET_HIGHLIGHT_STEP: Record<DisplayPrefs["performance"], number> = { fast: 5, balanced: 2, detailed: 0.5 };
 
@@ -248,10 +250,12 @@ export class SceneController {
         if (this.destroyed) return;
         const lv = layerView as unknown as { maximumNumberOfFeatures?: number; filter: FeatureFilter | null | undefined };
         // The SDK estimates its own cap only after the layer view has processed
-        // the layer (so it is not yet a number here) and may lower it later —
-        // 8,500 was measured on a software renderer, silently dropping blocks.
-        // All blocks are loaded once (time is a filter), so keep the cap above
-        // the dataset size, unless the view is short of memory.
+        // the layer (so it is not yet a number here, and the original one-off
+        // raise never took effect) — 8,500 was measured on a software renderer,
+        // silently dropping blocks. All blocks are loaded once (time is a
+        // filter), so raise the cap above the dataset size as soon as the SDK
+        // sets it. The SDK then keeps it as an override; it is not raised while
+        // the view is already short of memory.
         const raiseCap = () => {
           const quality = view.performanceInfo?.quality ?? 1;
           if (typeof lv.maximumNumberOfFeatures === "number" && lv.maximumNumberOfFeatures < MASSING_FEATURE_CAP && quality >= 0.9) {
@@ -369,9 +373,11 @@ export class SceneController {
     // handover year each) — the massing layer's opacity is never animated,
     // because each opacity change stalls the 3D renderer for up to 1.5 s.
     const handover = this.handover(year);
+    const massingVisible = !hidden.has("massing") && handover.massingVisible;
     const massingWhere = massingWhereClause(quantize(year, MASSING_YEAR_STEP[display.performance]), handover.retireBlocks && this.hasHandoverField);
     if (this.massingView) {
-      if (massingWhere !== this.massingWhere) {
+      // A hidden layer keeps its last filter; it is brought up to date when shown again.
+      if (massingVisible && massingWhere !== this.massingWhere) {
         this.massingView.filter = new FeatureFilter({ where: massingWhere });
         this.massingWhere = massingWhere;
       }
@@ -388,9 +394,13 @@ export class SceneController {
     // the layer re-draw every feature, which is what made playback stutter.
     const story = s.storyChapter === "1798";
     const animate = profile.constructionAnimation && !flat;
-    const massingYear = animate ? quantize(year, profile.rendererYearStep) : null;
+    // After the last block is complete every height is final, so the year stops mattering.
+    const lastComplete = this.data.manifest.massing_last_complete;
+    const massingYear = animate ? (lastComplete !== undefined && year >= lastComplete ? lastComplete : quantize(year, profile.rendererYearStep)) : null;
     const edges = profile.edgesOverride ?? display.layers.massing.edges;
-    this.setRenderer("massing", `${flat}|${massingYear}|${edges}`, force, () => massingRenderer(massingYear, this.data.manifest.styles, flat, display.layers.massing, edges));
+    if (massingVisible || force) {
+      this.setRenderer("massing", `${flat}|${massingYear}|${edges}`, force, () => massingRenderer(massingYear, this.data.manifest.styles, flat, display.layers.massing, edges));
+    }
     // Year-dependent renderers are rebuilt only when their output changes:
     // landmarks while one is under construction or at a construction date,
     // streets when a street starts or stops glowing as new.
@@ -406,7 +416,7 @@ export class SceneController {
     const styles = display.layers;
     // Outlined extrusions (massing, landmarks) take opacity once a slider has settled.
     this.setExtrusionOpacity("massing", round3(s.historicOpacity * styles.massing.opacity), force);
-    L.massing.visible = !hidden.has("massing") && handover.massingVisible;
+    L.massing.visible = massingVisible;
     this.setExtrusionOpacity("landmarks", round3(Math.max(0.15, s.historicOpacity) * styles.landmarks.opacity), force);
     L.envelope.opacity = round3(s.historicOpacity * styles.envelope.opacity * handover.envelopeFactor);
     L.streets.opacity = styles.streets.opacity;
@@ -428,12 +438,14 @@ export class SceneController {
    * rebuild their edges — measured at 0.3–1.5 s on an integrated GPU, and the
    * SDK's edge renderer can throw ("no object") when changes arrive while it is
    * still rebuilding. A slider drag would fire one per step, so the value is
-   * applied once the slider has rested; the first and forced values apply at once.
+   * applied once the slider has rested and the layer view has finished
+   * updating (or after OPACITY_MAX_WAIT_MS); the first and forced values
+   * apply at once.
    */
   private setExtrusionOpacity(id: "massing" | "landmarks", value: number, force: boolean): void {
     const layer = this.layers[id];
     const pending = this.opacityTimers.get(id);
-    // Same target already waiting (e.g. playback ticks while it settles): leave the timer alone.
+    // Same target already waiting (e.g. playback ticks while it settles): leave it alone.
     if (pending && pending.value === value && !force) return;
     if (pending) window.clearTimeout(pending.timer);
     this.opacityTimers.delete(id);
@@ -442,9 +454,22 @@ export class SceneController {
       layer.opacity = value;
       return;
     }
-    const timer = window.setTimeout(() => {
+    const view = this.viewRef;
+    const apply = () => {
+      // A newer value may have replaced this one while we waited.
+      if (this.destroyed || this.opacityTimers.get(id)?.value !== value) return;
       this.opacityTimers.delete(id);
-      if (!this.destroyed) layer.opacity = value;
+      layer.opacity = value;
+    };
+    const timer = window.setTimeout(() => {
+      const layerView = view.allLayerViews.find((lv) => lv.layer === layer);
+      if (!layerView?.updating) {
+        apply();
+        return;
+      }
+      const ready = reactiveUtils.whenOnce(() => !layerView.updating);
+      const timeout = new Promise((resolve) => window.setTimeout(resolve, OPACITY_MAX_WAIT_MS));
+      void Promise.race([ready, timeout]).then(apply);
     }, OPACITY_SETTLE_MS);
     this.opacityTimers.set(id, { timer, value });
   }
@@ -455,9 +480,12 @@ export class SceneController {
   }
 
   private handover(year: number): HandoverState {
+    const s = this.settings;
     return handoverState(year, this.data.manifest.fade_to_modern, {
-      modernOpacity: this.settings.modernOpacity,
+      modernOpacity: s.modernOpacity,
       modernAvailable: this.modernAvailable,
+      // Blocks only step aside for present-day buildings that are actually drawn.
+      modernDrawn: s.viewMode !== "plan" && !s.hidden.includes("modern"),
     });
   }
 
