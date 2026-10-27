@@ -9,10 +9,13 @@ import {
   isComplete,
   isEventVisible,
   isPresent,
+  NEW_STREET_YEARS,
   presentWhereClause,
   quantize,
   rampByYear,
+  rendererBreaksFor,
   snapToBreakpoint,
+  stableRendererYear,
 } from "./time";
 import type { TemporalProps } from "../types/history";
 
@@ -168,6 +171,61 @@ describe("filter stability during playback", () => {
     for (let y = 1550; y <= 2030; y += 0.37) {
       expect(visibleIds(snapToBreakpoint(y, dates))).toBe(visibleIds(y));
     }
+  });
+});
+
+/** TypeScript replica of the Arcade in heightArcade (landmark renderer). */
+function arcadeHeight(year: number, f: { build_start: number; start_year: number; height_m: number; base_m: number }): number {
+  const { build_start: s, start_year: e, height_m: h, base_m: base } = f;
+  const p = e <= s ? 1 : Math.min(1, Math.max(0, (year - s) / (e - s)));
+  if (base > 0) return p < 0.85 ? 0.05 : h * Math.max(0.05, (p - 0.85) / 0.15);
+  return Math.max(0.05, h * p);
+}
+
+describe("stableRendererYear — rebuild year-dependent renderers only when they change", () => {
+  let seed = 11;
+  const rand = () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
+  };
+  const landmarks = Array.from({ length: 60 }, () => {
+    const build = Math.round((1600 + rand() * 400) * 100) / 100;
+    return { properties: { build_start: build, start_year: Math.round((build + rand() * 8) * 100) / 100, height_m: 10 + rand() * 40, base_m: rand() < 0.2 ? 20 : 0 } };
+  });
+  const streets = Array.from({ length: 200 }, () => ({ properties: { start_year: Math.round((1600 + rand() * 420) * 100) / 100 } }));
+
+  it("gives every landmark exactly the same height as the real year would", () => {
+    const { breaks, active } = rendererBreaksFor("landmarks", landmarks);
+    for (let y = 1550; y <= 2030; y += 0.25) {
+      const stable = stableRendererYear(y, breaks, active);
+      for (const { properties: f } of landmarks) expect(arcadeHeight(stable, f)).toBe(arcadeHeight(y, f));
+    }
+  });
+  it("gives every street exactly the same 'new' class as the real year would", () => {
+    const { breaks } = rendererBreaksFor("streets", streets);
+    for (let y = 1600; y <= 2030; y += 0.5) {
+      const stable = stableRendererYear(y, breaks);
+      for (const { properties: f } of streets) {
+        if (f.start_year > y) continue; // not on the map (time filter)
+        expect(stable - f.start_year < NEW_STREET_YEARS).toBe(y - f.start_year < NEW_STREET_YEARS);
+      }
+    }
+  });
+  it("rebuilds the landmark renderer far less often than every quarter-year", () => {
+    // Realistic density: 34 landmarks, each under construction for 0.5–3 years.
+    const sparse = Array.from({ length: 34 }, () => {
+      const build = Math.round((1600 + rand() * 420) * 100) / 100;
+      return { properties: { build_start: build, start_year: Math.round((build + 0.5 + rand() * 2.5) * 100) / 100 } };
+    });
+    const { breaks, active } = rendererBreaksFor("landmarks", sparse);
+    const years = Array.from({ length: (2026 - 1600) * 4 + 1 }, (_, i) => 1600 + i / 4);
+    const before = new Set(years.map((y) => quantize(y, 0.25))).size;
+    const after = new Set(years.map((y) => stableRendererYear(quantize(y, 0.25), breaks, active))).size;
+    expect(after).toBeLessThan(before / 3);
+  });
+  it("passes the year straight through when no dates are known yet", () => {
+    expect(stableRendererYear(1850.25, undefined)).toBe(1850.25);
+    expect(stableRendererYear(1850.25, [])).toBe(1850.25);
   });
 });
 

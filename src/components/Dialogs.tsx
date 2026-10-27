@@ -81,6 +81,11 @@ export function AboutDialog({ data }: { data: AppData }) {
         <p>
           The building massing ({(m.counts.massing ?? 0).toLocaleString()} generated blocks), the built-up envelope, the shoreline and reclamation outlines and the street alignments are a <em>demonstration reconstruction</em>. They show the pattern of Belfast's growth — outward along its streets, upward through rebuilding, onto land reclaimed from the Lagan — but they are not digitised from historical maps and no single block represents a real building. Street geometry: <strong>{m.street_geometry_source}</strong>. Landmark dates are sourced; their outlines are illustrative unless stated.
         </p>
+        {m.phases ? (
+          <p>
+            From {m.phases.clearance[0]} to {m.phases.clearance[1]} a share of inner-city terraces is cleared{m.phases.redevelopment ? ", and most cleared sites are rebuilt after a few vacant years as flats or low-rise housing" : ""} — the timeline marks this with an amber hatched band. From {m.phases.handover[0]} to {m.phases.handover[1]} the model hands over to today's buildings: these fade in first, then the illustrative blocks step aside, centre first (amber-to-cyan band).
+          </p>
+        ) : null}
         <div className="notice cyan">
           <Icon name="scroll" />
           <span>To make the reconstruction evidential, digitise dated extents and footprints from the Irish Historic Towns Atlas (Belfast I and II) and OSNI six-inch editions, then run the data pipeline described in the README.</span>

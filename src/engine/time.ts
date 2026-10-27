@@ -16,6 +16,9 @@ import type { TemporalProps, HistoricalEvent } from "../types/history";
  */
 export const MASSING_FEATURE_CAP = 12500;
 
+/** Kinds of illustrative massing block (attribute `t`). */
+export const MASSING_KIND = { frontage: 0, terrace: 1, industrial: 2, redevelopment: 3 } as const;
+
 /** Sentinel stored in layer attributes for "still standing". */
 export const PRESENT_SENTINEL = 9999;
 
@@ -157,6 +160,58 @@ export function eventsStartingBetween<T extends Pick<HistoricalEvent, "start_yea
 /** Round down to a multiple of `step` (stable string output for where clauses). */
 export function quantize(year: number, step: number): number {
   return Math.round(Math.floor(year / step + 1e-9) * step * 1000) / 1000;
+}
+
+/**
+ * Year to embed in a year-dependent renderer so that it is rebuilt only when
+ * its output would change. Inside an "active" interval (a construction period,
+ * during which heights change continuously) the year is used as is; elsewhere
+ * it snaps to the latest date in `breaks`, because between consecutive dates
+ * every feature renders identically (unit-tested). Rebuilding a renderer makes
+ * the layer re-symbolise every feature, which shows as a flicker.
+ */
+export function stableRendererYear(
+  year: number,
+  breaks: readonly number[] | undefined,
+  active: readonly (readonly [number, number])[] = [],
+): number {
+  if (!breaks || breaks.length === 0) return year;
+  for (const [a, b] of active) if (year > a && year < b) return year;
+  return snapToBreakpoint(year, breaks as number[]);
+}
+
+/** Years a street glows as "new" after it first appears (street renderer). */
+export const NEW_STREET_YEARS = 10;
+
+/**
+ * Dates at which a year-dependent renderer's output changes, for
+ * {@link stableRendererYear}. Landmark heights change continuously during
+ * construction ([build_start, start_year]) and are constant otherwise; a
+ * street's class changes when it appears and when it stops being "new".
+ */
+export function rendererBreaksFor(
+  id: "landmarks" | "streets",
+  features: readonly { properties: Record<string, unknown> }[],
+): { breaks: number[]; active: [number, number][] } {
+  const breaks = new Set<number>();
+  const active: [number, number][] = [];
+  for (const f of features) {
+    const p = f.properties;
+    if (id === "landmarks") {
+      const a = Number(p.build_start);
+      const b = Number(p.start_year);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+      breaks.add(a);
+      breaks.add(b);
+      if (b > a) active.push([a, b]);
+    } else {
+      const start = Number(p.start_year);
+      if (!Number.isFinite(start)) continue;
+      breaks.add(start);
+      breaks.add(Math.round((start + NEW_STREET_YEARS) * 1000) / 1000);
+    }
+  }
+  return { breaks: [...breaks].sort((x, y) => x - y), active };
 }
 
 /**

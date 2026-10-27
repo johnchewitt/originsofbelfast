@@ -298,6 +298,19 @@ export interface DataManifest {
   counts: Record<string, number>;
   styles: { code: number; id: string; label: string }[];
   fade_to_modern: [number, number];
+  /** Latest completion year of any massing block (no block is under construction after it). */
+  massing_last_complete?: number;
+  /**
+   * Reconstruction phases shown on the timeline. `handover_field` names the
+   * massing attribute holding each block's handover year; older data builds
+   * lack it, and the scene then keeps every block until the handover ends.
+   */
+  phases?: {
+    clearance: [number, number];
+    redevelopment: [number, number] | null;
+    handover: [number, number];
+    handover_field?: "r";
+  };
   footprint: { year: number; area_km2: number }[];
   population: { series: PopulationPoint[]; alternates: { year: number; population: number; label: string }[]; source_ids: string[] };
   street_geometry_source: "schematic" | "openstreetmap";

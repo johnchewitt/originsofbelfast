@@ -246,6 +246,19 @@
       1960,
       1982
     ],
+    "redevelopment": {
+      "share": 0.8,
+      "gap_years": [
+        2,
+        7
+      ],
+      "flats_until": 1975,
+      "source_ids": [
+        "wiki-divis-tower",
+        "wiki-demographics"
+      ],
+      "note": "Sourced: inner-city terraces cleared from the 1960s were redeveloped — Divis Flats and Divis Tower (1966) replaced housing in the lower Falls, and the 1951 census peak was followed by redevelopment and suburban growth. Illustrative: which cleared rows were rebuilt (80%), the vacant interval (2–7 years), and the forms (taller flats and maisonettes before 1975, low-rise housing after). Sites cleared too late to be rebuilt before the handover stay vacant."
+    },
     "fade_to_modern": [
       1986,
       2008
@@ -377,6 +390,14 @@
       "height": [
         12,
         40
+      ]
+    },
+    "redevelopment": {
+      "label": "Post-war redevelopment",
+      "from": 1960,
+      "height": [
+        8,
+        24
       ]
     }
   }

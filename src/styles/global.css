@@ -1039,6 +1039,62 @@ input[type="range"].range {
   background: linear-gradient(90deg, rgba(73, 234, 216, 0.04), rgba(73, 234, 216, 0.22));
   pointer-events: none;
 }
+/* Reconstruction phases: clearance & redevelopment (amber hatch), handover to today (amber → cyan). */
+.tl-band {
+  position: absolute;
+  bottom: 3px;
+  height: 4px;
+  border-radius: 2px;
+}
+.tl-band.redevelopment {
+  background: repeating-linear-gradient(135deg, rgba(232, 183, 107, 0.9) 0 4px, rgba(232, 183, 107, 0.25) 4px 7px);
+}
+.tl-band.handover {
+  background: linear-gradient(90deg, rgba(232, 183, 107, 0.9), rgba(73, 234, 216, 0.95));
+}
+.legend-band {
+  width: 22px;
+  height: 5px;
+  border-radius: 2px;
+}
+.legend-band.redevelopment {
+  background: repeating-linear-gradient(135deg, rgba(232, 183, 107, 0.9) 0 4px, rgba(232, 183, 107, 0.25) 4px 7px);
+}
+.legend-band.handover {
+  background: linear-gradient(90deg, rgba(232, 183, 107, 0.9), rgba(73, 234, 216, 0.95));
+}
+.tl-phase {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 6px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 10.5px;
+  line-height: 13px; /* stays within the readout row, clear of the event ticks below */
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tl-phase-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tl-phase.redevelopment,
+.tl-phase.model-only {
+  color: var(--amber);
+  border-color: rgba(232, 183, 107, 0.45);
+  background: rgba(232, 183, 107, 0.1);
+}
+.tl-phase.handover,
+.tl-phase.present {
+  color: var(--cyan);
+  border-color: rgba(73, 234, 216, 0.45);
+  background: linear-gradient(90deg, rgba(232, 183, 107, 0.12), rgba(73, 234, 216, 0.12));
+}
 .tl-ticks {
   position: absolute;
   left: 0;

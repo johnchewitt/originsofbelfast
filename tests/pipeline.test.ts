@@ -7,9 +7,10 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { irishGridToLonLat, itmToLonLat, parseIrishGridReference } from "../scripts/lib/grids";
 import { chainLines, matchStreet } from "../scripts/lib/osm";
-import { generateMassing, styleForYear, type MassingParams } from "../scripts/lib/massing";
+import { generateMassing, KIND_REDEVELOPMENT, KIND_TERRACE, styleForYear, type MassingFeature, type MassingParams } from "../scripts/lib/massing";
 import { distance, offset, type LonLat } from "../src/engine/geo";
-import { isEventVisible, isPresent, MASSING_FEATURE_CAP } from "../src/engine/time";
+import { handoverState, isMassingShown, retireRange } from "../src/engine/handover";
+import { isEventVisible, isPresent, MASSING_FEATURE_CAP, quantize, rendererBreaksFor, stableRendererYear } from "../src/engine/time";
 import { ask } from "../src/engine/ask";
 import { buildSearchIndex, search, type PlaceRecord } from "../src/engine/search";
 import type { HistoricalEvent, SourceRecord } from "../src/types/history";
@@ -158,6 +159,62 @@ describe("illustrative massing generator", () => {
     expect(styleForYear(1880, "frontage")).toBe("victorian");
     expect(styleForYear(1880, "terrace")).toBe("terrace");
   });
+
+  describe("redevelopment after clearance", () => {
+    const redevParams: MassingParams = { ...params, clearance_ring_m: [300, 1150], clearance_share: 0.6, max_features: 20000, redevelopment: { share: 0.8, gap_years: [2, 7], flats_until: 1975 } };
+    const withStyles = { ...styles, redevelopment: { label: "", from: 1960, height: [8, 24] as [number, number] } };
+    const rebuilt = generateMassing({ ...input(), params: redevParams, styles: withStyles });
+    const vacant = generateMassing({ ...input(), params: { ...redevParams, redevelopment: undefined }, styles: withStyles });
+    const centroid = (f: MassingFeature): LonLat => {
+      const r = f.geometry.coordinates[0] as LonLat[];
+      return [r.slice(0, 4).reduce((s, p) => s + p[0], 0) / 4, r.slice(0, 4).reduce((s, p) => s + p[1], 0) / 4];
+    };
+    const successors = rebuilt.filter((f) => f.properties.t === KIND_REDEVELOPMENT);
+
+    it("rebuilds most cleared sites", () => {
+      const cleared = rebuilt.filter((f) => f.properties.t === KIND_TERRACE && f.properties.e < 9999);
+      expect(cleared.length).toBeGreaterThan(10);
+      expect(successors.length / cleared.length).toBeGreaterThan(0.5);
+    });
+    it("puts each new block on a cleared site, after the clearance, before the handover", () => {
+      const cleared = rebuilt.filter((f) => f.properties.t === KIND_TERRACE && f.properties.e < 9999);
+      for (const s of successors) {
+        const site = cleared.find((c) => distance(centroid(c), centroid(s)) < 1);
+        expect(site, `successor ${s.properties.i}`).toBeDefined();
+        expect(s.properties.b).toBeGreaterThanOrEqual((site as MassingFeature).properties.e); // never two buildings at once
+        expect(s.properties.s).toBeGreaterThan((site as MassingFeature).properties.e);
+        expect(s.properties.s).toBeLessThanOrEqual(1985);
+        expect(s.properties.e).toBe(9999);
+      }
+    });
+    const strip = (list: MassingFeature[]) => list.filter((f) => f.properties.t !== KIND_REDEVELOPMENT).map((f) => ({ ...f.properties, i: 0, r: 0, g: f.geometry }));
+    it("leaves the rest of the model exactly as it was (separate random stream)", () => {
+      expect(strip(rebuilt)).toEqual(strip(vacant));
+    });
+    it("thins the original rows exactly as before when the budget bites", () => {
+      const budget = Math.round(vacant.length * 0.85);
+      const tight = { ...redevParams, max_features: budget };
+      const thinRebuilt = generateMassing({ ...input(), params: tight, styles: withStyles });
+      const thinVacant = generateMassing({ ...input(), params: { ...tight, redevelopment: undefined }, styles: withStyles });
+      expect(thinVacant.length).toBe(budget); // the budget really bites
+      expect(strip(thinRebuilt)).toEqual(strip(thinVacant));
+      expect(thinRebuilt.length).toBeGreaterThan(budget); // successors come on top of the budget
+    });
+    it("keeps redevelopment out of landmark sites and open spaces", () => {
+      const zone = { centre: offset(centre, 700, 0), radius: 260, from: 1950 };
+      const guarded = generateMassing({ ...input(), exclusions: [...input().exclusions, zone], params: redevParams, styles: withStyles });
+      const inZone = guarded.filter((f) => f.properties.t === KIND_REDEVELOPMENT && distance(centroid(f), zone.centre) < zone.radius);
+      expect(inZone).toHaveLength(0);
+      expect(guarded.filter((f) => f.properties.t === KIND_REDEVELOPMENT).length).toBeGreaterThan(0);
+    });
+    it("gives every block a handover year inside the handover", () => {
+      const [a, b] = retireRange(params.fade_to_modern);
+      for (const f of rebuilt) {
+        expect(f.properties.r).toBeGreaterThanOrEqual(a - 0.01);
+        expect(f.properties.r).toBeLessThanOrEqual(b + 0.01);
+      }
+    });
+  });
 });
 
 const built = existsSync(resolve(DATA, "events.json"));
@@ -208,6 +265,66 @@ describe.skipIf(!built)("built dataset integrity", () => {
   it("fits the whole massing layer under the 3D view's feature cap", () => {
     const massing = read<{ features: unknown[] }>("massing.geojson").features;
     expect(massing.length).toBeLessThanOrEqual(MASSING_FEATURE_CAP);
+  });
+
+  describe("illustrative city through clearance and handover", () => {
+    const manifest = built ? read<{ fade_to_modern: [number, number]; phases?: { handover_field?: string } }>("manifest.json") : { fade_to_modern: [1986, 2008] as [number, number] };
+    const massing = built ? read<{ features: MassingFeature[] }>("massing.geojson").features : [];
+    const centre: LonLat = [-5.9285, 54.5998];
+    const centroid = (f: MassingFeature): LonLat => {
+      const r = f.geometry.coordinates[0] as LonLat[];
+      return [r.slice(0, 4).reduce((s, p) => s + p[0], 0) / 4, r.slice(0, 4).reduce((s, p) => s + p[1], 0) / 4];
+    };
+    const standing = (list: MassingFeature[], year: number) => list.filter((f) => isMassingShown(f.properties, year, false)).length;
+
+    it("never hollows out: the inner ring keeps its buildings through 1960–85", () => {
+      const ring = massing.filter((f) => {
+        const d = distance(centroid(f), centre);
+        return d > 800 && d < 2600;
+      });
+      expect(standing(ring, 1985) / standing(ring, 1960)).toBeGreaterThan(0.93); // was 0.85 with cleared sites left vacant
+      for (let y = 1700; y <= manifest.fade_to_modern[0] - 5; y += 0.5) {
+        const a = standing(massing, y);
+        expect((a - standing(massing, y + 5)) / a, `${y}–${y + 5}`).toBeLessThan(0.015);
+      }
+    });
+    it("keeps the original rows at the full budget and the total under the cap", () => {
+      const originals = massing.filter((f) => f.properties.t !== KIND_REDEVELOPMENT).length;
+      const growth = JSON.parse(readFileSync(resolve(__dirname, "../data/curated/growth.json"), "utf-8")) as { massing: { max_features: number } };
+      expect(originals).toBe(growth.massing.max_features);
+      expect(massing.length).toBeLessThanOrEqual(MASSING_FEATURE_CAP);
+    });
+    it("leaves late clearances vacant rather than bunching rebuilds at 1985", () => {
+      const at1985 = massing.filter((f) => f.properties.t === KIND_REDEVELOPMENT && Math.abs(f.properties.s - 1985) < 0.01);
+      expect(at1985.length).toBeLessThan(3);
+    });
+    it("records the handover field and a handover year on every block", () => {
+      expect(manifest.phases?.handover_field).toBe("r");
+      const [a, b] = retireRange(manifest.fade_to_modern);
+      for (const f of massing) {
+        expect(f.properties.r).toBeGreaterThanOrEqual(a - 0.01);
+        expect(f.properties.r).toBeLessThanOrEqual(b + 0.01);
+      }
+    });
+    it("keeps a full city on screen through the handover", () => {
+      const [start, end] = manifest.fade_to_modern;
+      const before = standing(massing, start - 0.01);
+      for (let y = start; y <= end; y += 0.25) {
+        const shown = massing.filter((f) => isMassingShown(f.properties, y, true)).length / before;
+        const modern = handoverState(y, manifest.fade_to_modern, { modernOpacity: 0.35, modernAvailable: true }).modernOpacity;
+        expect(modern + shown, `year ${y}`).toBeGreaterThanOrEqual(0.99);
+      }
+      expect(massing.filter((f) => isMassingShown(f.properties, end, true))).toHaveLength(0);
+    });
+  });
+
+  it("rebuilds the landmark renderer only around construction dates", () => {
+    const features = read<{ features: { properties: Record<string, unknown> }[] }>("landmarks.geojson").features;
+    const { breaks, active } = rendererBreaksFor("landmarks", features);
+    const years = Array.from({ length: (2026 - 600) * 4 + 1 }, (_, i) => 600 + i / 4);
+    const before = new Set(years.map((y) => quantize(y, 0.25))).size;
+    const after = new Set(years.map((y) => stableRendererYear(quantize(y, 0.25), breaks, active))).size;
+    expect(after).toBeLessThan(before / 4);
   });
   it("shows the Market House standing in 1798 and gone by 1820", () => {
     const parts = read<{ features: { properties: { landmark_id: string; build_start: number; start_year: number; end_year: number } }[] }>("landmarks.geojson").features

@@ -9,7 +9,14 @@
  *  - frontage blocks along the period street network, appearing when their
  *    street segment appears, and rebuilt taller over time in the core;
  *  - terrace rows filling the growth envelope beyond the core, with a share
- *    of inner-ring rows cleared in the 1960s–80s redevelopment period.
+ *    of inner-ring rows cleared in the 1960s–80s redevelopment period and,
+ *    on most cleared sites, a redevelopment block (flats and maisonettes,
+ *    later low-rise housing) after a few vacant years — so clearance reads as
+ *    redevelopment rather than as the inner city emptying.
+ *
+ * Every block also carries a handover year `r`: during the handover to the
+ * present-day buildings the scene removes blocks by filter (centre first)
+ * instead of fading the whole layer (see src/engine/handover.ts).
  *
  * Generation is deterministic for a given seed.
  */
@@ -24,7 +31,8 @@ import {
   type Ring,
 } from "../../src/engine/geo";
 import { envelopeYearAt, seededRandom, type EnvelopeModel } from "../../src/engine/envelope";
-import { PRESENT_SENTINEL } from "../../src/engine/time";
+import { handoverYear } from "../../src/engine/handover";
+import { MASSING_KIND, PRESENT_SENTINEL } from "../../src/engine/time";
 
 export interface StyleDef {
   label: string;
@@ -47,6 +55,23 @@ export interface MassingParams {
   clearance_years: [number, number];
   fade_to_modern: [number, number];
   max_features: number;
+  /** Rebuilding on cleared terrace sites (omit to leave cleared sites vacant). */
+  redevelopment?: RedevelopmentParams;
+}
+
+/**
+ * Redevelopment of cleared terrace sites. The share, gap and forms are
+ * illustrative; the fact of clearance followed by redevelopment is sourced.
+ */
+export interface RedevelopmentParams {
+  /** Share of cleared rows rebuilt (0–1). */
+  share: number;
+  /** Vacant years between clearance and the new block. */
+  gap_years: [number, number];
+  /** Blocks begun before this year are flats/maisonettes; later ones low-rise housing. */
+  flats_until: number;
+  source_ids?: string[];
+  note?: string;
 }
 
 /**
@@ -106,15 +131,20 @@ export interface MassingInputs {
 export interface MassingFeature {
   type: "Feature";
   geometry: { type: "Polygon"; coordinates: Ring[] };
-  properties: { i: number; b: number; s: number; e: number; h: number; k: number; t: number };
+  /** i id, b build start, s complete, e removed, h height, k style code, t kind, r handover year. */
+  properties: { i: number; b: number; s: number; e: number; h: number; k: number; t: number; r: number };
 }
 
 /** Latest year at which illustrative massing is generated (the modern layer takes over). */
-const LAST_GENERATED_YEAR = 1985;
-/** Kinds encoded in property t. */
-const KIND_FRONTAGE = 0;
-const KIND_TERRACE = 1;
-const KIND_INDUSTRIAL = 2;
+export const LAST_GENERATED_YEAR = 1985;
+/** Kinds encoded in property t (shared with the app). */
+export const KIND_FRONTAGE = MASSING_KIND.frontage;
+export const KIND_TERRACE = MASSING_KIND.terrace;
+export const KIND_INDUSTRIAL = MASSING_KIND.industrial;
+export const KIND_REDEVELOPMENT = MASSING_KIND.redevelopment;
+/** Seed offsets for independent random streams (so adding one never reshuffles the others). */
+const REDEVELOPMENT_SEED_OFFSET = 7919;
+const HANDOVER_SEED_OFFSET = 104729;
 /** Infill rows start this far from the centre (inside it the street frontages suffice). */
 const CORE_INFILL_START_M = 40;
 
@@ -238,6 +268,9 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
   const order = styleOrder(styles);
   const code = (style: string): number => Math.max(0, order.indexOf(style));
   const rand = seededRandom(input.seed);
+  // Separate streams: redevelopment and handover draws never shift the main layout.
+  const redevRand = seededRandom(input.seed + REDEVELOPMENT_SEED_OFFSET);
+  const handoverRand = seededRandom(input.seed + HANDOVER_SEED_OFFSET);
   const index = new SegmentIndex(input.streets, envelope.centre);
   const growthYear = input.growthYear ?? ((p: LonLat) => envelopeYearAt(envelope, p));
   const features: MassingFeature[] = [];
@@ -255,6 +288,7 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
         h: round1(height),
         k: code(style),
         t: kind,
+        r: PRESENT_SENTINEL,
       },
     });
   };
@@ -353,7 +387,10 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
   }
 
   // ── Terrace rows and mills filling the envelope ───────────────────────────
-  const terraceCandidates: MassingFeature[] = [];
+  // Candidates are groups so a cleared row and its redevelopment are thinned together.
+  const terraceCandidates: MassingFeature[][] = [];
+  const redev = params.redevelopment;
+  const redevStyle = styles.redevelopment ? "redevelopment" : "postwar";
   const bands = params.terrace_row_spacing_m;
   let inner = CORE_INFILL_START_M;
   for (const band of bands) {
@@ -395,7 +432,7 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
           const w = between(rand, [50, 85]);
           const d = between(rand, [18, 26]);
           const end = rand() < 0.5 ? between(rand, [1958, 1995]) : PRESENT_SENTINEL;
-          terraceCandidates.push(makeFeature(rectangle(centre, w, d, angle), appear - 2, appear, end, between(rand, styles.industrial?.height ?? [16, 24]), code("industrial"), KIND_INDUSTRIAL));
+          terraceCandidates.push([makeFeature(rectangle(centre, w, d, angle), appear - 2, appear, end, between(rand, styles.industrial?.height ?? [16, 24]), code("industrial"), KIND_INDUSTRIAL)]);
           continue;
         }
         const style = styleForYear(appear, "terrace");
@@ -404,32 +441,97 @@ export function generateMassing(input: MassingInputs): MassingFeature[] {
         const cleared = r > c0 && r < c1 && appear < 1914 && rand() < params.clearance_share;
         const end = cleared ? between(rand, params.clearance_years) : PRESENT_SENTINEL;
         const length = Math.min(between(rand, params.terrace_length_m), step * 1.25);
-        terraceCandidates.push(makeFeature(rectangle(centre, length, Math.min(params.terrace_depth_m, step * 0.55), angle), appear - between(rand, [0.5, 1.5]), appear, end, h, code(style), KIND_TERRACE));
+        const depth = Math.min(params.terrace_depth_m, step * 0.55);
+        const group = [makeFeature(rectangle(centre, length, depth, angle), appear - between(rand, [0.5, 1.5]), appear, end, h, code(style), KIND_TERRACE)];
+        if (cleared && redev) {
+          const successor = redevelopmentBlock(redevRand, redev, centre, length, depth, angle, end, styles[redevStyle], code(redevStyle), input.exclusions);
+          if (successor) group.push(successor);
+        }
+        terraceCandidates.push(group);
       }
     }
     inner = outer;
   }
 
-  // Thin terraces uniformly if the total would exceed the feature budget.
+  // Thin terraces uniformly if they would exceed the feature budget. The
+  // budget (`max_features`) counts the original rows only, so they are thinned
+  // exactly as without redevelopment; each kept cleared row brings its
+  // redevelopment block with it (the build checks the total against the 3D
+  // view's feature cap).
   const budget = Math.max(0, params.max_features - features.length);
   const keepEvery = terraceCandidates.length > budget && budget > 0 ? terraceCandidates.length / budget : 1;
   let cursor = 0;
   for (let i = 0; i < terraceCandidates.length; i += 1) {
     if (i >= cursor) {
-      const f = terraceCandidates[i] as MassingFeature;
-      f.properties.i = nextId++;
-      features.push(f);
+      for (const f of terraceCandidates[i] as MassingFeature[]) {
+        f.properties.i = nextId++;
+        features.push(f);
+      }
       cursor += keepEvery;
     }
   }
+
+  // ── Handover years: centre first, soft-edged (see src/engine/handover.ts) ──
+  const reach = Math.max(1, ...envelope.benchmarks.flatMap((m) => m.radii));
+  for (const f of features) {
+    const ring = f.geometry.coordinates[0] as LonLat[];
+    const n = Math.max(1, ring.length - 1);
+    let x = 0;
+    let y = 0;
+    for (let k = 0; k < n; k += 1) {
+      x += (ring[k] as LonLat)[0];
+      y += (ring[k] as LonLat)[1];
+    }
+    const share = distance([x / n, y / n], envelope.centre) / reach;
+    f.properties.r = handoverYear(params.fade_to_modern, share, handoverRand());
+  }
   return features;
+}
+
+/**
+ * Redevelopment block on a cleared terrace site, or null when the site is not
+ * rebuilt: by chance (1 − share), when the rebuild would only come after
+ * {@link LAST_GENERATED_YEAR} (it then stays vacant until the handover), or
+ * when the site has since become a landmark's or an open space's (exclusions).
+ * Earlier schemes are taller flats and maisonettes on a narrower footprint;
+ * later ones low-rise housing — both illustrative forms.
+ */
+function redevelopmentBlock(
+  rand: () => number,
+  params: RedevelopmentParams,
+  centre: LonLat,
+  length: number,
+  depth: number,
+  angle: number,
+  clearedIn: number,
+  style: StyleDef | undefined,
+  k: number,
+  exclusions: Exclusion[],
+): MassingFeature | null {
+  // Draw every value first so the stream stays aligned whatever is decided.
+  const rebuild = rand() < params.share;
+  const appear = clearedIn + between(rand, params.gap_years);
+  const heightDraw = rand();
+  const lengthDraw = rand();
+  const depthDraw = rand();
+  const leadDraw = rand();
+  if (!rebuild || appear > LAST_GENERATED_YEAR || appear < clearedIn + 1) return null;
+  const [lo, hi] = style?.height ?? [10, 30];
+  const flats = appear < params.flats_until;
+  const height = flats ? lo + (hi - lo) * (0.35 + 0.65 * heightDraw) : lo + (hi - lo) * 0.2 * heightDraw;
+  const blockLength = length * (flats ? 0.75 + 0.25 * lengthDraw : 0.85 + 0.15 * lengthDraw);
+  const blockDepth = flats ? Math.min(depth, 11 + 4 * depthDraw) : depth;
+  // Building starts no earlier than the clearance: the two never stand on the site together.
+  const build = Math.max(clearedIn, appear - (1 + 1.5 * leadDraw));
+  if (excluded(centre, build, exclusions)) return null;
+  return makeFeature(rectangle(centre, blockLength, blockDepth, angle), build, appear, PRESENT_SENTINEL, height, k, KIND_REDEVELOPMENT);
 }
 
 function makeFeature(ring: Ring, build: number, start: number, end: number, height: number, k: number, t: number): MassingFeature {
   return {
     type: "Feature",
     geometry: { type: "Polygon", coordinates: [ring.map(([x, y]) => [round6(x), round6(y)] as LonLat)] },
-    properties: { i: 0, b: round2(build), s: round2(start), e: round2(end), h: round1(height), k, t },
+    properties: { i: 0, b: round2(build), s: round2(start), e: round2(end), h: round1(height), k, t, r: PRESENT_SENTINEL },
   };
 }
 

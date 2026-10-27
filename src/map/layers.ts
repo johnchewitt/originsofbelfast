@@ -14,7 +14,7 @@ import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer.js";
 import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 import PortalItem from "@arcgis/core/portal/PortalItem.js";
 import SolidEdges3D from "@arcgis/core/symbols/edges/SolidEdges3D.js";
-import { heightArcade } from "../engine/time";
+import { heightArcade, NEW_STREET_YEARS } from "../engine/time";
 import { CONFIDENCE_COLOURS, hexToRgba, PALETTE } from "./palette";
 import { adjustBrightness, massingColour, mixColours, type DisplayPrefs, type EdgeStyle, type LandmarkStyle, type MassingStyle } from "./layerStyles";
 import { CONFIG } from "../config";
@@ -131,7 +131,7 @@ export function streetRenderer(year: number, storyMode: boolean, colour: string 
       `var age = ${y} - $feature.start_year;`,
       `if ($feature.street_class == 'closed') { return 'closed'; }`,
       `if ($feature.street_class == 'entry') { return IIf(${storyMode ? "true" : "false"}, 'entry-story', 'entry'); }`,
-      `if (age < 10) { return 'new'; }`,
+      `if (age < ${NEW_STREET_YEARS}) { return 'new'; }`,
       `if ($feature.street_class == 'motorway') { return 'motorway'; }`,
       `return IIf($feature.date_basis == 'documented', 'documented', 'inferred');`,
     ].join("\n"),

@@ -68,6 +68,7 @@ export const BRIGHT_PERIOD_COLOURS: Record<string, string> = {
   industrial: "#b4988a",
   terrace: "#d07a5e",
   modern: "#d6ecee",
+  redevelopment: "#9cc6b4",
 };
 
 /** The original, muted palette. */
@@ -83,6 +84,7 @@ export const CLASSIC_PERIOD_COLOURS: Record<string, string> = {
   industrial: "#6d5446",
   terrace: "#8a4e3b",
   modern: "#a9c9cc",
+  redevelopment: "#6f9688",
 };
 
 /** Landmark colours chosen to stand apart from the bright building palette. */

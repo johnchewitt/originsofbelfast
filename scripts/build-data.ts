@@ -35,7 +35,8 @@ import {
   type LonLat,
   type Ring,
 } from "../src/engine/geo";
-import { PRESENT_SENTINEL } from "../src/engine/time";
+import { retireRange } from "../src/engine/handover";
+import { MASSING_FEATURE_CAP, PRESENT_SENTINEL } from "../src/engine/time";
 import type {
   EventCategory,
   GeometryBasis,
@@ -45,7 +46,7 @@ import type {
   LocationPrecision,
 } from "../src/types/history";
 import { irishGridToLonLat, itmToLonLat, parseIrishGridReference } from "./lib/grids";
-import { generateMassing, type MassingParams, type StreetForMassing, type StyleDef, type YardZone } from "./lib/massing";
+import { generateMassing, LAST_GENERATED_YEAR, type MassingParams, type StreetForMassing, type StyleDef, type YardZone } from "./lib/massing";
 import { matchStreet, readOsmLines, type OsmLine } from "./lib/osm";
 
 // ── Paths and logging ─────────────────────────────────────────────────────────
@@ -684,6 +685,17 @@ const railFeatures = transport.lines.map((l) => {
 });
 
 // ── Massing ──────────────────────────────────────────────────────────────────
+const [handoverStart, handoverEnd] = growth.massing.fade_to_modern;
+if (!(handoverEnd > handoverStart)) fail("growth.json: fade_to_modern must be [start, end] with end after start");
+if (handoverStart <= LAST_GENERATED_YEAR) fail(`growth.json: fade_to_modern must start after ${LAST_GENERATED_YEAR}, the last year in which illustrative blocks appear`);
+const redevelopment = growth.massing.redevelopment;
+if (redevelopment) {
+  checkSources(redevelopment.source_ids, "Massing redevelopment");
+  if (!(redevelopment.share >= 0 && redevelopment.share <= 1)) fail("growth.json: redevelopment.share must be between 0 and 1");
+  const [g0, g1] = redevelopment.gap_years;
+  if (!(g0 >= 1 && g1 >= g0)) fail("growth.json: redevelopment.gap_years must be [min, max] with min of at least 1 year");
+  if (!growth.styles.redevelopment) fail('growth.json: add a "redevelopment" style so rebuilt blocks are labelled as such');
+}
 const yards: YardZone[] = [];
 for (const y of growth.massing.yards ?? []) {
   checkSources(y.source_ids, `Yard ${y.id}`);
@@ -709,6 +721,13 @@ const massing = generateMassing({
   seed: growth.seed,
 });
 log.info(`Generated ${massing.length} illustrative massing features.`);
+// Every block is loaded once and time is a filter, so the whole layer must fit the 3D view's cap.
+if (massing.length > MASSING_FEATURE_CAP) fail(`Massing has ${massing.length} blocks, more than the layer-view cap of ${MASSING_FEATURE_CAP}: lower massing.max_features or redevelopment.share`);
+// A block must be complete before blocks start handing over, or it would appear during the handover.
+const massingLastComplete = massing.reduce((m, f) => Math.max(m, f.properties.s), -Infinity);
+const [retireFrom] = retireRange(growth.massing.fade_to_modern);
+if (massingLastComplete >= retireFrom) fail(`Massing blocks complete up to ${massingLastComplete}, after the handover begins retiring blocks (${retireFrom.toFixed(2)}): move fade_to_modern later`);
+for (const f of massing) if (!(f.properties.r > f.properties.s)) fail(`Massing block ${f.properties.i} hands over (${f.properties.r}) before it is complete (${f.properties.s})`);
 
 // ── Event points and uncertainty discs ───────────────────────────────────────
 const eventPoints = events
@@ -832,6 +851,14 @@ writeJson("manifest.json", {
   },
   styles: styleIds.map((id, code) => ({ code, id, label: growth.styles[id]?.label ?? id })),
   fade_to_modern: growth.massing.fade_to_modern,
+  /** Latest completion year of any massing block: after it, no block is under construction. */
+  massing_last_complete: massingLastComplete,
+  phases: {
+    clearance: growth.massing.clearance_years,
+    redevelopment: redevelopment ? [growth.massing.clearance_years[0], LAST_GENERATED_YEAR] : null,
+    handover: growth.massing.fade_to_modern,
+    handover_field: "r",
+  },
   footprint,
   population: { series: population.series, alternates: population.alternates, source_ids: population.source_ids },
   street_geometry_source: osmMatched > 0 ? "openstreetmap" : "schematic",
